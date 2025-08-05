@@ -10,16 +10,14 @@ function initGame() {
     const world = new World(canvas);
     console.log(world.player);
 
-    gameLoop(ctx);
+    // gameLoop(ctx);
   });
 }
 
-function gameLoop(ctx) {
-  function loop() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
+// function gameLoop(ctx) {
+//   function loop() {}
 
-  requestAnimationFrame(loop);
-}
+//   requestAnimationFrame(loop);
+// }
 
 initGame();
