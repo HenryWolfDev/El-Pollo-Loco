@@ -4,10 +4,19 @@ export class MoveableObject {
   width = 150;
   height = 100;
   image;
+  imageCache = [];
 
   loadImage(path) {
     this.image = new Image();
     this.image.src = path;
+  }
+
+  loadImages(arr) {
+    arr.forEach((path) => {
+      let img = new Image();
+      img.src = path;
+      this.imageCache.push(img);
+    });
   }
 
   moveRight() {}
