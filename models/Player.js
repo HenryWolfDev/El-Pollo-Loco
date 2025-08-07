@@ -15,7 +15,7 @@ export class Player extends MoveableObject {
   gravity = 1;
   velocity = 0;
 
-  speed = 2;
+  speed = 5;
 
   constructor(world) {
     super().loadImage("../img/2_character_pepe/1_idle/idle/I-1.png");

@@ -116,5 +116,11 @@ export const imageLoader = {
   },
   BACKGROUND: {
     air: "../img/5_background/layers/air.png",
+    layer1_1: "../img/5_background/layers/1_first_layer/1.png",
+    layer1_2: "../img/5_background/layers/1_first_layer/2.png",
+    layer2_1: "../img/5_background/layers/2_second_layer/1.png",
+    layer2_2: "../img/5_background/layers/2_second_layer/2.png",
+    layer3_1: "../img/5_background/layers/3_third_layer/1.png",
+    layer3_2: "../img/5_background/layers/3_third_layer/2.png",
   },
 };

@@ -1,11 +1,10 @@
 import { Player } from "./Player.js";
-import { Chicken } from "./Chicken.js";
-import { Cloud } from "./Cloud.js";
 import { BackgroundObject } from "./Background-Object.js";
+import { level1 } from "../level/level1.js";
 
 export class World {
-  enemies = [new Chicken(), new Chicken(), new Chicken()];
-  clouds = [new Cloud(), new Cloud()];
+  enemies = level1.enemies;
+  clouds = level1.clouds;
   backgroundLayers = [];
 
   canvas;
@@ -34,7 +33,7 @@ export class World {
 
     this.addObjectsToWorld(this.backgroundLayers);
     this.addObjectsToWorld(this.clouds);
-    this.addToWorld(this.player);
+    this.drawWithDirection(this.player);
     this.addObjectsToWorld(this.enemies);
 
     this.ctx.translate(-this.camera_x, 0);
@@ -45,11 +44,11 @@ export class World {
   // #region Add-Objects-To-World
   addObjectsToWorld(objects) {
     objects.forEach((object) => {
-      this.addToWorld(object);
+      this.drawWithDirection(object);
     });
   }
 
-  addToWorld(moveObject) {
+  drawWithDirection(moveObject) {
     // changed direction for object left and right
     if (moveObject.otherDirection) {
       this.ctx.save();
@@ -72,33 +71,22 @@ export class World {
   }
   // #endregion Add-Objects-To-World
 
+  // #region Background-Layer
   generateBackgroundLayers(repeatCount = 10) {
-    const backgroundImagePaths1 = [
-      "../img/5_background/layers/air.png",
-      "../img/5_background/layers/3_third_layer/1.png",
-      "../img/5_background/layers/2_second_layer/1.png",
-      "../img/5_background/layers/1_first_layer/1.png",
-    ];
-
-    const backgroundImagePaths2 = [
-      "../img/5_background/layers/air.png",
-      "../img/5_background/layers/3_third_layer/2.png",
-      "../img/5_background/layers/2_second_layer/2.png",
-      "../img/5_background/layers/1_first_layer/2.png",
-    ];
-
+    const [paths1, paths2] = level1.backgroundLayers;
     const imageWidth = 719;
     this.backgroundLayers = [];
 
     for (let i = 0; i < repeatCount; i++) {
       const x = i * imageWidth;
-      const paths = i % 2 === 0 ? backgroundImagePaths1 : backgroundImagePaths2;
+      const paths = i % 2 === 0 ? paths1 : paths2;
 
-      for (let path of paths) {
-        this.backgroundLayers.push(new BackgroundObject(path, x));
-      }
+      paths.forEach((path) =>
+        this.backgroundLayers.push(new BackgroundObject(path, x))
+      );
     }
   }
+  // #endregion Background-Layer
 
   updateCamera() {
     const offset = 90;
