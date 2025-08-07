@@ -1,5 +1,6 @@
 import { MoveableObject } from "./MoveableObject.js";
 import { imageLoader } from "../js/imageLoader.js";
+import { IntervalHub } from "../js/IntervalHub.js";
 
 export class Player extends MoveableObject {
   width = 150;
@@ -14,7 +15,7 @@ export class Player extends MoveableObject {
   gravity = 1;
   velocity = 0;
 
-  speed = 6;
+  speed = 2;
 
   constructor(world) {
     super().loadImage("../img/2_character_pepe/1_idle/idle/I-1.png");
@@ -23,12 +24,12 @@ export class Player extends MoveableObject {
     this.loadIDLE();
     this.loadWALK();
     this.loadJump();
-    this.startAnimation();
 
-    // Interhub.startInterval(this.run, 1000 / 60);
-    // Interhub.startInterval(this.startAnimation, 1000 / 30);
+    IntervalHub.startInterval(this.run, 1000 / 60);
+    this.idleAnimation();
   }
 
+  // #region LOAD-IMAGES
   loadIDLE() {
     this.idle = imageLoader.PLAYER.idle.map((path) => {
       const img = new Image();
@@ -52,19 +53,19 @@ export class Player extends MoveableObject {
       this.jump.push(img);
     });
   }
+  // #endregion LOAD-IMAGES
 
   run = () => {
-    // checkkollision
+    this.movement();
     // draw
   };
 
-  startAnimation() {
+  idleAnimation() {
     let i = 0;
     let idleTick = 0;
     const idleDelay = 3.5;
 
-    // fix
-    setInterval(() => {
+    IntervalHub.startInterval(() => {
       const keys = this.world.keys;
       const walking = keys.includes("ArrowLeft") || keys.includes("ArrowRight");
       const frames = walking ? this.walk : this.idle;
@@ -82,7 +83,7 @@ export class Player extends MoveableObject {
           }
         }
       }
-    }, 1000 / 30);
+    }, 1000 / 20);
   }
 
   movement() {
@@ -96,6 +97,7 @@ export class Player extends MoveableObject {
       this.x += this.speed;
       this.otherDirection = false;
     }
+
     if (keys.includes("ArrowUp")) {
       this.y -= this.jumpSpeed;
     }

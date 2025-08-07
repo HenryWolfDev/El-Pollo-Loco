@@ -5,16 +5,12 @@ import { BackgroundObject } from "./Background-Object.js";
 
 export class World {
   enemies = [new Chicken(), new Chicken(), new Chicken()];
-  clouds = [new Cloud()];
-  backgroundObjects = [
-    new BackgroundObject("../img/5_background/layers/air.png", 0),
-    new BackgroundObject("../img/5_background/layers/3_third_layer/1.png", 0),
-    new BackgroundObject("../img/5_background/layers/2_second_layer/1.png", 0),
-    new BackgroundObject("../img/5_background/layers/1_first_layer/1.png", 0),
-  ];
+  clouds = [new Cloud(), new Cloud()];
+  backgroundLayers = [];
 
   canvas;
   ctx;
+  camera_x = 0;
 
   constructor(canvas) {
     this.ctx = canvas.getContext("2d");
@@ -22,6 +18,8 @@ export class World {
     this.keys = [];
     this.player = new Player(this);
     console.log("Player methods:", this.player);
+
+    this.generateBackgroundLayers();
 
     this.setupInput();
     this.draw();
@@ -31,11 +29,15 @@ export class World {
     this.ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     this.player.movement();
+    this.updateCamera();
+    this.ctx.translate(this.camera_x, 0);
 
-    this.addObjectsToWorld(this.backgroundObjects);
+    this.addObjectsToWorld(this.backgroundLayers);
     this.addObjectsToWorld(this.clouds);
     this.addToWorld(this.player);
     this.addObjectsToWorld(this.enemies);
+
+    this.ctx.translate(-this.camera_x, 0);
 
     requestAnimationFrame(() => this.draw());
   }
@@ -47,28 +49,64 @@ export class World {
     });
   }
 
-  addToWorld(moveableObject) {
+  addToWorld(moveObject) {
     // changed direction for object left and right
-    if (moveableObject.otherDirection) {
+    if (moveObject.otherDirection) {
       this.ctx.save();
-      this.ctx.translate(moveableObject.width, 0);
+      this.ctx.translate(moveObject.width, 0);
       this.ctx.scale(-1, 1);
-      moveableObject.x = moveableObject.x * -1;
+      moveObject.x = moveObject.x * -1;
     }
     this.ctx.drawImage(
-      moveableObject.image,
-      moveableObject.x,
-      moveableObject.y,
-      moveableObject.width,
-      moveableObject.height
+      moveObject.image,
+      moveObject.x,
+      moveObject.y,
+      moveObject.width,
+      moveObject.height
     );
     // reseted changed direction
-    if (moveableObject.otherDirection) {
-      moveableObject.x = moveableObject.x * -1;
+    if (moveObject.otherDirection) {
+      moveObject.x = moveObject.x * -1;
       this.ctx.restore();
     }
   }
   // #endregion Add-Objects-To-World
+
+  generateBackgroundLayers(repeatCount = 10) {
+    const backgroundImagePaths1 = [
+      "../img/5_background/layers/air.png",
+      "../img/5_background/layers/3_third_layer/1.png",
+      "../img/5_background/layers/2_second_layer/1.png",
+      "../img/5_background/layers/1_first_layer/1.png",
+    ];
+
+    const backgroundImagePaths2 = [
+      "../img/5_background/layers/air.png",
+      "../img/5_background/layers/3_third_layer/2.png",
+      "../img/5_background/layers/2_second_layer/2.png",
+      "../img/5_background/layers/1_first_layer/2.png",
+    ];
+
+    const imageWidth = 719;
+    this.backgroundLayers = [];
+
+    for (let i = 0; i < repeatCount; i++) {
+      const x = i * imageWidth;
+      const paths = i % 2 === 0 ? backgroundImagePaths1 : backgroundImagePaths2;
+
+      for (let path of paths) {
+        this.backgroundLayers.push(new BackgroundObject(path, x));
+      }
+    }
+  }
+
+  updateCamera() {
+    const offset = 90;
+    this.camera_x = -this.player.x + offset;
+
+    // Begrenzung: Nicht über linken Rand hinaus
+    this.camera_x = Math.min(this.camera_x, 0);
+  }
 
   // #region INPUT-LISTENER
   setupInput() {
