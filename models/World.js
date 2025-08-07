@@ -3,10 +3,8 @@ import { BackgroundObject } from "./Background-Object.js";
 import { level1 } from "../level/level1.js";
 
 export class World {
-  enemies = level1.enemies;
-  clouds = level1.clouds;
+  level = level1;
   backgroundLayers = [];
-
   canvas;
   ctx;
   camera_x = 0;
@@ -16,10 +14,8 @@ export class World {
     this.canvas = canvas;
     this.keys = [];
     this.player = new Player(this);
-    console.log("Player methods:", this.player);
 
     this.generateBackgroundLayers();
-
     this.setupInput();
     this.draw();
   }
@@ -32,9 +28,9 @@ export class World {
     this.ctx.translate(this.camera_x, 0);
 
     this.addObjectsToWorld(this.backgroundLayers);
-    this.addObjectsToWorld(this.clouds);
+    this.addObjectsToWorld(this.level.clouds);
     this.drawWithDirection(this.player);
-    this.addObjectsToWorld(this.enemies);
+    this.addObjectsToWorld(this.level.enemies);
 
     this.ctx.translate(-this.camera_x, 0);
 

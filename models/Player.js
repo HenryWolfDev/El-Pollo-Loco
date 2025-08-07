@@ -89,11 +89,11 @@ export class Player extends MoveableObject {
   movement() {
     const keys = this.world.keys;
 
-    if (keys.includes("ArrowLeft")) {
+    if (keys.includes("ArrowLeft") && this.x > 0) {
       this.x -= this.speed;
       this.otherDirection = true;
     }
-    if (keys.includes("ArrowRight")) {
+    if (keys.includes("ArrowRight") && this.x < this.world.level.level_end_x) {
       this.x += this.speed;
       this.otherDirection = false;
     }
