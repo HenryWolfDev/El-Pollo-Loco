@@ -3,6 +3,10 @@ export class MoveableObject {
   y = 140;
   width = 150;
   height = 100;
+
+  speed = 0.25;
+  otherDirection = false;
+
   image;
   imageCache = [];
 
@@ -21,5 +25,10 @@ export class MoveableObject {
 
   moveRight() {}
 
-  moveLeft() {}
+  // fix
+  moveLeft() {
+    setInterval(() => {
+      this.x -= this.speed;
+    }, 1000 / 60);
+  }
 }
