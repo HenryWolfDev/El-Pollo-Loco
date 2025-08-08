@@ -11,10 +11,10 @@ export class Endboss extends MoveableObject {
   constructor() {
     super().loadImage("../img/4_enemie_boss_chicken/1_walk/G1.png");
     this.x = 2400; // Endboss erscheint weiter hinten im Level
-    this.speed = 0.05;
+    this.speedX = 0.05;
 
     this.loadIdle(() => {
-      this.startIdleAnimation();
+      this.startAnimation();
     });
   }
 
@@ -34,7 +34,7 @@ export class Endboss extends MoveableObject {
     }
   };
 
-  startIdleAnimation() {
+  startAnimation() {
     IntervalHub.startInterval(this.animateIdle, 1000 / 3);
   }
 }

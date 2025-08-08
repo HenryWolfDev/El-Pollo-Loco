@@ -88,7 +88,6 @@ export class World {
     const offset = 90;
     this.camera_x = -this.player.x + offset;
 
-    // Begrenzung: Nicht über linken Rand hinaus
     this.camera_x = Math.min(this.camera_x, 0);
   }
 

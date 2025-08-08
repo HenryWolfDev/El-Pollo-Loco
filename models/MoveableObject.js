@@ -4,7 +4,9 @@ export class MoveableObject {
   y = 140;
   width = 150;
   height = 100;
-  speed = 0.25;
+  speedX = 0.25;
+  speedY = 0;
+  acceleration = 1;
   otherDirection = false;
   image;
   imageCache = [];
@@ -33,11 +35,20 @@ export class MoveableObject {
     });
   }
 
+  applyGravity() {
+    IntervalHub.startInterval(() => {
+      if (this.y < 180) {
+        this.y += this.speedY;
+        this.speedY += this.acceleration;
+      }
+    }, 1000 / 25);
+  }
+
   moveRight() {}
 
   moveLeft() {
     IntervalHub.startInterval(() => {
-      this.x -= this.speed;
+      this.x -= this.speedX;
     }, 1000 / 60);
   }
 }

@@ -13,10 +13,10 @@ export class Chicken extends MoveableObject {
   constructor() {
     super().loadImage("../img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
     this.x = SpawnXManager.getNextSpawnX();
-    this.speed = 0.1 + Math.random() * 0.15;
+    this.speedX = 0.1 + Math.random() * 0.15;
 
     this.loadWalk(() => {
-      this.startIdleAnimation();
+      this.startAnimation();
     });
   }
 
@@ -32,7 +32,7 @@ export class Chicken extends MoveableObject {
     }
   };
 
-  startIdleAnimation() {
+  startAnimation() {
     this.moveLeft();
     IntervalHub.startInterval(this.animateIdle, 1000 / 3.5);
   }

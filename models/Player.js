@@ -5,22 +5,22 @@ import { IntervalHub } from "../js/IntervalHub.js";
 export class Player extends MoveableObject {
   width = 150;
   height = 300;
+
+  y = 10;
+
   idle = [];
   walk = [];
   jump = [];
 
-  // JUMP PROPTERTIES
-  isJumping = false;
-  jumpSpeed = 15;
-  gravity = 1;
-  velocity = 0;
-
-  speed = 5;
+  speedX = 4;
+  speedY = 7;
+  acceleration = 1;
 
   constructor(world) {
     super().loadImage("../img/2_character_pepe/1_idle/idle/I-1.png");
     this.world = world;
 
+    this.applyGravity();
     this.loadIDLE();
     this.loadWALK();
     this.loadJump();
@@ -90,17 +90,22 @@ export class Player extends MoveableObject {
     const keys = this.world.keys;
 
     if (keys.includes("ArrowLeft") && this.x > 0) {
-      this.x -= this.speed;
+      this.x -= this.speedX;
       this.otherDirection = true;
     }
     if (keys.includes("ArrowRight") && this.x < this.world.level.level_end_x) {
-      this.x += this.speed;
+      this.x += this.speedX;
       this.otherDirection = false;
     }
+  }
 
-    if (keys.includes("ArrowUp")) {
-      this.y -= this.jumpSpeed;
-    }
+  applyGravity() {
+    IntervalHub.startInterval(() => {
+      if (this.y < 130) {
+        this.y += this.speedY;
+        this.speedY += this.acceleration;
+      }
+    }, 1000 / 25);
   }
 
   jump() {}
