@@ -9,6 +9,7 @@ export class MoveabelObject {
   currentImage = 0;
 
   speedX = 0.15;
+  speedY = 0;
 
   otherDirection = false;
 
