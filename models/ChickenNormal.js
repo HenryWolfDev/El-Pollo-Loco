@@ -2,9 +2,9 @@ import { MoveabelObject } from "./MoveableObject.js";
 import { SpawnManager } from "../game/SpawnManager.js";
 
 export class ChickenNormal extends MoveabelObject {
-  y = 230;
+  y = 330;
   img;
-  width = 100;
+  width = 75;
   height = 100;
   constructor() {
     super().loadImage(

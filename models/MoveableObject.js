@@ -1,6 +1,6 @@
 export class MoveabelObject {
   x = 500;
-  y = 230;
+  y = 280;
   img;
   width = 100;
   height = 100;
