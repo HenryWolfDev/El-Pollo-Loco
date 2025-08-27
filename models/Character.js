@@ -8,9 +8,12 @@ export class Character extends MoveabelObject {
   width = 150;
   height = 200;
 
+  speedX = 10;
+
   images_Walking = imageLoader.PLAYER.walk;
-  constructor() {
+  constructor(world) {
     super().loadImage("../assets/img/2_character_pepe/2_walk/W-21.png");
+    this.world = world;
     this.loadingImages();
     IntervalHub.startInterval(this.animate, 1000 / 10);
   }
@@ -20,10 +23,16 @@ export class Character extends MoveabelObject {
   }
 
   animate = () => {
-    let i = this.currentImage % this.images_Walking.length;
-    let path = this.images_Walking[i];
-    this.img = this.imageCache[path];
-    this.currentImage++;
+    if (this.world.keyboard.RIGHT) {
+      this.moveRight();
+      this.otherDirection = false;
+      this.playAnimation(this.images_Walking);
+    }
+    if (this.world.keyboard.LEFT) {
+      this.moveLeft();
+      this.otherDirection = true;
+      this.playAnimation(this.images_Walking);
+    }
   };
 
   jump() {}

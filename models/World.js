@@ -5,7 +5,6 @@ import { BackgroundObject } from "./BackgroundObject.js";
 import { imageLoader } from "../game/imageLoader.js";
 
 export class World {
-  character = new Character();
   enemies = [new ChickenNormal(), new ChickenNormal(), new ChickenNormal()];
   clouds = [new Cloud(), new Cloud(), new Cloud(), new Cloud(), new Cloud()];
   backgroundObjects = [
@@ -26,10 +25,13 @@ export class World {
 
   canvas;
   ctx;
+  keyboard;
 
-  constructor(canvas) {
+  constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
+    this.keyboard = keyboard;
+    this.character = new Character(this);
     this.draw();
   }
 
@@ -49,6 +51,24 @@ export class World {
     });
   }
   addToMap(mo) {
+    if (mo.otherDirection) {
+      this.flipImage(mo);
+    }
     this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+    if (mo.otherDirection) {
+      this.flipImageBack(mo);
+    }
+  }
+
+  flipImage(mo) {
+    this.ctx.save();
+    this.ctx.translate(mo.width, 0);
+    this.ctx.scale(-1, 1);
+    mo.x = mo.x * -1;
+  }
+
+  flipImageBack(mo) {
+    mo.x = mo.x * -1;
+    this.ctx.restore();
   }
 }

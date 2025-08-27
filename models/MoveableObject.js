@@ -10,6 +10,8 @@ export class MoveabelObject {
 
   speedX = 0.15;
 
+  otherDirection = false;
+
   loadImage(path) {
     this.img = new Image();
     this.img.src = path;
@@ -23,7 +25,18 @@ export class MoveabelObject {
     });
   }
 
+  playAnimation(images) {
+    let i = this.currentImage % images.length;
+    let path = images[i];
+    this.img = this.imageCache[path];
+    this.currentImage++;
+  }
+
   moveLeft() {
     this.x -= this.speedX;
+  }
+
+  moveRight() {
+    this.x += this.speedX;
   }
 }
