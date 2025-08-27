@@ -3,13 +3,13 @@ import { ChickenNormal } from "../models/ChickenNormal.js";
 import { Cloud } from "./Cloud.js";
 import { BackgroundObject } from "./BackgroundObject.js";
 import { imageLoader } from "../game/imageLoader.js";
+import { Level } from "./Level.js";
 
 export class World {
-  enemies = [new ChickenNormal(), new ChickenNormal(), new ChickenNormal()];
-  clouds = [new Cloud(), new Cloud(), new Cloud(), new Cloud(), new Cloud()];
-
-  bgLayers1 = imageLoader.BACKGROUND_Layer1;
-  bgLayers2 = imageLoader.BACKGROUND_Layer2;
+  enemies = Level.enemies;
+  clouds = Level.clouds;
+  bgLayers1 = Level.bgLayers1;
+  bgLayers2 = Level.bgLayers2;
   backgroundObjects = [];
 
   canvas;
@@ -38,6 +38,8 @@ export class World {
     this.ctx.translate(-this.camera_x, 0);
     requestAnimationFrame(() => this.draw());
   }
+
+  // #region addObjectsToMap & addToMap method
   addObjectsToMap(objects) {
     objects.forEach((ob) => {
       this.addToMap(ob);
@@ -53,8 +55,23 @@ export class World {
     }
   }
 
+  flipImage(mo) {
+    this.ctx.save();
+    this.ctx.translate(mo.width, 0);
+    this.ctx.scale(-1, 1);
+    mo.x = mo.x * -1;
+  }
+
+  flipImageBack(mo) {
+    mo.x = mo.x * -1;
+    this.ctx.restore();
+  }
+  // #endregion addObjectsToMap & addToMap method
+
+  // #region Background creation
   generateBackgroundLayers() {
-    let count = 8;
+    this.generateBackgroundLayerTwo(-720);
+    let count = 6;
     for (let i = 0; i < count; i++) {
       let position = i * 720;
       if (i % 2 === 0) {
@@ -79,16 +96,5 @@ export class World {
       );
     }
   }
-
-  flipImage(mo) {
-    this.ctx.save();
-    this.ctx.translate(mo.width, 0);
-    this.ctx.scale(-1, 1);
-    mo.x = mo.x * -1;
-  }
-
-  flipImageBack(mo) {
-    mo.x = mo.x * -1;
-    this.ctx.restore();
-  }
+  // #endregion Background creation
 }
