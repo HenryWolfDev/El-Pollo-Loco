@@ -1,7 +1,7 @@
 export class SpawnManager {
-  static spawnX = 1400;
+  static spawnX = 400;
   static spwanYClouds = 20 - Math.random() * 15;
-  static spwanXClouds = 500;
+  static spwanXClouds = 100;
 
   static getNextSpawnX() {
     const currentX = this.spawnX;
