@@ -1,8 +1,8 @@
 export class MoveabelObject {
-  x = 130;
-  y = 20;
+  x = 500;
+  y = 230;
   img;
-  width = 150;
+  width = 100;
   height = 100;
 
   loadImage(path) {
