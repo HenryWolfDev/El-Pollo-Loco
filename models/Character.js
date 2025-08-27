@@ -1,7 +1,9 @@
-export class Character {
-  x;
-  y;
+import { MoveabelObject } from "./MoveableObject.js";
 
-  moveRight() {}
+export class Character extends MoveabelObject {
+  constructor() {
+    super().loadImage("../assets/img/2_character_pepe/2_walk/W-21.png");
+  }
+
   jump() {}
 }
