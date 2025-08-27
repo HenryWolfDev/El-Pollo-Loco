@@ -16,8 +16,4 @@ export class Cloud extends MoveabelObject {
   animate = () => {
     this.moveLeft();
   };
-
-  moveLeft() {
-    this.x -= this.speedX;
-  }
 }
