@@ -33,6 +33,7 @@ export class Character extends MoveabelObject {
       this.otherDirection = true;
       this.playAnimation(this.images_Walking);
     }
+    this.world.camera_x = -this.x;
   };
 
   jump() {}

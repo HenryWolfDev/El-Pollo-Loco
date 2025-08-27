@@ -114,15 +114,20 @@ export const imageLoader = {
       "../assets/img/4_enemie_boss_chicken/5_dead/G26.png",
     ],
   },
-  BACKGROUND: {
-    air: "../assets/img/5_background/layers/air.png",
-    layer1_1: "../assets/img/5_background/layers/1_first_layer/1.png",
-    layer1_2: "../assets/img/5_background/layers/1_first_layer/2.png",
-    layer2_1: "../assets/img/5_background/layers/2_second_layer/1.png",
-    layer2_2: "../assets/img/5_background/layers/2_second_layer/2.png",
-    layer3_1: "../assets/img/5_background/layers/3_third_layer/1.png",
-    layer3_2: "../assets/img/5_background/layers/3_third_layer/2.png",
-  },
+
+  BACKGROUND_Layer1: [
+    "../assets/img/5_background/layers/air.png",
+    "../assets/img/5_background/layers/3_third_layer/1.png",
+    "../assets/img/5_background/layers/2_second_layer/1.png",
+    "../assets/img/5_background/layers/1_first_layer/1.png",
+  ],
+  BACKGROUND_Layer2: [
+    "../assets/img/5_background/layers/air.png",
+    "../assets/img/5_background/layers/3_third_layer/2.png",
+    "../assets/img/5_background/layers/2_second_layer/2.png",
+    "../assets/img/5_background/layers/1_first_layer/2.png",
+  ],
+
   STATUSBAR: {
     statusbarHealth: [
       "../assets/img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png",
