@@ -1,4 +1,5 @@
 import { ChickenNormal } from "./ChickenNormal.js";
+import { Enbboss } from "./Endboss.js";
 import { Cloud } from "./Cloud.js";
 import { imageLoader } from "../game/imageLoader.js";
 
@@ -8,6 +9,7 @@ export class Level {
     new ChickenNormal(),
     new ChickenNormal(),
     new ChickenNormal(),
+    new Enbboss(),
   ];
   static clouds = [
     new Cloud(),
