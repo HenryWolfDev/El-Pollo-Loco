@@ -5,6 +5,7 @@ import { IntervalHub } from "../game/IntervalHub.js";
 import { StatusbarHealth } from "./StatusbarHealth.js";
 import { StatusbarCoins } from "./StatusbarCoins.js";
 import { StatusbarBottles } from "./StatusbarBottle.js";
+import { ThrowableObject } from "./ThrowableObject.js";
 
 export class World {
   enemies = Level.enemies;
@@ -12,6 +13,7 @@ export class World {
   bgLayers1 = Level.bgLayers1;
   bgLayers2 = Level.bgLayers2;
   backgroundObjects = [];
+  throwableObjects = [];
 
   canvas;
   ctx;
@@ -29,17 +31,32 @@ export class World {
     this.statusbarBottles = new StatusbarBottles();
     this.draw();
 
-    IntervalHub.startInterval(this.checkCollisions, 200);
+    IntervalHub.startInterval(this.run, 200);
   }
 
-  checkCollisions = () => {
+  run = () => {
+    this.checkCollisions();
+    this.checkThrowableObjects();
+  };
+
+  checkCollisions() {
     this.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
         this.character.hit();
         this.statusBarHealth.setPercentage(this.character.energy);
       }
     });
-  };
+  }
+
+  checkThrowableObjects() {
+    if (this.keyboard.D) {
+      let bottle = new ThrowableObject(
+        this.character.x + 100,
+        this.character.y + 50
+      );
+      this.throwableObjects.push(bottle);
+    }
+  }
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -49,6 +66,7 @@ export class World {
     this.addObjectsToMap(this.clouds);
     this.addToMap(this.character);
     this.addObjectsToMap(this.enemies);
+    this.addObjectsToMap(this.throwableObjects);
 
     // Status Bars
     this.ctx.translate(-this.camera_x, 0);

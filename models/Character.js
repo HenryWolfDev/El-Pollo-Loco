@@ -8,9 +8,8 @@ export class Character extends MoveabelObject {
   y = 230;
   width = 150;
   height = 200;
-  speedX = 50;
+  speedX = 20;
   speedY = 0;
-  acceleration = 2.5;
 
   jumpAnim = false;
   isWalking = false;
@@ -27,7 +26,7 @@ export class Character extends MoveabelObject {
     super().loadImage("../assets/img/2_character_pepe/2_walk/W-21.png");
     this.world = world;
     this.loadingImages();
-    IntervalHub.startInterval(this.applyGravity, 1000 / 25);
+    this.applyGravity();
     IntervalHub.startInterval(this.animate, 1000 / 10);
   }
 
@@ -97,18 +96,6 @@ export class Character extends MoveabelObject {
   }
   charIsJumpingOrInAir() {
     return this.jumpAnim || this.isAboveGround();
-  }
-
-  applyGravity = () => {
-    // speedY > 0 - moving up
-    if (this.isAboveGround() || this.speedY > 0) {
-      this.y -= this.speedY;
-      this.speedY -= this.acceleration;
-    }
-  };
-
-  isAboveGround() {
-    return this.y < 230;
   }
 
   resetJumpFlagIfOnGround() {

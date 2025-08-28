@@ -1,8 +1,10 @@
 import { DrawableObject } from "./DrawabelObject.js";
+import { IntervalHub } from "../game/IntervalHub.js";
 
 export class MoveabelObject extends DrawableObject {
   speedX = 0.15;
   speedY = 0;
+  acceleration = 2.5;
   energy = 100;
   lastHit = 0;
   otherDirection = false;
@@ -60,6 +62,20 @@ export class MoveabelObject extends DrawableObject {
     }
   }
   // #endregion drawing frames
+
+  applyGravity() {
+    // speedY > 0 - moving up
+    IntervalHub.startInterval(() => {
+      if (this.isAboveGround() || this.speedY > 0) {
+        this.y -= this.speedY;
+        this.speedY -= this.acceleration;
+      }
+    }, 1000 / 25);
+  }
+
+  isAboveGround() {
+    return this.y < 230;
+  }
 
   // #region loading images
 
