@@ -33,6 +33,17 @@ export class MoveabelObject {
     this.currentImage++;
   }
 
+  draw(ctx) {
+    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+  }
+  drawFrame(ctx) {
+    ctx.beginPath();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "lime";
+    ctx.rect(this.x, this.y, this.width, this.height);
+    ctx.stroke();
+  }
+
   moveLeft() {
     this.x -= this.speedX;
   }

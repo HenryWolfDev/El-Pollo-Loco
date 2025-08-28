@@ -4,7 +4,7 @@ import { IntervalHub } from "../game/IntervalHub.js";
 import { Level } from "./Level.js";
 
 export class Character extends MoveabelObject {
-  x = 3400;
+  x = 0;
   y = 230;
   width = 150;
   height = 200;
