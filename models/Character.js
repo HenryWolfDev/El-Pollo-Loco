@@ -5,7 +5,7 @@ import { Level } from "./Level.js";
 
 export class Character extends MoveabelObject {
   x = 3400;
-  y = 30;
+  y = 230;
   width = 150;
   height = 200;
   speedX = 50;
@@ -94,6 +94,7 @@ export class Character extends MoveabelObject {
   }
 
   applyGravity = () => {
+    // speedY > 0 - moving up
     if (this.isAboveGround() || this.speedY > 0) {
       this.y -= this.speedY;
       this.speedY -= this.acceleration;
