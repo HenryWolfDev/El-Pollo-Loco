@@ -44,6 +44,15 @@ export class MoveabelObject {
     ctx.stroke();
   }
 
+  isColliding(mo) {
+    return (
+      this.x < mo.x + mo.width &&
+      this.x + this.width > mo.x &&
+      this.y < mo.y + mo.height &&
+      this.y + this.height > mo.y
+    );
+  }
+
   moveLeft() {
     this.x -= this.speedX;
   }

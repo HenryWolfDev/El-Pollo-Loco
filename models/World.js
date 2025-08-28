@@ -4,6 +4,7 @@ import { Cloud } from "./Cloud.js";
 import { BackgroundObject } from "./BackgroundObject.js";
 import { imageLoader } from "../game/imageLoader.js";
 import { Level } from "./Level.js";
+import { IntervalHub } from "../game/IntervalHub.js";
 
 export class World {
   enemies = Level.enemies;
@@ -24,7 +25,17 @@ export class World {
     this.generateBackgroundLayers();
     this.character = new Character(this);
     this.draw();
+
+    IntervalHub.startInterval(this.checkCollisions, 200);
   }
+
+  checkCollisions = () => {
+    this.enemies.forEach((enemy) => {
+      if (this.character.isColliding(enemy)) {
+        console.log("collision", enemy);
+      }
+    });
+  };
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
