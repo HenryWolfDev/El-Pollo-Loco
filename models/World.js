@@ -1,10 +1,10 @@
 import { Character } from "../models/Character.js";
-import { ChickenNormal } from "../models/ChickenNormal.js";
-import { Cloud } from "./Cloud.js";
 import { BackgroundObject } from "./BackgroundObject.js";
-import { imageLoader } from "../game/imageLoader.js";
 import { Level } from "./Level.js";
 import { IntervalHub } from "../game/IntervalHub.js";
+import { StatusbarHealth } from "./StatusbarHealth.js";
+import { StatusbarCoins } from "./StatusbarCoins.js";
+import { StatusbarBottles } from "./StatusbarBottle.js";
 
 export class World {
   enemies = Level.enemies;
@@ -17,6 +17,7 @@ export class World {
   ctx;
   keyboard;
   camera_x = -100;
+  statusBarHealth = new StatusbarHealth();
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -24,6 +25,8 @@ export class World {
     this.keyboard = keyboard;
     this.generateBackgroundLayers();
     this.character = new Character(this);
+    this.statusbarCoins = new StatusbarCoins();
+    this.statusbarBottles = new StatusbarBottles();
     this.draw();
 
     IntervalHub.startInterval(this.checkCollisions, 200);
@@ -33,6 +36,7 @@ export class World {
     this.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
         this.character.hit();
+        this.statusBarHealth.setPercentage(this.character.energy);
       }
     });
   };
@@ -45,6 +49,13 @@ export class World {
     this.addObjectsToMap(this.clouds);
     this.addToMap(this.character);
     this.addObjectsToMap(this.enemies);
+
+    // Status Bars
+    this.ctx.translate(-this.camera_x, 0);
+    this.addToMap(this.statusBarHealth);
+    this.addToMap(this.statusbarCoins);
+    this.addToMap(this.statusbarBottles);
+    this.ctx.translate(this.camera_x, 0);
 
     this.ctx.translate(-this.camera_x, 0);
     requestAnimationFrame(() => this.draw());

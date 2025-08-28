@@ -6,6 +6,7 @@ export class MoveabelObject extends DrawableObject {
   energy = 100;
   lastHit = 0;
   otherDirection = false;
+  debugFrame = true;
 
   // #region action methods
   hit() {
@@ -50,11 +51,13 @@ export class MoveabelObject extends DrawableObject {
   // #region drawing frames
 
   drawFrame(ctx) {
-    ctx.beginPath();
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = "lime";
-    ctx.rect(this.x, this.y, this.width, this.height);
-    ctx.stroke();
+    if (this.debugFrame) {
+      ctx.beginPath();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "lime";
+      ctx.rect(this.x, this.y, this.width, this.height);
+      ctx.stroke();
+    }
   }
   // #endregion drawing frames
 
