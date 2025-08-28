@@ -1,17 +1,10 @@
-export class MoveabelObject {
-  x = 500;
-  y = 280;
+import { DrawableObject } from "./DrawabelObject.js";
+
+export class MoveabelObject extends DrawableObject {
   speedX = 0.15;
   speedY = 0;
-  width = 100;
-  height = 100;
-  img;
-  imageCache = {};
-  currentImage = 0;
-
   energy = 100;
   lastHit = 0;
-
   otherDirection = false;
 
   // #region action methods
@@ -55,9 +48,7 @@ export class MoveabelObject {
   }
 
   // #region drawing frames
-  draw(ctx) {
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-  }
+
   drawFrame(ctx) {
     ctx.beginPath();
     ctx.lineWidth = 2;
@@ -68,18 +59,6 @@ export class MoveabelObject {
   // #endregion drawing frames
 
   // #region loading images
-  loadImage(path) {
-    this.img = new Image();
-    this.img.src = path;
-  }
-
-  loadImages(arr) {
-    arr.forEach((path) => {
-      let img = new Image();
-      img.src = path;
-      this.imageCache[path] = img;
-    });
-  }
 
   playAnimation(images) {
     let i = this.currentImage % images.length;
