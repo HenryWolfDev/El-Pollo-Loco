@@ -32,7 +32,7 @@ export class World {
   checkCollisions = () => {
     this.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
-        console.log("collision", enemy);
+        this.character.hit();
       }
     });
   };

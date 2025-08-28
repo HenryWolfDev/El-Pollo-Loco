@@ -67,6 +67,10 @@ export class Character extends MoveabelObject {
     this.world.camera_x = -this.x + 100;
   }
 
+  jump() {
+    this.speedY = 30;
+  }
+
   jumpStart() {
     if (this.world.keyboard.SPACE && !this.isAboveGround()) {
       this.jump();
@@ -74,15 +78,17 @@ export class Character extends MoveabelObject {
       this.currentImage = 0;
     }
   }
-
-  jump() {
-    this.speedY = 30;
-  }
-
   // #endregion movement
 
   // #region Character Animations
   CharacterAnimations() {
+    if (this.isdead()) {
+      this.playAnimation(this.images_Dead);
+      this.isSleeping = false;
+      this.isWalking = false;
+    } else if (this.isHurt()) {
+      this.playAnimation(this.images_Hurt);
+    }
     if (this.charIsJumpingOrInAir()) {
       this.isSleeping = false;
       this.isWalking = false;
