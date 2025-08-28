@@ -51,23 +51,14 @@ export class Character extends MoveabelObject {
     if (this.world.keyboard.RIGHT && this.x < Level.level_end_x) {
       this.moveRight();
       this.otherDirection = false;
-      this.playAnimation(this.images_Walking);
+      this.isWalking = true;
     }
     if (this.world.keyboard.LEFT && this.x > 0) {
       this.moveLeft();
       this.otherDirection = true;
-      this.playAnimation(this.images_Walking);
+      this.isWalking = true;
     }
-
     this.updateCamera();
-  }
-
-  updateCamera() {
-    this.world.camera_x = -this.x + 100;
-  }
-
-  jump() {
-    this.speedY = 30;
   }
 
   jumpStart() {
@@ -77,21 +68,40 @@ export class Character extends MoveabelObject {
       this.currentImage = 0;
     }
   }
+
+  jump() {
+    this.speedY = 30;
+  }
   // #endregion movement
 
   // #region Character Animations
   CharacterAnimations() {
-    if (this.isdead()) {
+    if (this.isWalking && !this.isHurt()) {
+      this.playAnimation(this.images_Walking);
+      this.isWalking = false;
+    } else if (this.isdead()) {
       this.playAnimation(this.images_Dead);
       this.isSleeping = false;
       this.isWalking = false;
     } else if (this.isHurt()) {
+      this.x -= 15;
+      this.checkXPosition();
       this.playAnimation(this.images_Hurt);
+      this.isWalking = false;
+    } else if (!this.isHurt() && !this.isWalking) {
+      this.playAnimation(this.images_Idle);
+      this.isWalking = false;
     }
     if (this.charIsJumpingOrInAir()) {
       this.isSleeping = false;
       this.isWalking = false;
       this.playAnimation(this.images_Jumping);
+    }
+  }
+
+  checkXPosition() {
+    if (this.x <= 0) {
+      this.x = 0;
     }
   }
   charIsJumpingOrInAir() {
@@ -102,10 +112,9 @@ export class Character extends MoveabelObject {
     if (!this.isAboveGround() && this.jumpAnim) {
       this.jumpAnim = false;
     }
+  }
 
-    if (!this.isAboveGround()) {
-      if (this.jumpAnim) this.jumpAnim = false;
-      if (this.speedY < 0) this.speedY = 0;
-    }
+  updateCamera() {
+    this.world.camera_x = -this.x + 100;
   }
 }
