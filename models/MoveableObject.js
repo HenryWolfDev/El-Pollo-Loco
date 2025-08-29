@@ -1,4 +1,4 @@
-import { DrawableObject } from "./DrawabelObject.js";
+import { DrawableObject } from "./DrawableObject.js";
 import { IntervalHub } from "../game/IntervalHub.js";
 
 export class MoveabelObject extends DrawableObject {

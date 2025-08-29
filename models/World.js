@@ -6,6 +6,8 @@ import { StatusbarHealth } from "./StatusbarHealth.js";
 import { StatusbarCoins } from "./StatusbarCoins.js";
 import { StatusbarBottles } from "./StatusbarBottle.js";
 import { ThrowableObject } from "./ThrowableObject.js";
+import { AudioHub } from "../game/AudioHub.js";
+import { StatusbarBossHealth } from "./StatusbarBossHealth.js";
 
 /**
  * Repräsentiert die Spielwelt, inklusive Spielfigur, Hintergrund, Gegnern, Statusanzeigen und Logik.
@@ -41,6 +43,7 @@ export class World {
     this.character = new Character(this);
     this.statusbarCoins = new StatusbarCoins();
     this.statusbarBottles = new StatusbarBottles();
+    this.statusBarBossHealth = new StatusbarBossHealth();
     this.draw();
 
     IntervalHub.startInterval(this.run, 200);
@@ -57,6 +60,7 @@ export class World {
     this.coins.filter((coin, index) => {
       if (this.character.isColliding(coin)) {
         this.character.coinsCount++;
+        AudioHub.playOne(AudioHub.Collect_Sound);
         this.statusbarCoins.setPercentage(this.character.coinsCount);
         this.coins.splice(index, 1);
       }
@@ -67,6 +71,7 @@ export class World {
     this.bottles.filter((bottle, index) => {
       if (this.character.isColliding(bottle)) {
         this.character.bottleCount++;
+        AudioHub.playOne(AudioHub.Collect_Sound);
         this.statusbarBottles.setPercentage(this.character.bottleCount);
         this.bottles.splice(index, 1);
       }
@@ -112,8 +117,8 @@ export class World {
       );
       this.throwableBottles.push(bottle);
       this.character.bottleCount--;
+      this.statusbarBottles.setPercentage(this.character.bottleCount);
     }
-    this.statusbarBottles.setPercentage(this.character.bottleCount);
 
     if (!this.keyboard.D) {
       this.canThrow = true;
@@ -141,6 +146,7 @@ export class World {
     this.addToMap(this.statusBarHealth);
     this.addToMap(this.statusbarCoins);
     this.addToMap(this.statusbarBottles);
+    this.addToMap(this.statusBarBossHealth);
     this.ctx.translate(this.camera_x, 0);
 
     this.ctx.translate(-this.camera_x, 0);

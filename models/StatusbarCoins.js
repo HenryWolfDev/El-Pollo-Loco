@@ -1,4 +1,4 @@
-import { DrawableObject } from "./DrawabelObject.js";
+import { DrawableObject } from "./DrawableObject.js";
 import { imageLoader } from "../game/imageLoader.js";
 export class StatusbarCoins extends DrawableObject {
   images_Coins = imageLoader.STATUSBAR.statusbarCoins;

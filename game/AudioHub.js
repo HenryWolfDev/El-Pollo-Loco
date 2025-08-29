@@ -59,6 +59,8 @@ export class AudioHub {
   static Background = new MyAudio("../assets/sounds/game/background2.mp3");
   static Wind = new MyAudio("../assets/sounds/game/wind2.mp3");
 
+  static volumneOn = true;
+
   // All Sounds
   static allSounds = [
     AudioHub.Character_Dead,
@@ -81,7 +83,9 @@ export class AudioHub {
   static playOne(sound) {
     if (sound.sound.readyState === 4 || sound.loaded) {
       sound.loaded = true;
-      sound.sound.volume = vol;
+
+      sound.sound.volume = 0.4;
+
       sound.sound.currentTime = 0;
       sound.sound.play();
     }

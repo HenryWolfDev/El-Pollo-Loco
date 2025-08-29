@@ -2,6 +2,7 @@ import { MoveabelObject } from "./MoveableObject.js";
 import { SpawnManager } from "../game/SpawnManager.js";
 import { IntervalHub } from "../game/IntervalHub.js";
 import { imageLoader } from "../game/imageLoader.js";
+import { AudioHub } from "../game/AudioHub.js";
 
 export class ChickenSmall extends MoveabelObject {
   x = 1000;
@@ -11,6 +12,8 @@ export class ChickenSmall extends MoveabelObject {
 
   images_Walking = imageLoader.ENEMIE_CHICKEN.chicken_small.walk;
   images_Dead = imageLoader.ENEMIE_CHICKEN.chicken_small.dead;
+
+  isDeadSoundPlaying = false;
 
   constructor() {
     super().loadImage(
@@ -31,7 +34,12 @@ export class ChickenSmall extends MoveabelObject {
 
   playDeadAnimation() {
     if (this.isdead()) {
+      if (!this.isDeadSoundPlaying) {
+        AudioHub.playOne(AudioHub.Chicken_Dead2);
+        this.isDeadSoundPlaying = true;
+      }
       this.playAnimation(this.images_Dead);
+      return;
     }
   }
 }
