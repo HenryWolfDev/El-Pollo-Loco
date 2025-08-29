@@ -7,6 +7,9 @@ import { StatusbarCoins } from "./StatusbarCoins.js";
 import { StatusbarBottles } from "./StatusbarBottle.js";
 import { ThrowableObject } from "./ThrowableObject.js";
 
+/**
+ * Repräsentiert die Spielwelt, inklusive Spielfigur, Hintergrund, Gegnern, Statusanzeigen und Logik.
+ */
 export class World {
   backgroundLayers = [];
   bgLayer1 = Level.bgLayers1;
@@ -15,7 +18,9 @@ export class World {
   enemys = Level.enemies;
   coins = Level.Coins;
   bottles = Level.Bottle;
-  throwableObjects = [];
+  throwableBottles = [];
+
+  canThrowBottle = true;
 
   canvas;
   ctx;
@@ -23,6 +28,11 @@ export class World {
   camera_x = -100;
   statusBarHealth = new StatusbarHealth();
 
+  /**
+   * Erstellt eine neue Spielwelt.
+   * @param {HTMLCanvasElement} canvas - Das Canvas-Element für das Rendering
+   * @param {object} keyboard - Die Tastatureingaben
+   */
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
@@ -37,45 +47,83 @@ export class World {
   }
 
   run = () => {
-    // this.checkCollisions();
+    this.checkCollisions();
     this.checkThrowableObjects();
+    this.checkCoinsPickup();
+    this.checkBottlePickup();
   };
+
+  checkCoinsPickup() {
+    this.coins.filter((coin, index) => {
+      if (this.character.isColliding(coin)) {
+        this.character.coinsCount++;
+        this.statusbarCoins.setPercentage(this.character.coinsCount);
+        this.coins.splice(index, 1);
+      }
+    });
+  }
+
+  checkBottlePickup() {
+    this.bottles.filter((bottle, index) => {
+      if (this.character.isColliding(bottle)) {
+        this.character.bottleCount++;
+        this.statusbarBottles.setPercentage(this.character.bottleCount);
+        this.bottles.splice(index, 1);
+      }
+    });
+  }
+
+  // #region Collision methods
+  checkCollisions() {
+    this.enemys.forEach((enemy, index) => {
+      if (
+        this.character.isAboveGround() &&
+        this.character.isFalling() &&
+        this.character.isColliding(enemy)
+      ) {
+        enemy.energy = 0;
+        this.character.jump();
+        this.removeEnemy(index);
+      } else if (this.character.isColliding(enemy)) {
+        this.character.hit();
+        this.statusBarHealth.setPercentage(this.character.energy);
+      }
+    });
+  }
 
   removeEnemy(index) {
     setTimeout(() => {
       this.enemys.splice(index, 1);
     }, 500);
   }
-
-  // #region Collision methods
-  // checkCollisions() {
-  //   this.enemys.forEach((enemy, index) => {
-  //     if (
-  //       this.character.isColliding(enemy) &&
-  //       this.character.isAboveGround() &&
-  //       this.character.isFalling()
-  //     ) {
-  //       enemy.energy = 0;
-  //       this.character.jump();
-  //       this.removeEnemy(index);
-  //     } else if (this.character.isColliding(enemy)) {
-  //       this.character.hit();
-  //       this.statusBarHealth.setPercentage(this.character.energy);
-  //     }
-  //   });
-  // }
   // #endregion Collision methods
 
   checkThrowableObjects() {
-    if (this.keyboard.D) {
+    if (
+      this.keyboard.D &&
+      this.character.bottleCount > 0 &&
+      this.canThrowBottle
+    ) {
+      this.canThrow = false;
+      this.character.updateAction();
       let bottle = new ThrowableObject(
         this.character.x + 100,
         this.character.y + 50
       );
-      this.throwableObjects.push(bottle);
+      this.throwableBottles.push(bottle);
+      this.character.bottleCount--;
+    }
+    this.statusbarBottles.setPercentage(this.character.bottleCount);
+
+    if (!this.keyboard.D) {
+      this.canThrow = true;
     }
   }
 
+  /**
+   * Zeichnet die gesamte Spielwelt pro Frame.
+   * Bewegt Kamera, rendert Objekte und HUD.
+   */
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
@@ -84,7 +132,7 @@ export class World {
     this.addObjectsToMap(this.clouds);
     this.addToMap(this.character);
     this.addObjectsToMap(this.enemys);
-    this.addObjectsToMap(this.throwableObjects);
+    this.addObjectsToMap(this.throwableBottles);
     this.addObjectsToMap(this.coins);
     this.addObjectsToMap(this.bottles);
 
@@ -100,11 +148,22 @@ export class World {
   }
 
   // #region addObjectsToMap & addToMap method
+
+  /**
+   * Fügt eine Liste von Objekten der Zeichenfläche hinzu.
+   * @param {object[]} objects - Liste der zu zeichnenden Objekte
+   */
   addObjectsToMap(objects) {
     objects.forEach((ob) => {
       this.addToMap(ob);
     });
   }
+
+  /**
+   * Zeichnet ein einzelnes Objekt auf das Canvas.
+   * Berücksichtigt Richtung (Spiegelung).
+   * @param {object} mo - Das darzustellende Objekt
+   */
   addToMap(mo) {
     if (mo.otherDirection) {
       this.flipImage(mo);
@@ -117,6 +176,10 @@ export class World {
     }
   }
 
+  /**
+   * Spiegelt ein Objekt horizontal.
+   * @param {object} mo - Das Objekt, das gespiegelt werden soll
+   */
   flipImage(mo) {
     this.ctx.save();
     this.ctx.translate(mo.width, 0);
@@ -124,6 +187,10 @@ export class World {
     mo.x = mo.x * -1;
   }
 
+  /**
+   * Setzt die Spiegelung des Objekts zurück.
+   * @param {object} mo - Das Objekt, das zurückgesetzt werden soll
+   */
   flipImageBack(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();
@@ -131,6 +198,11 @@ export class World {
   // #endregion addObjectsToMap & addToMap method
 
   // #region Background creation
+
+  /**
+   * Generiert alle Hintergrundebenen im Level.
+   * Nutzt zwei verschiedene Layer, abwechselnd angeordnet.
+   */
   generateBackgroundLayers() {
     this.generateBackgroundLayerTwo(-720);
 

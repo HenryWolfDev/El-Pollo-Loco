@@ -4,7 +4,7 @@ import { IntervalHub } from "../game/IntervalHub.js";
 import { imageLoader } from "../game/imageLoader.js";
 
 export class ChickenSmall extends MoveabelObject {
-  x = 800;
+  x = 1000;
   y = 340;
   width = 60;
   height = 80;
@@ -24,7 +24,7 @@ export class ChickenSmall extends MoveabelObject {
   }
 
   animate = () => {
-    // this.moveLeft();
+    this.moveLeft();
     this.playAnimation(this.images_Walking);
     this.playDeadAnimation();
   };

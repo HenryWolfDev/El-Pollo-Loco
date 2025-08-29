@@ -81,7 +81,7 @@ export class AudioHub {
   static playOne(sound) {
     if (sound.sound.readyState === 4 || sound.loaded) {
       sound.loaded = true;
-      sound.sound.volume = 0.4;
+      sound.sound.volume = vol;
       sound.sound.currentTime = 0;
       sound.sound.play();
     }

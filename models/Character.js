@@ -2,7 +2,14 @@ import { MoveabelObject } from "./MoveableObject.js";
 import { imageLoader } from "../game/imageLoader.js";
 import { IntervalHub } from "../game/IntervalHub.js";
 import { Level } from "./Level.js";
+import { AudioHub } from "../game/AudioHub.js";
 
+/**
+ * Repräsentiert den spielbaren Charakter.
+ * Erbt von MoveableObject und enthält Animationen, Bewegungen und Interaktionen.
+ *
+ * @extends MoveabelObject
+ */
 export class Character extends MoveabelObject {
   x = 0;
   y = 230;
@@ -14,6 +21,12 @@ export class Character extends MoveabelObject {
   jumpAnim = false;
   isWalking = false;
 
+  bottleCount = 10;
+  coinsCount = 0;
+
+  /**
+   * Lädt alle benötigten Animationsbilder des Charakters.
+   */
   images_Idle = imageLoader.PLAYER.idle;
   images_Walking = imageLoader.PLAYER.walk;
   images_Jumping = imageLoader.PLAYER.jump;
@@ -21,6 +34,10 @@ export class Character extends MoveabelObject {
   images_Hurt = imageLoader.PLAYER.hurt;
   images_Sleep = imageLoader.PLAYER.long_idle;
 
+  /**
+   * Erstellt eine neue Instanz des Characters.
+   * @param {object} world - Das Spielfeld bzw. die Welt, in der sich der Charakter befindet.
+   */
   constructor(world) {
     super().loadImage("../assets/img/2_character_pepe/2_walk/W-21.png");
     this.world = world;
@@ -47,6 +64,10 @@ export class Character extends MoveabelObject {
   };
 
   // #region movement
+
+  /**
+   * Bewegt den Charakter nach links oder rechts basierend auf Tasteneingaben.
+   */
   moveLeftAndRight() {
     if (this.world.keyboard.RIGHT && this.x < Level.level_end_x) {
       this.moveRight();
@@ -63,6 +84,9 @@ export class Character extends MoveabelObject {
     this.updateCamera();
   }
 
+  /**
+   * Startet den Sprung, wenn SPACE gedrückt wird und der Charakter nicht bereits in der Luft ist.
+   */
   jumpStart() {
     if (this.world.keyboard.SPACE && !this.isAboveGround()) {
       this.jump();
@@ -79,8 +103,11 @@ export class Character extends MoveabelObject {
   // #endregion movement
 
   // #region Character Animations
+  /**
+   * Verarbeitet die aktuellen Animationen des Charakters abhängig vom Zustand.
+   */
   CharacterAnimations() {
-    if (this.charIsSleeping()) {
+    if (this.charIsSleeping() && !this.isHurt()) {
       this.playAnimation(this.images_Sleep);
       return;
     }
@@ -104,12 +131,21 @@ export class Character extends MoveabelObject {
       this.isWalking = false;
     }
   }
+  // #endregion Character Animations
 
+  /**
+   * Verhindert, dass der Charakter über den linken Rand hinaus bewegt wird.
+   */
   checkXPosition() {
     if (this.x <= 0) {
       this.x = 0;
     }
   }
+
+  /**
+   * Überprüft, ob der Charakter springt oder sich in der Luft befindet.
+   * @returns {boolean} true, wenn Charakter springt oder in der Luft ist
+   */
   charIsJumpingOrInAir() {
     return this.jumpAnim || this.isAboveGround();
   }
@@ -118,15 +154,25 @@ export class Character extends MoveabelObject {
     return this.waitingTime > this.timeToWait;
   }
 
+  /**
+   * Überprüft, ob der Charakter schläft (nach 5 Sekunden Inaktivität).
+   * @returns {boolean} true, wenn der Charakter schläft
+   */
   charIsSleeping() {
-    //  / 1000 = time in seconds
     let timeSinceLastAction = (Date.now() - this.lastAction) / 1000;
     return timeSinceLastAction > 5;
   }
+
+  /**
+   * Aktualisiert den Zeitstempel der letzten Aktion (z.B. Bewegung).
+   */
   updateAction() {
     this.lastAction = Date.now();
   }
 
+  /**
+   * Setzt das Sprung-Flag zurück, wenn der Charakter wieder auf dem Boden ist.
+   */
   resetJumpFlagIfOnGround() {
     if (!this.isAboveGround() && this.jumpAnim) {
       this.jumpAnim = false;

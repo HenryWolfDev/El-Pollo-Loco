@@ -12,7 +12,7 @@ export class MoveabelObject extends DrawableObject {
 
   // #region action methods
   hit() {
-    this.energy -= 10;
+    this.energy -= 5;
     if (this.energy < 0) {
       this.energy = 0;
     } else {
@@ -39,7 +39,9 @@ export class MoveabelObject extends DrawableObject {
   }
 
   moveRight() {
-    this.x += this.speedX;
+    if (!this.isdead()) {
+      this.x += this.speedX;
+    }
   }
 
   // #endregion Moving
