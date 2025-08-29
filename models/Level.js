@@ -19,7 +19,7 @@ export class Level {
     new Cloud(),
     new Cloud(),
   ];
-  static Coins = [new Coin(300), new Coin(500)];
+  static Coins = [new Coin(300, 330), new Coin(500, 230)];
 
   static bgLayers1 = imageLoader.BACKGROUND_Layer1;
   static bgLayers2 = imageLoader.BACKGROUND_Layer2;

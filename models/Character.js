@@ -13,7 +13,6 @@ export class Character extends MoveabelObject {
 
   jumpAnim = false;
   isWalking = false;
-  isSleeping = false;
 
   images_Idle = imageLoader.PLAYER.idle;
   images_Walking = imageLoader.PLAYER.walk;
@@ -26,6 +25,7 @@ export class Character extends MoveabelObject {
     super().loadImage("../assets/img/2_character_pepe/2_walk/W-21.png");
     this.world = world;
     this.loadingImages();
+    this.lastAction = Date.now();
     this.applyGravity();
     IntervalHub.startInterval(this.animate, 1000 / 10);
   }
@@ -50,11 +50,13 @@ export class Character extends MoveabelObject {
   moveLeftAndRight() {
     if (this.world.keyboard.RIGHT && this.x < Level.level_end_x) {
       this.moveRight();
+      this.updateAction();
       this.otherDirection = false;
       this.isWalking = true;
     }
     if (this.world.keyboard.LEFT && this.x > 0) {
       this.moveLeft();
+      this.updateAction();
       this.otherDirection = true;
       this.isWalking = true;
     }
@@ -64,6 +66,7 @@ export class Character extends MoveabelObject {
   jumpStart() {
     if (this.world.keyboard.SPACE && !this.isAboveGround()) {
       this.jump();
+      this.updateAction();
       this.jumpAnim = true;
       this.currentImage = 0;
     }
@@ -77,26 +80,28 @@ export class Character extends MoveabelObject {
 
   // #region Character Animations
   CharacterAnimations() {
+    if (this.charIsSleeping()) {
+      this.playAnimation(this.images_Sleep);
+      return;
+    }
     if (this.isWalking && !this.isHurt()) {
       this.playAnimation(this.images_Walking);
       this.isWalking = false;
     } else if (this.isdead()) {
       this.playAnimation(this.images_Dead);
-      this.isSleeping = false;
       this.isWalking = false;
     } else if (this.isHurt()) {
       this.x -= 15;
+      this.updateAction();
       this.checkXPosition();
       this.playAnimation(this.images_Hurt);
+      this.isWalking = true;
+    } else if (this.charIsJumpingOrInAir()) {
       this.isWalking = false;
+      this.playAnimation(this.images_Jumping);
     } else if (!this.isHurt() && !this.isWalking) {
       this.playAnimation(this.images_Idle);
       this.isWalking = false;
-    }
-    if (this.charIsJumpingOrInAir()) {
-      this.isSleeping = false;
-      this.isWalking = false;
-      this.playAnimation(this.images_Jumping);
     }
   }
 
@@ -107,6 +112,19 @@ export class Character extends MoveabelObject {
   }
   charIsJumpingOrInAir() {
     return this.jumpAnim || this.isAboveGround();
+  }
+
+  charIsNotMoving() {
+    return this.waitingTime > this.timeToWait;
+  }
+
+  charIsSleeping() {
+    //  / 1000 = time in seconds
+    let timeSinceLastAction = (Date.now() - this.lastAction) / 1000;
+    return timeSinceLastAction > 5;
+  }
+  updateAction() {
+    this.lastAction = Date.now();
   }
 
   resetJumpFlagIfOnGround() {

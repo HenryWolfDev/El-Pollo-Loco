@@ -8,12 +8,12 @@ import { StatusbarBottles } from "./StatusbarBottle.js";
 import { ThrowableObject } from "./ThrowableObject.js";
 
 export class World {
-  enemys = Level.enemies;
+  backgroundLayers = [];
+  bgLayer1 = Level.bgLayers1;
+  bgLayer2 = Level.bgLayers2;
   clouds = Level.clouds;
-  bgLayers1 = Level.bgLayers1;
-  bgLayers2 = Level.bgLayers2;
+  enemys = Level.enemies;
   coins = Level.Coins;
-  backgroundObjects = [];
   throwableObjects = [];
 
   canvas;
@@ -46,6 +46,7 @@ export class World {
     }, 500);
   }
 
+  // #region Collision methods
   checkCollisions() {
     this.enemys.forEach((enemy, index) => {
       if (
@@ -62,6 +63,7 @@ export class World {
       }
     });
   }
+  // #endregion Collision methods
 
   checkThrowableObjects() {
     if (this.keyboard.D) {
@@ -77,7 +79,7 @@ export class World {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
 
-    this.addObjectsToMap(this.backgroundObjects);
+    this.addObjectsToMap(this.backgroundLayers);
     this.addObjectsToMap(this.clouds);
     this.addToMap(this.character);
     this.addObjectsToMap(this.enemys);
@@ -142,16 +144,16 @@ export class World {
   }
 
   generateBackgroundLayerOne(position) {
-    for (let i = 0; i < this.bgLayers1.length; i++) {
-      this.backgroundObjects.push(
-        new BackgroundObject(this.bgLayers1[i], position)
+    for (let i = 0; i < this.bgLayer1.length; i++) {
+      this.backgroundLayers.push(
+        new BackgroundObject(this.bgLayer1[i], position)
       );
     }
   }
   generateBackgroundLayerTwo(position) {
-    for (let i = 0; i < this.bgLayers2.length; i++) {
-      this.backgroundObjects.push(
-        new BackgroundObject(this.bgLayers2[i], position)
+    for (let i = 0; i < this.bgLayer2.length; i++) {
+      this.backgroundLayers.push(
+        new BackgroundObject(this.bgLayer2[i], position)
       );
     }
   }
