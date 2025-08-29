@@ -27,5 +27,12 @@ export class ChickenNormal extends MoveabelObject {
   animate = () => {
     this.moveLeft();
     this.playAnimation(this.images_Walking);
+    this.playDeadAnimation();
   };
+
+  playDeadAnimation() {
+    if (this.isdead()) {
+      this.playAnimation(this.images_Dead);
+    }
+  }
 }

@@ -72,6 +72,7 @@ export class Character extends MoveabelObject {
   jump() {
     this.speedY = 30;
   }
+
   // #endregion movement
 
   // #region Character Animations

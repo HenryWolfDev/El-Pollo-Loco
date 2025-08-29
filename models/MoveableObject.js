@@ -12,7 +12,7 @@ export class MoveabelObject extends DrawableObject {
 
   // #region action methods
   hit() {
-    this.energy -= 0;
+    this.energy -= 10;
     if (this.energy < 0) {
       this.energy = 0;
     } else {
@@ -33,12 +33,15 @@ export class MoveabelObject extends DrawableObject {
 
   // #region Moving
   moveLeft() {
-    this.x -= this.speedX;
+    if (!this.isdead()) {
+      this.x -= this.speedX;
+    }
   }
 
   moveRight() {
     this.x += this.speedX;
   }
+
   // #endregion Moving
 
   isColliding(mo) {
@@ -69,12 +72,17 @@ export class MoveabelObject extends DrawableObject {
       if (this.isAboveGround() || this.speedY > 0) {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
+        console.log(this.isFalling());
       }
     }, 1000 / 25);
   }
 
   isAboveGround() {
     return this.y < 230;
+  }
+
+  isFalling() {
+    return this.speedY < 0;
   }
 
   // #region loading images

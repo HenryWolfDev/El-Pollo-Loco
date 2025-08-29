@@ -8,10 +8,11 @@ import { StatusbarBottles } from "./StatusbarBottle.js";
 import { ThrowableObject } from "./ThrowableObject.js";
 
 export class World {
-  enemies = Level.enemies;
+  enemys = Level.enemies;
   clouds = Level.clouds;
   bgLayers1 = Level.bgLayers1;
   bgLayers2 = Level.bgLayers2;
+  coins = Level.Coins;
   backgroundObjects = [];
   throwableObjects = [];
 
@@ -39,9 +40,23 @@ export class World {
     this.checkThrowableObjects();
   };
 
+  removeEnemy(index) {
+    setTimeout(() => {
+      this.enemys.splice(index, 1);
+    }, 500);
+  }
+
   checkCollisions() {
-    this.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy)) {
+    this.enemys.forEach((enemy, index) => {
+      if (
+        this.character.isColliding(enemy) &&
+        this.character.isAboveGround() &&
+        this.character.isFalling()
+      ) {
+        enemy.energy = 0;
+        this.character.jump();
+        this.removeEnemy(index);
+      } else if (this.character.isColliding(enemy)) {
         this.character.hit();
         this.statusBarHealth.setPercentage(this.character.energy);
       }
@@ -65,8 +80,9 @@ export class World {
     this.addObjectsToMap(this.backgroundObjects);
     this.addObjectsToMap(this.clouds);
     this.addToMap(this.character);
-    this.addObjectsToMap(this.enemies);
+    this.addObjectsToMap(this.enemys);
     this.addObjectsToMap(this.throwableObjects);
+    this.addObjectsToMap(this.coins);
 
     // Status Bars
     this.ctx.translate(-this.camera_x, 0);
@@ -113,6 +129,7 @@ export class World {
   // #region Background creation
   generateBackgroundLayers() {
     this.generateBackgroundLayerTwo(-720);
+
     let count = 6;
     for (let i = 0; i < count; i++) {
       let position = i * 720;
