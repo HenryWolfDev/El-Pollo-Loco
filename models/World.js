@@ -14,6 +14,7 @@ export class World {
   clouds = Level.clouds;
   enemys = Level.enemies;
   coins = Level.Coins;
+  bottles = Level.Bottle;
   throwableObjects = [];
 
   canvas;
@@ -36,7 +37,7 @@ export class World {
   }
 
   run = () => {
-    this.checkCollisions();
+    // this.checkCollisions();
     this.checkThrowableObjects();
   };
 
@@ -47,22 +48,22 @@ export class World {
   }
 
   // #region Collision methods
-  checkCollisions() {
-    this.enemys.forEach((enemy, index) => {
-      if (
-        this.character.isColliding(enemy) &&
-        this.character.isAboveGround() &&
-        this.character.isFalling()
-      ) {
-        enemy.energy = 0;
-        this.character.jump();
-        this.removeEnemy(index);
-      } else if (this.character.isColliding(enemy)) {
-        this.character.hit();
-        this.statusBarHealth.setPercentage(this.character.energy);
-      }
-    });
-  }
+  // checkCollisions() {
+  //   this.enemys.forEach((enemy, index) => {
+  //     if (
+  //       this.character.isColliding(enemy) &&
+  //       this.character.isAboveGround() &&
+  //       this.character.isFalling()
+  //     ) {
+  //       enemy.energy = 0;
+  //       this.character.jump();
+  //       this.removeEnemy(index);
+  //     } else if (this.character.isColliding(enemy)) {
+  //       this.character.hit();
+  //       this.statusBarHealth.setPercentage(this.character.energy);
+  //     }
+  //   });
+  // }
   // #endregion Collision methods
 
   checkThrowableObjects() {
@@ -85,6 +86,7 @@ export class World {
     this.addObjectsToMap(this.enemys);
     this.addObjectsToMap(this.throwableObjects);
     this.addObjectsToMap(this.coins);
+    this.addObjectsToMap(this.bottles);
 
     // Status Bars
     this.ctx.translate(-this.camera_x, 0);

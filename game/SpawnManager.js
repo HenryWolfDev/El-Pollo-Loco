@@ -1,5 +1,5 @@
 export class SpawnManager {
-  static spawnX = 400;
+  static spawnX = 100;
   static spwanYClouds = 20 - Math.random() * 15;
   static spwanXClouds = 100;
 

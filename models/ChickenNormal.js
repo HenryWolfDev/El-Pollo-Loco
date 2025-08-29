@@ -3,6 +3,7 @@ import { SpawnManager } from "../game/SpawnManager.js";
 import { IntervalHub } from "../game/IntervalHub.js";
 import { imageLoader } from "../game/imageLoader.js";
 export class ChickenNormal extends MoveabelObject {
+  x = 700;
   y = 330;
   img;
   width = 75;
@@ -17,7 +18,7 @@ export class ChickenNormal extends MoveabelObject {
     super().loadImage(
       "../assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png"
     );
-    this.x = SpawnManager.getNextSpawnX();
+    this.x += SpawnManager.getNextSpawnX();
     this.speedX = this.speedX + Math.random() * 0.5;
     this.loadImages(this.images_Walking);
     this.loadImages(this.images_Dead);
@@ -25,7 +26,7 @@ export class ChickenNormal extends MoveabelObject {
   }
 
   animate = () => {
-    this.moveLeft();
+    // this.moveLeft();
     this.playAnimation(this.images_Walking);
     this.playDeadAnimation();
   };

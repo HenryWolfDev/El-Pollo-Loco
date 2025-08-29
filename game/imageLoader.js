@@ -177,10 +177,12 @@ export const imageLoader = {
       "../assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png",
       "../assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png",
     ],
-    salsaBottleLeft:
+    salsaBottleLeft: [
       "../assets/img/6_salsa_bottle/1_salsa_bottle_on_ground.png",
-    salsaBottleRight:
+    ],
+    salsaBottleRight: [
       "../assets/img/6_salsa_bottle/2_salsa_bottle_on_ground.png",
+    ],
   },
   Coins: ["../assets/img/8_coin/coin_1.png", "../assets/img/8_coin/coin_2.png"],
 };
