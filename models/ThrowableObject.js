@@ -48,4 +48,9 @@ export class ThrowableObject extends MoveabelObject {
   isAboveGround() {
     return this.y < this.bottomY;
   }
+
+  playSplashAnimation () {
+    this.playAnimation(this.images_Splash);
+    
+  }
 }

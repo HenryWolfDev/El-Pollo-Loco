@@ -82,6 +82,7 @@ export class World {
   // #region Collision methods
   checkCollisions() {
     this.checkJumpAttack();
+    this.checkBottleAttack();
   }
 
   checkJumpAttack() {
@@ -96,13 +97,35 @@ export class World {
         this.removeEnemy(index);
       } else if (this.character.isColliding(enemy)) {
         this.character.hit();
-        this.character.x -=20;
+        this.character.x -= 20;
         this.character.checkXPosition();
         this.statusBarHealth.setPercentage(this.character.energy);
       }
     });
   }
+  // #region Bottle Attack handling
+  checkBottleAttack() {
+    this.throwableBottles.forEach((bottle, bIndex) => {
+      this.enemys.forEach((enemy, eIndex) => {
+        if (bottle.isColliding(enemy)) {
+          this.setBottleAttackNormalEnemys(bottle, enemy, bIndex, eIndex);
+        }
+      });
+    });
+  }
 
+  setBottleAttackNormalEnemys(bottle, enemy, bIndex, eIndex) {
+    bottle.playSplashAnimation();
+    this.removeBottle(bIndex);
+    enemy.energy = 0;
+    this.removeEnemy(eIndex);
+  }
+  // #endregion Bottle Attack handling
+  removeBottle(bIndex) {
+    setTimeout(() => {
+      this.throwableBottles.splice(bIndex, 1);
+    }, 300);
+  }
   removeEnemy(index) {
     setTimeout(() => {
       this.enemys.splice(index, 1);
@@ -116,7 +139,8 @@ export class World {
       this.character.updateAction();
       let bottle = new ThrowableObject(
         this.character.x + 100,
-        this.character.y + 50
+        this.character.y + 50,
+        this
       );
       this.throwableBottles.push(bottle);
       this.character.bottleCount--;

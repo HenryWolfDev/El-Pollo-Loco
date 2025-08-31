@@ -15,6 +15,8 @@ export class ChickenSmall extends MoveabelObject {
 
   isDeadSoundPlaying = false;
 
+  speedX = 2.5;
+
   constructor() {
     super().loadImage(
       "../assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png"
