@@ -44,6 +44,7 @@ export class World {
     this.statusbarCoins = new StatusbarCoins();
     this.statusbarBottles = new StatusbarBottles();
     this.statusBarBossHealth = new StatusbarBossHealth();
+    this.statusbarBottles.setPercentage(this.character.bottleCount);
     this.draw();
 
     IntervalHub.startInterval(this.run, 200);
@@ -80,6 +81,10 @@ export class World {
 
   // #region Collision methods
   checkCollisions() {
+    this.checkJumpAttack();
+  }
+
+  checkJumpAttack() {
     this.enemys.forEach((enemy, index) => {
       if (
         this.character.isAboveGround() &&
@@ -91,6 +96,8 @@ export class World {
         this.removeEnemy(index);
       } else if (this.character.isColliding(enemy)) {
         this.character.hit();
+        this.character.x -=20;
+        this.character.checkXPosition();
         this.statusBarHealth.setPercentage(this.character.energy);
       }
     });
@@ -104,11 +111,7 @@ export class World {
   // #endregion Collision methods
 
   checkThrowableObjects() {
-    if (
-      this.keyboard.D &&
-      this.character.bottleCount > 0 &&
-      this.canThrow
-    ) {
+    if (this.keyboard.D && this.character.bottleCount > 0 && this.canThrow) {
       this.canThrow = false;
       this.character.updateAction();
       let bottle = new ThrowableObject(

@@ -119,10 +119,8 @@ export class Character extends MoveabelObject {
       this.playAnimation(this.images_Dead);
       this.isWalking = false;
     } else if (this.isHurt()) {
-      this.x -= 15;
       AudioHub.playOne(AudioHub.Character_Damage);
       this.updateAction();
-      this.checkXPosition();
       this.playAnimation(this.images_Hurt);
       this.isWalking = true;
     } else if (this.charIsJumpingOrInAir()) {

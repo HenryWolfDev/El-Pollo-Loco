@@ -30,7 +30,7 @@ export class ThrowableObject extends MoveabelObject {
   }
 
   throwLoop = () => {
-    if (!this.usable) return;
+    if (!this.usable) return; 
     if (this.isAboveGround()) {
       this.x += 10;
       this.playAnimation(this.images_Rotation);
