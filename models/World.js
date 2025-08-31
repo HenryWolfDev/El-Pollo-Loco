@@ -34,9 +34,10 @@ export class World {
   statusBarHealth = new StatusbarHealth();
 
   /**
-   * Erstellt eine neue Spielwelt.
-   * @param {HTMLCanvasElement} canvas - Das Canvas-Element für das Rendering
-   * @param {object} keyboard - Die Tastatureingaben
+   * Erstellt eine neue Spielwelt und initialisiert Rendering, Spielfigur und HUD.
+   *
+   * @param {HTMLCanvasElement} canvas - Das Canvas-Element für das Rendering.
+   * @param {object} keyboard - Objekt mit Tastatureingaben/-zuständen.
    */
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -50,9 +51,16 @@ export class World {
     this.statusbarBottles.setPercentage(this.character.bottleCount);
     this.draw();
 
+    // Hauptspielschleife (Logik)
     IntervalHub.startInterval(this.run, 200);
   }
 
+  /**
+   * Zyklische Spiellogik: Event-Handling, Kollisionen und Pickups prüfen.
+   * Wird periodisch von der Spielschleife aufgerufen.
+   *
+   * @returns {void}
+   */
   run = () => {
     this.endbossEventHandling();
     this.checkCollisions();
@@ -61,6 +69,12 @@ export class World {
     this.checkBottlePickup();
   };
 
+  /**
+   * Prüft, ob der Spieler eine Münze berührt, sammelt sie ein
+   * und aktualisiert den Münz-Statusbalken.
+   *
+   * @returns {void}
+   */
   checkCoinsPickup() {
     this.coins.filter((coin, index) => {
       if (this.character.isColliding(coin)) {
@@ -72,6 +86,13 @@ export class World {
     });
   }
 
+  // #region Pickups
+
+  /**
+   * Prüft Flaschen-Pickups des Spielers und aktualisiert den Flaschen-Statusbalken.
+   *
+   * @returns {void}
+   */
   checkBottlePickup() {
     this.bottles.filter((bottle, index) => {
       if (this.character.isColliding(bottle)) {
@@ -83,6 +104,16 @@ export class World {
     });
   }
 
+  // #endregion Pickups
+
+  // #region Boss Event & Attacks
+
+  /**
+   * Startet das Endboss-Event, sobald der Spieler die Trigger-Position erreicht,
+   * bewegt den Boss und prüft Boss-Angriffe.
+   *
+   * @returns {void}
+   */
   endbossEventHandling() {
     if (this.character.x >= 3500) {
       this.bossEventTriggered = true;
@@ -98,6 +129,12 @@ export class World {
     }
   }
 
+  /**
+   * Prüft, ob der Boss nah genug ist, um einen Nahkampfangriff auszulösen. *********!!FUNKTIONIERT NICHT!!**********
+   *
+   * @param {Enbboss} enemy - Referenz auf den Endboss.
+   * @returns {void}
+   */
   checkBossAttack(enemy) {
     let differenz = Math.abs(this.character.x - enemy.x);
     if (differenz <= 50) {
@@ -105,13 +142,27 @@ export class World {
     }
   }
 
-  // #region Collision methods
+  // #endregion Boss Event & Attacks
+
+  // #region Collisions (Character vs Enemies, Bottles)
+
+  /**
+   * Führt alle Kollisionsprüfungen aus (Boden, Sprung, Flasche).
+   *
+   * @returns {void}
+   */
   checkCollisions() {
     this.checkBottomAttack();
     this.checkJumpAttack();
     this.checkBottleAttack();
   }
 
+  /**
+   * Sprung-Angriff: Wenn der Spieler im Fallen auf einen Gegner trifft,
+   * nimmt der Gegner Schaden und wird ggf. entfernt.
+   *
+   * @returns {void}
+   */
   checkJumpAttack() {
     this.enemys.forEach((enemy, index) => {
       if (
@@ -126,6 +177,12 @@ export class World {
     });
   }
 
+  /**
+   * Boden-Kontakt mit Gegnern: Spieler erleidet Schaden je nach Gegnertyp,
+   * Position wird leicht zurückgesetzt, HUD aktualisiert.
+   *
+   * @returns {void}
+   */
   checkBottomAttack() {
     this.enemys.forEach((enemy) => {
       if (
@@ -152,7 +209,13 @@ export class World {
       this.x = 0;
     }
   }
-  // #region Bottle Attack handling
+
+  /**
+   * Prüft Kollisionen zwischen geworfenen Flaschen und Gegnern,
+   * spielt ggf. Splash-Animation, verteilt Schaden und entfernt getroffene Objekte.
+   *
+   * @returns {void}
+   */
   checkBottleAttack() {
     this.throwableBottles.forEach((bottle, bIndex) => {
       if (bottle.hasDamaged) return;
@@ -175,20 +238,25 @@ export class World {
     });
   }
 
-  setBottleAttackNormalEnemys(bottle, enemy, bIndex, eIndex) {}
-  // #endregion Bottle Attack handling
   removeBottle(bIndex) {
     setTimeout(() => {
       this.throwableBottles.splice(bIndex, 1);
     }, 300);
   }
+
   removeEnemy(index) {
     setTimeout(() => {
       this.enemys.splice(index, 1);
     }, 500);
   }
-  // #endregion Collision methods
+  // #endregion Collisions (Character vs Enemies, Bottles)
 
+  /**
+   * Handhabt das Werfen von Flaschen: erstellt bei Tastendruck ein {@link ThrowableObject},
+   * reduziert den Flaschenvorrat und aktualisiert den HUD-Balken.
+   *
+   * @returns {void}
+   */
   checkThrowableObjects() {
     if (this.keyboard.D && this.character.bottleCount > 0 && this.canThrow) {
       this.canThrow = false;
@@ -209,8 +277,10 @@ export class World {
   }
 
   /**
-   * Zeichnet die gesamte Spielwelt pro Frame.
-   * Bewegt Kamera, rendert Objekte und HUD.
+   * Zeichnet die komplette Spielwelt für den aktuellen Frame
+   * (Kamera-Offset, World-Objekte, HUD) und plant den nächsten Frame.
+   *
+   * @returns {void}
    */
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -239,7 +309,7 @@ export class World {
     requestAnimationFrame(() => this.draw());
   }
 
-  // #region addObjectsToMap & addToMap method
+  // #region Render Helpers (addObjectsToMap & addToMap)
 
   /**
    * Fügt eine Liste von Objekten der Zeichenfläche hinzu.
@@ -287,9 +357,9 @@ export class World {
     mo.x = mo.x * -1;
     this.ctx.restore();
   }
-  // #endregion addObjectsToMap & addToMap method
+  // #endregion Render Helpers (addObjectsToMap & addToMap)
 
-  // #region Background creation
+  // #region Background Creation
 
   /**
    * Generiert alle Hintergrundebenen im Level.
@@ -323,5 +393,5 @@ export class World {
       );
     }
   }
-  // #endregion Background creation
+  // #region Background Creation
 }

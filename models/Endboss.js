@@ -34,17 +34,16 @@ export class Enbboss extends MoveabelObject {
   };
 
   BossAnimations() {
-    if (!this.enemyWalking) {
+    if (!this.isWalking) {
       this.playAnimation(this.images_ALERT);
     } else if (this.isHurt()) {
       this.playAnimation(this.images_Hurt);
-    } else if (this.enemyWalking) {
+    } else if (this.isWalking) {
       this.playAnimation(this.images_Walk);
-    } 
+    }
   }
 
-  playAttackAnimation(){
-    IntervalHub.startInterval(this.playAnimation(this.images_Attack), 1000 /5); 
+  playAttackAnimation() {
+    IntervalHub.startInterval(this.playAnimation(this.images_Attack), 1000 / 5);
   }
 }
-
