@@ -3,13 +3,18 @@ import { IntervalHub } from "../game/IntervalHub.js";
 import { Character } from "./Character.js";
 
 export class MoveabelObject extends DrawableObject {
-  speedX = 0.15;
+  speedX = 2.5;
   speedY = 0;
   acceleration = 2.5;
   energy = 100;
   lastHit = 0;
   otherDirection = false;
   debugFrame = true;
+
+  enemyWalking = false;
+
+  
+
 
   // #region action methods
   hit(damage) {
@@ -35,6 +40,7 @@ export class MoveabelObject extends DrawableObject {
   // #region Moving
   moveLeft() {
     if (!this.isdead()) {
+      this.enemyWalking = true;
       this.x -= this.speedX;
     }
   }

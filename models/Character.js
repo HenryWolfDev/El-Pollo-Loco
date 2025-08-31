@@ -133,14 +133,8 @@ export class Character extends MoveabelObject {
   }
   // #endregion Character Animations
 
-  /**
-   * Verhindert, dass der Charakter über den linken Rand hinaus bewegt wird.
-   */
-  checkXPosition() {
-    if (this.x <= 0) {
-      this.x = 0;
-    }
-  }
+
+
 
   /**
    * Überprüft, ob der Charakter springt oder sich in der Luft befindet.

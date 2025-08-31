@@ -6,6 +6,8 @@ export class Enbboss extends MoveabelObject {
   height = 350;
   y = 95;
 
+  endbossAttacking = false;
+
   images_ALERT = imageLoader.ENEMIE_BOSS_CHICKEN.alert;
   images_Hurt = imageLoader.ENEMIE_BOSS_CHICKEN.hurt;
   images_Dead = imageLoader.ENEMIE_BOSS_CHICKEN.dead;
@@ -28,13 +30,21 @@ export class Enbboss extends MoveabelObject {
   }
 
   animate = () => {
-    this.playAnimation(this.images_ALERT);
     this.BossAnimations();
   };
 
   BossAnimations() {
-    if (this.isHurt()) {
+    if (!this.enemyWalking) {
+      this.playAnimation(this.images_ALERT);
+    } else if (this.isHurt()) {
       this.playAnimation(this.images_Hurt);
-    }
+    } else if (this.enemyWalking) {
+      this.playAnimation(this.images_Walk);
+    } 
+  }
+
+  playAttackAnimation(){
+    IntervalHub.startInterval(this.playAnimation(this.images_Attack), 1000 /5); 
   }
 }
+

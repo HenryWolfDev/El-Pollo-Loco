@@ -25,6 +25,8 @@ export class World {
 
   canThrow = true;
 
+  bossEventTriggered = false;
+
   canvas;
   ctx;
   keyboard;
@@ -44,7 +46,7 @@ export class World {
     this.character = new Character(this);
     this.statusbarCoins = new StatusbarCoins();
     this.statusbarBottles = new StatusbarBottles();
-    this.statusBarBossHealth = new StatusbarBossHealth();
+    this.statusBarBossHealth = null;
     this.statusbarBottles.setPercentage(this.character.bottleCount);
     this.draw();
 
@@ -52,6 +54,7 @@ export class World {
   }
 
   run = () => {
+    this.endbossEventHandling();
     this.checkCollisions();
     this.checkThrowableObjects();
     this.checkCoinsPickup();
@@ -80,8 +83,31 @@ export class World {
     });
   }
 
+  endbossEventHandling() {
+    if (this.character.x >= 3500) {
+      this.bossEventTriggered = true;
+      this.statusBarBossHealth = new StatusbarBossHealth();
+    }
+    if (this.bossEventTriggered) {
+      this.enemys.forEach((enemy) => {
+        if (enemy instanceof Enbboss) {
+          enemy.moveLeft();
+          this.checkBossAttack(enemy);
+        }
+      });
+    }
+  }
+
+  checkBossAttack(enemy) {
+    let differenz = Math.abs(this.character.x - enemy.x);
+    if (differenz <= 50) {
+      console.log("hallo");
+    }
+  }
+
   // #region Collision methods
   checkCollisions() {
+    this.checkBottomAttack();
     this.checkJumpAttack();
     this.checkBottleAttack();
   }
@@ -93,21 +119,43 @@ export class World {
         this.character.isFalling() &&
         this.character.isColliding(enemy)
       ) {
-        enemy.energy = 0;
+        enemy.hit(100);
         this.character.jump();
         this.removeEnemy(index);
-      } else if (this.character.isColliding(enemy)) {
-        this.character.hit(5);
+      }
+    });
+  }
+
+  checkBottomAttack() {
+    this.enemys.forEach((enemy) => {
+      if (
+        this.character.isColliding(enemy) &&
+        !this.character.isAboveGround()
+      ) {
+        if (enemy instanceof Enbboss) {
+          this.character.hit(15);
+        } else {
+          this.character.hit(5);
+        }
         this.character.x -= 20;
-        this.character.checkXPosition();
+        this.checkCharacterXPosition();
         this.statusBarHealth.setPercentage(this.character.energy);
       }
     });
   }
+
+  /**
+   * Verhindert, dass der Charakter über den linken Rand hinaus bewegt wird.
+   */
+  checkCharacterXPosition() {
+    if (this.character.x <= 0) {
+      this.x = 0;
+    }
+  }
   // #region Bottle Attack handling
   checkBottleAttack() {
     this.throwableBottles.forEach((bottle, bIndex) => {
-      if(bottle.hasDamaged) return;
+      if (bottle.hasDamaged) return;
       this.enemys.forEach((enemy, eIndex) => {
         if (bottle.isColliding(enemy)) {
           bottle.hasDamaged = true;
@@ -181,7 +229,10 @@ export class World {
     this.addToMap(this.statusBarHealth);
     this.addToMap(this.statusbarCoins);
     this.addToMap(this.statusbarBottles);
-    this.addToMap(this.statusBarBossHealth);
+    if (this.statusBarBossHealth) {
+      this.addToMap(this.statusBarBossHealth);
+    }
+
     this.ctx.translate(this.camera_x, 0);
 
     this.ctx.translate(-this.camera_x, 0);
