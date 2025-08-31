@@ -8,6 +8,7 @@ import { StatusbarBottles } from "./StatusbarBottle.js";
 import { ThrowableObject } from "./ThrowableObject.js";
 import { AudioHub } from "../game/AudioHub.js";
 import { StatusbarBossHealth } from "./StatusbarBossHealth.js";
+import { Enbboss } from "./Endboss.js";
 
 /**
  * Repräsentiert die Spielwelt, inklusive Spielfigur, Hintergrund, Gegnern, Statusanzeigen und Logik.
@@ -96,7 +97,7 @@ export class World {
         this.character.jump();
         this.removeEnemy(index);
       } else if (this.character.isColliding(enemy)) {
-        this.character.hit();
+        this.character.hit(5);
         this.character.x -= 20;
         this.character.checkXPosition();
         this.statusBarHealth.setPercentage(this.character.energy);
@@ -106,20 +107,27 @@ export class World {
   // #region Bottle Attack handling
   checkBottleAttack() {
     this.throwableBottles.forEach((bottle, bIndex) => {
+      if(bottle.hasDamaged) return;
       this.enemys.forEach((enemy, eIndex) => {
         if (bottle.isColliding(enemy)) {
-          this.setBottleAttackNormalEnemys(bottle, enemy, bIndex, eIndex);
+          bottle.hasDamaged = true;
+          bottle.playSplashAnimation();
+          this.removeBottle(bIndex);
+          if (enemy instanceof Enbboss) {
+            enemy.hit(50);
+            this.statusBarBossHealth.setPercentage(enemy.energy);
+          } else {
+            enemy.hit(100);
+          }
+          if (enemy.isdead()) {
+            this.removeEnemy(eIndex);
+          }
         }
       });
     });
   }
 
-  setBottleAttackNormalEnemys(bottle, enemy, bIndex, eIndex) {
-    bottle.playSplashAnimation();
-    this.removeBottle(bIndex);
-    enemy.energy = 0;
-    this.removeEnemy(eIndex);
-  }
+  setBottleAttackNormalEnemys(bottle, enemy, bIndex, eIndex) {}
   // #endregion Bottle Attack handling
   removeBottle(bIndex) {
     setTimeout(() => {

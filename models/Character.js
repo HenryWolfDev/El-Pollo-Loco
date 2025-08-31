@@ -11,7 +11,7 @@ import { AudioHub } from "../game/AudioHub.js";
  * @extends MoveabelObject
  */
 export class Character extends MoveabelObject {
-  x = 0;
+  x = 3400;
   y = 230;
   width = 150;
   height = 200;

@@ -16,7 +16,7 @@ export class Enbboss extends MoveabelObject {
     super().loadImage("../assets/img/4_enemie_boss_chicken/2_alert/G5.png");
     this.x = 3800;
     this.loadingImages();
-    IntervalHub.startInterval(this.animate, 1000 / 2.5);
+    IntervalHub.startInterval(this.animate, 1000 / 5);
   }
 
   loadingImages() {
@@ -29,5 +29,12 @@ export class Enbboss extends MoveabelObject {
 
   animate = () => {
     this.playAnimation(this.images_ALERT);
+    this.BossAnimations();
   };
+
+  BossAnimations() {
+    if (this.isHurt()) {
+      this.playAnimation(this.images_Hurt);
+    }
+  }
 }
