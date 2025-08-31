@@ -22,7 +22,7 @@ export class World {
   bottles = Level.Bottle;
   throwableBottles = [];
 
-  canThrowBottle = true;
+  canThrow = true;
 
   canvas;
   ctx;
@@ -107,7 +107,7 @@ export class World {
     if (
       this.keyboard.D &&
       this.character.bottleCount > 0 &&
-      this.canThrowBottle
+      this.canThrow
     ) {
       this.canThrow = false;
       this.character.updateAction();

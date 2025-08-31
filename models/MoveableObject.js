@@ -1,5 +1,6 @@
 import { DrawableObject } from "./DrawableObject.js";
 import { IntervalHub } from "../game/IntervalHub.js";
+import { Character } from "./Character.js";
 
 export class MoveabelObject extends DrawableObject {
   speedX = 0.15;
@@ -74,8 +75,10 @@ export class MoveabelObject extends DrawableObject {
       if (this.isAboveGround() || this.speedY > 0) {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
-        if(this.y >= 230){
-          this.y = 230;
+        if (this instanceof Character) {
+          if (this.y >= 230) {
+            this.y = 230;
+          }
         }
       }
     }, 1000 / 25);
