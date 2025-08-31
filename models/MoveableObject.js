@@ -74,7 +74,9 @@ export class MoveabelObject extends DrawableObject {
       if (this.isAboveGround() || this.speedY > 0) {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
-        console.log(this.isFalling());
+        if(this.y >= 230){
+          this.y = 230;
+        }
       }
     }, 1000 / 25);
   }

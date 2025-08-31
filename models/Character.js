@@ -109,6 +109,7 @@ export class Character extends MoveabelObject {
   CharacterAnimations() {
     if (this.charIsSleeping() && !this.isHurt()) {
       this.playAnimation(this.images_Sleep);
+      AudioHub.playOne(AudioHub.Character_Snoring);
       return;
     }
     if (this.isWalking && !this.isHurt()) {
@@ -119,9 +120,10 @@ export class Character extends MoveabelObject {
       this.isWalking = false;
     } else if (this.isHurt()) {
       this.x -= 15;
+      AudioHub.playOne(AudioHub.Character_Damage);
       this.updateAction();
       this.checkXPosition();
-      this.playAnimation(this.images_Hurt);
+      this.playAnimation(this.images_Hurt);   
       this.isWalking = true;
     } else if (this.charIsJumpingOrInAir()) {
       this.isWalking = false;
