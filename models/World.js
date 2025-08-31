@@ -11,7 +11,28 @@ import { StatusbarBossHealth } from "./StatusbarBossHealth.js";
 import { Enbboss } from "./Endboss.js";
 
 /**
- * Repräsentiert die Spielwelt, inklusive Spielfigur, Hintergrund, Gegnern, Statusanzeigen und Logik.
+ * Repräsentiert die komplette Spielwelt (Spielfigur, Gegner, Hintergrund, HUD und Spiellogik).
+ *
+ * @class
+ * @property {BackgroundObject[]} backgroundLayers - Alle aktuell gerenderten Hintergrund-Objekte (parallax).
+ * @property {string[]} bgLayer1 - Bildpfade der ersten Hintergrund-Layer-Konfiguration aus dem Level.
+ * @property {string[]} bgLayer2 - Bildpfade der zweiten Hintergrund-Layer-Konfiguration aus dem Level.
+ * @property {Object[]} clouds - Wolken-Objekte aus dem Level (werden gezeichnet).
+ * @property {(Object|Enbboss)[]} enemys - Gegnerliste des Levels (inkl. Endboss).
+ * @property {Object[]} coins - Münz-Objekte im Level.
+ * @property {Object[]} bottles - Flaschen-Objekte im Level (Pickup).
+ * @property {ThrowableObject[]} throwableBottles - Aktive, geworfene Flaschen.
+ * @property {boolean} canThrow - Ob der Spieler aktuell eine Flasche werfen darf (Wurf-Rate-Limiter).
+ * @property {boolean} bossEventTriggered - Ob das Endboss-Ereignis bereits gestartet wurde.
+ * @property {HTMLCanvasElement} canvas - Referenz auf das Canvas.
+ * @property {CanvasRenderingContext2D} ctx - 2D-Rendering-Kontext des Canvas.
+ * @property {object} keyboard - Zustände der Steuerungstasten.
+ * @property {number} camera_x - Aktuelle X-Position der Kamera (negativ = nach links versetzt).
+ * @property {StatusbarHealth} statusBarHealth - HUD-Anzeige der Spielerenergie.
+ * @property {StatusbarCoins} statusbarCoins - HUD-Anzeige der gesammelten Münzen.
+ * @property {StatusbarBottles} statusbarBottles - HUD-Anzeige der verfügbaren Flaschen.
+ * @property {StatusbarBossHealth|null} statusBarBossHealth - HUD-Anzeige der Boss-Energie (nur bei Bosskampf).
+ * @property {Character} character - Die Spielfigur.
  */
 export class World {
   backgroundLayers = [];
