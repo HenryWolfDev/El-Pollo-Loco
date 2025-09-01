@@ -74,7 +74,7 @@ export class World {
     this.draw();
 
     // Hauptspielschleife (Logik)
-    IntervalHub.startInterval(this.run, 200);
+    IntervalHub.startInterval(this.run, 100);
   }
 
   /**
@@ -195,10 +195,10 @@ export class World {
    */
   triggerBossAttackEvent(enemy) {
     if (this.character.x > enemy.x - 200) {
-      enemy.speedX += 2;
+      enemy.speedX = 12;
       enemy.playAttackAnimation();
     } else {
-      enemy.speedX = 20;
+      enemy.speedX = 10;
     }
   }
 
