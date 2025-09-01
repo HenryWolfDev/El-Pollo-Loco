@@ -16,12 +16,13 @@ export class Character extends MoveabelObject {
   width = 150;
   height = 200;
   speedX = 20;
-  speedY = 0;
+  speedY = 2.5;
 
   jumpAnim = false;
   isWalking = false;
+  s;
 
-  bottleCount = 10;
+  bottleCount = 2;
   coinsCount = 0;
 
   /**
@@ -106,30 +107,37 @@ export class Character extends MoveabelObject {
   /**
    * Verarbeitet die aktuellen Animationen des Charakters abhängig vom Zustand.
    */
+
   CharacterAnimations() {
-    if (this.charIsSleeping() && !this.isHurt()) {
+    if (this.isdead()) {
+      this.playAnimation(this.images_Dead);
+      this.isWalking = false;
+      return;
+    }
+    if (this.isHurt()) {
+      this.updateAction();
+      this.playAnimation(this.images_Hurt);
+      return;
+    }
+    if (this.charIsJumpingOrInAir()) {
+      this.isWalking = false;
+      this.playAnimation(this.images_Jumping);
+      return;
+    }
+    if (this.isWalking) {
+      this.playAnimation(this.images_Walking);
+      this.isWalking = false;
+      return;
+    }
+    if (this.charIsSleeping()) {
       this.playAnimation(this.images_Sleep);
       AudioHub.playOne(AudioHub.Character_Snoring);
       return;
     }
-    if (this.isWalking && !this.isHurt()) {
-      this.playAnimation(this.images_Walking);
-      this.isWalking = false;
-    } else if (this.isdead()) {
-      this.playAnimation(this.images_Dead);
-      this.isWalking = false;
-    } else if (this.isHurt()) {
-      this.updateAction();
-      this.playAnimation(this.images_Hurt);
-      this.isWalking = true;
-    } else if (this.charIsJumpingOrInAir()) {
-      this.isWalking = false;
-      this.playAnimation(this.images_Jumping);
-    } else if (!this.isHurt() && !this.isWalking) {
-      this.playAnimation(this.images_Idle);
-      this.isWalking = false;
-    }
+
+    this.playAnimation(this.images_Idle);
   }
+
   // #endregion Character Animations
 
   /**

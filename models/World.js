@@ -195,10 +195,10 @@ export class World {
    */
   triggerBossAttackEvent(enemy) {
     if (this.character.x > enemy.x - 200) {
-      enemy.speedX = 12;
+      enemy.speedX = 17;
       enemy.playAttackAnimation();
     } else {
-      enemy.speedX = 10;
+      enemy.speedX = 15;
     }
   }
 
