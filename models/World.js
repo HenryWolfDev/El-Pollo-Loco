@@ -70,6 +70,7 @@ export class World {
     this.statusbarBottles = new StatusbarBottles();
     this.statusBarBossHealth = null;
     this.statusbarBottles.setPercentage(this.character.bottleCount);
+    AudioHub.playOne(AudioHub.Background);
     this.draw();
 
     // Hauptspielschleife (Logik)
@@ -95,8 +96,9 @@ export class World {
   // #region Screens
   showGameOverScreen() {
     if (this.character.isdead()) {
-      AudioHub.stopAll();
       IntervalHub.stopAllIntervals();
+      AudioHub.stopAll();
+      AudioHub.playOne(AudioHub.Character_Dead);
       document.getElementById("gameover-screen").style.display = "flex";
 
       const restartBtn = document.getElementById("restart-btn");
@@ -110,6 +112,7 @@ export class World {
     this.enemys.forEach((enemy) => {
       if (enemy instanceof Enbboss) {
         if (enemy.isdead()) {
+          IntervalHub.stopAllIntervals();
           AudioHub.stopAll();
           AudioHub.playOne(AudioHub.Winning);
           document.getElementById("winning-screen").style.display = "flex";
@@ -172,6 +175,7 @@ export class World {
     if (this.character.x >= 3500) {
       this.bossEventTriggered = true;
       this.statusBarBossHealth = new StatusbarBossHealth();
+      AudioHub.playOne(AudioHub.Chicken_Voice);
     }
     if (this.bossEventTriggered) {
       this.enemys.forEach((enemy) => {
@@ -222,8 +226,8 @@ export class World {
   checkJumpAttack() {
     this.enemys.forEach((enemy, index) => {
       if (
-        this.character.isAboveGround() &&
         this.character.isFalling() &&
+        this.character.isAboveGround() &&
         this.character.isColliding(enemy)
       ) {
         enemy.hit(100);
@@ -250,8 +254,8 @@ export class World {
         } else {
           this.character.hit(5);
         }
-
-        this.character.x -= 25;
+        AudioHub.playOne(AudioHub.Character_Damage);
+        this.character.x -= 35;
         this.checkCharacterXPosition();
         this.statusBarHealth.setPercentage(this.character.energy);
       }
@@ -283,6 +287,9 @@ export class World {
           this.removeBottle(bIndex);
           if (enemy instanceof Enbboss) {
             enemy.hit(25);
+            if (!enemy.isdead()) {
+              AudioHub.playOne(AudioHub.Chicken_Dead);
+            }
             this.statusBarBossHealth.setPercentage(enemy.energy);
           } else {
             enemy.hit(100);
@@ -290,6 +297,8 @@ export class World {
           if (enemy.isdead()) {
             this.removeEnemy(eIndex);
           }
+        } else if (!bottle.isAboveGround()) {
+          this.removeBottle(bIndex);
         }
       });
     });

@@ -11,7 +11,7 @@ import { AudioHub } from "../game/AudioHub.js";
  * @extends MoveabelObject
  */
 export class Character extends MoveabelObject {
-  x = 3400;
+  x = 0;
   y = 230;
   width = 150;
   height = 200;
@@ -119,7 +119,6 @@ export class Character extends MoveabelObject {
       this.playAnimation(this.images_Dead);
       this.isWalking = false;
     } else if (this.isHurt()) {
-      AudioHub.playOne(AudioHub.Character_Damage);
       this.updateAction();
       this.playAnimation(this.images_Hurt);
       this.isWalking = true;

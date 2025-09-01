@@ -1,6 +1,7 @@
 import { MoveabelObject } from "./MoveableObject.js";
 import { imageLoader } from "../game/imageLoader.js";
 import { IntervalHub } from "../game/IntervalHub.js";
+import { AudioHub } from "../game/AudioHub.js";
 
 export class ThrowableObject extends MoveabelObject {
   images_Rotation = imageLoader.SALSABOTTLE.bottleRotation;
@@ -30,7 +31,7 @@ export class ThrowableObject extends MoveabelObject {
   }
 
   throwLoop = () => {
-    if (!this.usable) return; 
+    if (!this.usable) return;
     if (this.isAboveGround()) {
       this.x += 10;
       this.playAnimation(this.images_Rotation);
@@ -40,6 +41,7 @@ export class ThrowableObject extends MoveabelObject {
 
       if (!this.splashStart) {
         this.playAnimation(this.images_Splash);
+        AudioHub.playOne(AudioHub.Bottle_Break);
         this.splashStart = true;
       }
     }
@@ -49,8 +51,7 @@ export class ThrowableObject extends MoveabelObject {
     return this.y < this.bottomY;
   }
 
-  playSplashAnimation () {
+  playSplashAnimation() {
     this.playAnimation(this.images_Splash);
-    
   }
 }
