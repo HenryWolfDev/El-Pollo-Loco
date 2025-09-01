@@ -11,7 +11,7 @@ import { AudioHub } from "../game/AudioHub.js";
  * @extends MoveabelObject
  */
 export class Character extends MoveabelObject {
-  x = 3400;
+  x = 0;
   y = 230;
   width = 150;
   height = 200;
@@ -132,9 +132,6 @@ export class Character extends MoveabelObject {
     }
   }
   // #endregion Character Animations
-
-
-
 
   /**
    * Überprüft, ob der Charakter springt oder sich in der Luft befindet.

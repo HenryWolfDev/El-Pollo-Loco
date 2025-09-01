@@ -151,17 +151,17 @@ export class World {
   }
 
   /**
-   * Prüft, ob der Boss nah genug ist, um eine Nahkampfangriff-Animation auszulösen. 
+   * Prüft, ob der Boss nah genug ist, um eine Nahkampfangriff-Animation auszulösen.
    *
    * @param {Enbboss} enemy - Referenz auf den Endboss.
    * @returns {void}
    */
   triggerBossAttackEvent(enemy) {
-    if (this.character.x > enemy.x - 180) {
-      enemy.speedX += 1;
+    if (this.character.x > enemy.x - 200) {
+      enemy.speedX += 2;
       enemy.playAttackAnimation();
-    } else{
-      enemy.speedX = 2.5
+    } else {
+      enemy.speedX = 20;
     }
   }
 
@@ -217,7 +217,8 @@ export class World {
         } else {
           this.character.hit(5);
         }
-        this.character.x -= 20;
+
+        this.character.x -= 25;
         this.checkCharacterXPosition();
         this.statusBarHealth.setPercentage(this.character.energy);
       }
