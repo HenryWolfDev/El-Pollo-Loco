@@ -10,54 +10,48 @@ class MyAudio {
 export class AudioHub {
   // #region Audio-Files
   static Character_Damage = new MyAudio(
-    "../assets/sounds/character/characterDamage.mp3"
+    "assets/sounds/character/characterDamage.mp3"
   );
   static Character_Dead = new MyAudio(
-    "../assets/sounds/character/characterDead.wav"
+    "assets/sounds/character/characterDead.wav"
   );
   static Character_Jump = new MyAudio(
-    "../assets/sounds/character/characterJump.mp3"
+    "assets/sounds/character/characterJump.mp3"
   );
 
   static Character_Walk = new MyAudio(
-    "../assets/sounds/character/characterRun2.mp3"
+    "assets/sounds/character/characterRun2.mp3"
   );
   static Character_Snoring = new MyAudio(
-    "../assets/sounds/character/characterSnoring.mp3"
+    "assets/sounds/character/characterSnoring.mp3"
   );
 
   //Chicken
-  static Chicken_Dead = new MyAudio("../assets/sounds/chicken/chickenDead.mp3");
-  static Chicken_Dead2 = new MyAudio(
-    "../assets/sounds/chicken/chickenDead2.mp3"
-  );
-  static Chicken_Voice = new MyAudio(
-    "../assets/sounds/chicken/chickenVoice2.mp3"
-  );
+  static Chicken_Dead = new MyAudio("assets/sounds/chicken/chickenDead.mp3");
+  static Chicken_Dead2 = new MyAudio("assets/sounds/chicken/chickenDead2.mp3");
+  static Chicken_Voice = new MyAudio("assets/sounds/chicken/chickenVoice2.mp3");
 
   //Collectibles
   static Bottle_Collect = new MyAudio(
-    "../assets/sounds/collectibles/bottleCollectSound.wav"
+    "assets/sounds/collectibles/bottleCollectSound.wav"
   );
   static Collect_Sound = new MyAudio(
-    "../assets/sounds/collectibles/collectSound.mp3"
+    "assets/sounds/collectibles/collectSound.mp3"
   );
 
   //Endboss
-  static Endboss = new MyAudio("../assets/sounds/endboss/endbossApproach.wav");
+  static Endboss = new MyAudio("assets/sounds/endboss/endbossApproach.wav");
 
   //Game
-  static Game_Start = new MyAudio("../assets/sounds/game/gameStart.mp3");
+  static Game_Start = new MyAudio("assets/sounds/game/gameStart.mp3");
 
   //Throwable
-  static Bottle_Break = new MyAudio(
-    "../assets/sounds/throwable/bottleBreak.mp3"
-  );
+  static Bottle_Break = new MyAudio("assets/sounds/throwable/bottleBreak.mp3");
 
-  static Winning = new MyAudio("../assets/sounds/game/winning.mp3");
+  static Winning = new MyAudio("assets/sounds/game/winning.mp3");
 
-  static Background = new MyAudio("../assets/sounds/game/background2.mp3");
-  static Wind = new MyAudio("../assets/sounds/game/wind2.mp3");
+  static Background = new MyAudio("assets/sounds/game/background2.mp3");
+  static Wind = new MyAudio("assets/sounds/game/wind2.mp3");
 
   static volumneOn = true;
 

@@ -8,7 +8,7 @@ export class Cloud extends MoveabelObject {
   speedX = 0.25;
 
   constructor() {
-    super().loadImage("../assets/img/5_background/layers/4_clouds/full.png");
+    super().loadImage("assets/img/5_background/layers/4_clouds/full.png");
     this.x = SpawnManager.getNextSpawnXForClouds();
     this.y = SpawnManager.getNextSpawnYForClouds();
     IntervalHub.startInterval(this.animate, 1000 / 50);

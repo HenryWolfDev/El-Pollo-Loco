@@ -26,7 +26,7 @@ export class MoveabelObject extends DrawableObject {
   energy = 100;
   lastHit = 0;
   otherDirection = false;
-  debugFrame = true;
+  debugFrame = false;
   isWalking = false;
 
   // #region action methods

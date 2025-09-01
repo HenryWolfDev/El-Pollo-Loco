@@ -10,7 +10,7 @@ export class Coin extends MoveabelObject {
 
   images_Idle = imageLoader.Coins;
   constructor(x, y) {
-    super().loadImage("../assets/img/8_coin/coin_1.png");
+    super().loadImage("assets/img/8_coin/coin_1.png");
     this.loadImages(this.images_Idle);
     this.x = x;
     this.y = y;

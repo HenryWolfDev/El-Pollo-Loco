@@ -1,6 +1,5 @@
 import { MoveabelObject } from "./MoveableObject.js";
 import { imageLoader } from "../game/imageLoader.js";
-import { IntervalHub } from "../game/IntervalHub.js";
 
 export class Bottle extends MoveabelObject {
   y = 330;

@@ -19,7 +19,7 @@ export class ChickenSmall extends MoveabelObject {
 
   constructor() {
     super().loadImage(
-      "../assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png"
+      "assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png"
     );
     this.x += SpawnManager.getNextSpawnX();
     this.speedX = this.speedX + Math.random() * 0.5;

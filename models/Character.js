@@ -39,7 +39,7 @@ export class Character extends MoveabelObject {
    * @param {object} world - Das Spielfeld bzw. die Welt, in der sich der Charakter befindet.
    */
   constructor(world) {
-    super().loadImage("../assets/img/2_character_pepe/2_walk/W-21.png");
+    super().loadImage("assets/img/2_character_pepe/2_walk/W-21.png");
     this.world = world;
     this.loadingImages();
     this.lastAction = Date.now();

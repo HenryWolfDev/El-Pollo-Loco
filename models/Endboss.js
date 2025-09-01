@@ -16,7 +16,7 @@ export class Enbboss extends MoveabelObject {
   images_Attack = imageLoader.ENEMIE_BOSS_CHICKEN.attack;
 
   constructor() {
-    super().loadImage("../assets/img/4_enemie_boss_chicken/2_alert/G5.png");
+    super().loadImage("assets/img/4_enemie_boss_chicken/2_alert/G5.png");
     this.x = 3800;
     this.loadingImages();
     IntervalHub.startInterval(this.animate, 1000 / 5);
