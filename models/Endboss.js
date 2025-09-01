@@ -5,6 +5,7 @@ export class Enbboss extends MoveabelObject {
   width = 350;
   height = 350;
   y = 95;
+  speedX = 2.5;
 
   endbossAttacking = false;
 

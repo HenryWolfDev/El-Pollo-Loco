@@ -144,22 +144,24 @@ export class World {
       this.enemys.forEach((enemy) => {
         if (enemy instanceof Enbboss) {
           enemy.moveLeft();
-          this.checkBossAttack(enemy);
+          this.triggerBossAttack(enemy);
         }
       });
     }
   }
 
   /**
-   * Prüft, ob der Boss nah genug ist, um einen Nahkampfangriff auszulösen. *********!!FUNKTIONIERT NICHT!!**********
+   * Prüft, ob der Boss nah genug ist, um eine Nahkampfangriff-Animation auszulösen. 
    *
    * @param {Enbboss} enemy - Referenz auf den Endboss.
    * @returns {void}
    */
-  checkBossAttack(enemy) {
-    let differenz = Math.abs(this.character.x - enemy.x);
-    if (differenz <= 50) {
-      console.log("hallo");
+  triggerBossAttack(enemy) {
+    if (this.character.x > enemy.x - 180) {
+      enemy.speedX += 1;
+      enemy.playAttackAnimation();
+    } else{
+      enemy.speedX = 2.5
     }
   }
 
