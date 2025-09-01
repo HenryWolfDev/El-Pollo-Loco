@@ -144,7 +144,7 @@ export class World {
       this.enemys.forEach((enemy) => {
         if (enemy instanceof Enbboss) {
           enemy.moveLeft();
-          this.triggerBossAttack(enemy);
+          this.triggerBossAttackEvent(enemy);
         }
       });
     }
@@ -156,7 +156,7 @@ export class World {
    * @param {Enbboss} enemy - Referenz auf den Endboss.
    * @returns {void}
    */
-  triggerBossAttack(enemy) {
+  triggerBossAttackEvent(enemy) {
     if (this.character.x > enemy.x - 180) {
       enemy.speedX += 1;
       enemy.playAttackAnimation();
