@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <!-- Google font -->
     <link
@@ -12,13 +14,213 @@
     <!-- Favicon-->
     <link rel="icon" href="/assets/img/8_coin/coin_1.png" type="image/png" />
 
-    <!-- style link-->
     <link rel="stylesheet" href="style.css" />
-    <title>El Polo Loco</title>
+    <title>El Pollo Loco</title>
   </head>
   <body>
     <h1 class="title">El Pollo Loco</h1>
-    <canvas id="canvas" width="720" height="480"></canvas>
-    <script src="game/game.js" type="module"></script>
+
+    <div id="wrapper">
+      <canvas id="canvas" width="720" height="480"></canvas>
+      <!-- #region-Screens -->
+      <div id="start-screen" class="overlay screen">
+        <div class="button-box desktop-buttons">
+          <button class="button" id="start-button">Start</button>
+          <button class="button" id="control-button">Steuerung</button>
+          <button class="button" id="impress-button">Impressum</button>
+        </div>
+      </div>
+
+      <div id="gameover-screen" class="overlay screen" style="display: none">
+        <button class="button" id="restart-btn">Neustarten</button>
+      </div>
+       
+      <div id="winning-screen" class="overlay screen" style="display: none">
+        <button class="button" id="restart-btn-winning">Neustarten</button>
+      </div>
+       <!-- #endregion-Screens -->
+
+        <!-- #region mobile-buttons -->
+      <div class="mobile-buttons">
+        <div class="general-box">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            id="start-icon"
+            class="icon"
+            viewBox="0 0 512 512"
+          >
+            <path
+              fill="currentColor"
+              d="M256 48C141.31 48 48 141.31 48 256s93.31 208 208 208 208-93.31 208-208S370.69 48 256 48zm74.77 217.3l-114.45 69.14a10.78 10.78 0 01-16.32-9.31V186.87a10.78 10.78 0 0116.32-9.31l114.45 69.14a10.89 10.89 0 010 18.6z"
+            />
+          </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            id="settings-icon"
+            class="icon"
+            viewBox="0 0 512 512"
+          >
+            <path
+              fill="currentColor"
+              d="M483.13 245.38C461.92 149.49 430 98.31 382.65 84.33A107.13 107.13 0 00352 80c-13.71 0-25.65 3.34-38.28 6.88C298.5 91.15 281.21 96 256 96s-42.51-4.84-57.76-9.11C185.6 83.34 173.67 80 160 80a115.74 115.74 0 00-31.73 4.32c-47.1 13.92-79 65.08-100.52 161C4.61 348.54 16 413.71 59.69 428.83a56.62 56.62 0 0018.64 3.22c29.93 0 53.93-24.93 70.33-45.34 18.53-23.1 40.22-34.82 107.34-34.82 59.95 0 84.76 8.13 106.19 34.82 13.47 16.78 26.2 28.52 38.9 35.91 16.89 9.82 33.77 12 50.16 6.37 25.82-8.81 40.62-32.1 44-69.24 2.57-28.48-1.39-65.89-12.12-114.37zM208 240h-32v32a16 16 0 01-32 0v-32h-32a16 16 0 010-32h32v-32a16 16 0 0132 0v32h32a16 16 0 010 32zm84 4a20 20 0 1120-20 20 20 0 01-20 20zm44 44a20 20 0 1120-19.95A20 20 0 01336 288zm0-88a20 20 0 1120-20 20 20 0 01-20 20zm44 44a20 20 0 1120-20 20 20 0 01-20 20z"
+            />
+          </svg>
+        </div>
+        <div class="move-box-left">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            id="left-icon"
+            class="icon"
+            viewBox="0 0 512 512"
+          >
+            <path
+              fill="currentColor"
+              d="M48 256c0 114.87 93.13 208 208 208s208-93.13 208-208S370.87 48 256 48 48 141.13 48 256zm212.65-91.36a16 16 0 01.09 22.63L208.42 240H342a16 16 0 010 32H208.42l52.32 52.73A16 16 0 11238 347.27l-79.39-80a16 16 0 010-22.54l79.39-80a16 16 0 0122.65-.09z"
+            />
+          </svg>
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            id="right-icon"
+            class="icon"
+            viewBox="0 0 512 512"
+          >
+            <path
+              fill="currentColor"
+              d="M464 256c0-114.87-93.13-208-208-208S48 141.13 48 256s93.13 208 208 208 208-93.13 208-208zm-212.65 91.36a16 16 0 01-.09-22.63L303.58 272H170a16 16 0 010-32h133.58l-52.32-52.73A16 16 0 11274 164.73l79.39 80a16 16 0 010 22.54l-79.39 80a16 16 0 01-22.65.09z"
+            />
+          </svg>
+        </div>
+        <div class="move-box-right">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            id="jump-icon"
+            class="icon"
+            viewBox="0 0 512 512"
+          >
+            <path
+              fill="currentColor"
+              d="M256 48C141.13 48 48 141.13 48 256s93.13 208 208 208 208-93.13 208-208S370.87 48 256 48zm91.36 212.65a16 16 0 01-22.63.09L272 208.42V342a16 16 0 01-32 0V208.42l-52.73 52.32A16 16 0 11164.73 238l80-79.39a16 16 0 0122.54 0l80 79.39a16 16 0 01.09 22.65z"
+            />
+          </svg>
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            id="throw-icon"
+            class="icon"
+            viewBox="0 0 512 512"
+          >
+            <path
+              fill="currentColor"
+              d="M58.79 439.13A16 16 0 0148 424c0-73.1 14.68-131.56 43.65-173.77 35-51 90.21-78.46 164.35-81.87V88a16 16 0 0127.05-11.57l176 168a16 16 0 010 23.14l-176 168A16 16 0 01256 424v-79.77c-45 1.36-79 8.65-106.07 22.64-29.25 15.12-50.46 37.71-73.32 67a16 16 0 01-17.82 5.28z"
+            />
+          </svg>
+        </div>
+      </div>
+      <!-- #endregion mobile-buttons -->
+
+      <!--#region Control-Setting-Screen-Desktop -->
+      <div id="control-setting-screen" class="overlay screen" style="display: none">
+        <div>
+          <table class="table-desktop">
+            <tr>
+              <th>Aktion</th>
+              <th>Taste</th>
+            </tr>
+            <tr>
+              <td>Links</td>
+              <td>Pfeiltaste Rechts</td>
+            </tr>
+            <tr>
+              <td>Rechts</td>
+              <td>Pfeiltaste Links</td>
+            </tr>
+            <tr>
+              <td>Werfen</td>
+              <td>F</td>
+            </tr>
+            <tr>
+              <td>Springen</td>
+              <td>Leertaste</td>
+            </tr>
+          </table>
+
+          <table class="table-mobile">
+            <tr>
+              <th>Aktion</th>
+              <th>Taste</th>
+            </tr>
+            <tr>
+              <td>Links</td>
+              <td>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  id="left-icon"
+                  class="icon"
+                  viewBox="0 0 512 512"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M48 256c0 114.87 93.13 208 208 208s208-93.13 208-208S370.87 48 256 48 48 141.13 48 256zm212.65-91.36a16 16 0 01.09 22.63L208.42 240H342a16 16 0 010 32H208.42l52.32 52.73A16 16 0 11238 347.27l-79.39-80a16 16 0 010-22.54l79.39-80a16 16 0 0122.65-.09z"
+                  />
+                </svg>
+              </td>
+            </tr>
+            <tr>
+              <td>Rechts</td>
+              <td>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  id="right-icon"
+                  class="icon"
+                  viewBox="0 0 512 512"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M464 256c0-114.87-93.13-208-208-208S48 141.13 48 256s93.13 208 208 208 208-93.13 208-208zm-212.65 91.36a16 16 0 01-.09-22.63L303.58 272H170a16 16 0 010-32h133.58l-52.32-52.73A16 16 0 11274 164.73l79.39 80a16 16 0 010 22.54l-79.39 80a16 16 0 01-22.65.09z"
+                  />
+                </svg>
+              </td>
+            </tr>
+            <tr>
+               <tr>
+              <td>Springen</td>
+              <td>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  id="jump-icon"
+                  class="icon"
+                  viewBox="0 0 512 512"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M256 48C141.13 48 48 141.13 48 256s93.13 208 208 208 208-93.13 208-208S370.87 48 256 48zm91.36 212.65a16 16 0 01-22.63.09L272 208.42V342a16 16 0 01-32 0V208.42l-52.73 52.32A16 16 0 11164.73 238l80-79.39a16 16 0 0122.54 0l80 79.39a16 16 0 01.09 22.65z"
+                  />
+                </svg>
+              </td>
+            </tr>
+              <td>Werfen</td>
+              <td>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  id="throw-icon"
+                  class="icon"
+                  viewBox="0 0 512 512"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M58.79 439.13A16 16 0 0148 424c0-73.1 14.68-131.56 43.65-173.77 35-51 90.21-78.46 164.35-81.87V88a16 16 0 0127.05-11.57l176 168a16 16 0 010 23.14l-176 168A16 16 0 01256 424v-79.77c-45 1.36-79 8.65-106.07 22.64-29.25 15.12-50.46 37.71-73.32 67a16 16 0 01-17.82 5.28z"
+                  />
+                </svg>
+              </td>
+            </tr>
+           
+          </table>
+        </div>
+        <button class="button" id="restart-btn-control">Zurück</button>
+      </div>
+      <!--#endregion Control-Setting-Screen -->
+    </div>
+    <script type="module" src="game/game.js"></script>
   </body>
 </html>

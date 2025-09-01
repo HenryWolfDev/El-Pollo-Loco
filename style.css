@@ -27,9 +27,188 @@ h1 {
   font-size: 5.5rem;
 }
 
+/* #region Canvas and Wrapper */
 canvas {
   display: block;
-  /* width: 100%;
-  height: 100%; */
+  width: 100%;
+  height: 100%;
   background-color: black;
 }
+
+#wrapper {
+  position: relative;
+  margin: 0 auto;
+  width: 720px;
+  height: 480px;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+}
+/* #endregion Canvas and Wrapper */
+
+/* #region Global styles */
+.desktop-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 5rem;
+}
+
+.mobile-buttons {
+  pointer-events: none;
+}
+.mobile-buttons .icon {
+  pointer-events: auto;
+}
+
+.button {
+  font-family: "Rye", sans-serif;
+  border: rgb(60, 60, 60) solid 0.1rem;
+  border-radius: 0.5rem;
+  background-color: rgb(234, 200, 89);
+  padding: 1rem 2rem;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+.button:hover {
+  background-color: rgb(158, 134, 1);
+}
+
+table {
+  background-color: rgba(76, 40, 13, 0.1);
+  border-radius: 0.5rem;
+  border: 0.1rem solid black;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+
+  th,
+  td {
+    padding: 8px 12px;
+    font-size: 1.8rem;
+    font-weight: 500;
+  }
+}
+
+.icon {
+  width: 4rem;
+  height: 4rem;
+  border: 0.1rem solid rgb(255, 255, 255);
+  border-radius: 3rem;
+  color: #d3c726;
+}
+
+.icon:hover {
+  color: #ffffff;
+}
+/* #endregion Global styles */
+
+/* #region Gamestate Screens */
+.screen {
+  padding: 2rem 0;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+#start-screen {
+  background-image: url("assets/img/9_intro_outro_screens/start/startscreen_1.png");
+}
+#gameover-screen {
+  background-size: 80% 80%;
+  background-image: url("assets/img/won,lost/Game Over.png");
+}
+
+#winning-screen {
+  background-size: 80% 80%;
+  background-image: url("assets/img/won,lost/You Win A.png");
+}
+
+#control-setting-screen {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url("assets/img/5_background/second_half_background.png");
+}
+/* #endregion Gamestate Screens */
+
+/* #region Smartphone */
+
+.mobile-buttons {
+  display: none;
+}
+
+.table-mobile {
+  display: none;
+}
+
+@media only screen and (max-width: 780px) {
+  .desktop-buttons {
+    display: none;
+  }
+
+  .overlay {
+    align-items: flex-end;
+  }
+
+  .mobile-buttons {
+    display: block;
+    position: absolute;
+    inset: 0;
+
+    .general-box {
+      position: absolute;
+      top: 1rem;
+      right: 1.6rem;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .move-box-left {
+      position: absolute;
+      bottom: 1rem;
+      left: 1.6rem;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .move-box-right {
+      position: absolute;
+      bottom: 1rem;
+      right: 1.6rem;
+      display: flex;
+      gap: 2rem;
+    }
+  }
+  .title {
+    display: none;
+  }
+  canvas {
+    width: 100%;
+  }
+
+  .table-desktop {
+    display: none;
+  }
+
+  .table-mobile {
+    display: flex;
+  }
+}
+
+@media only screen and (max-height: 480px) {
+  .title {
+    display: none;
+  }
+
+  #wrapper {
+    width: 100vw;
+    height: 100dvh;
+  }
+}
+/* #endregion Smartphone */

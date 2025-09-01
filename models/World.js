@@ -88,7 +88,40 @@ export class World {
     this.checkThrowableObjects();
     this.checkCoinsPickup();
     this.checkBottlePickup();
+    this.showGameOverScreen();
+    this.showWinningScreen();
   };
+
+  // #region Screens
+  showGameOverScreen() {
+    if (this.character.isdead()) {
+      AudioHub.stopAll();
+      IntervalHub.stopAllIntervals();
+      document.getElementById("gameover-screen").style.display = "flex";
+
+      const restartBtn = document.getElementById("restart-btn");
+      restartBtn.addEventListener("click", () => {
+        location.reload();
+      });
+    }
+  }
+
+  showWinningScreen() {
+    this.enemys.forEach((enemy) => {
+      if (enemy instanceof Enbboss) {
+        if (enemy.isdead()) {
+          AudioHub.stopAll();
+          AudioHub.playOne(AudioHub.Winning);
+          document.getElementById("winning-screen").style.display = "flex";
+          const restartBtn = document.getElementById("restart-btn-winning");
+          restartBtn.addEventListener("click", () => {
+            location.reload();
+          });
+        }
+      }
+    });
+  }
+  // #endregion Screens
 
   /**
    * Prüft, ob der Spieler eine Münze berührt, sammelt sie ein
@@ -249,7 +282,7 @@ export class World {
           bottle.playSplashAnimation();
           this.removeBottle(bIndex);
           if (enemy instanceof Enbboss) {
-            enemy.hit(50);
+            enemy.hit(25);
             this.statusBarBossHealth.setPercentage(enemy.energy);
           } else {
             enemy.hit(100);
