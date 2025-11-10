@@ -111,6 +111,10 @@ window.addEventListener("keydown", (e) => {
   if (e.keyCode == 68) {
     keyboard.D = true;
   }
+  // Support F for throwing as labeled in controls
+  if (e.keyCode == 70) {
+    keyboard.D = true;
+  }
   if (e.keyCode == 27) {
     keyboard.ESCAPE = true;
   }
@@ -133,6 +137,9 @@ window.addEventListener("keyup", (e) => {
     keyboard.SPACE = false;
   }
   if (e.keyCode == 68) {
+    keyboard.D = false;
+  }
+  if (e.keyCode == 70) {
     keyboard.D = false;
   }
   if (e.keyCode == 27) {
