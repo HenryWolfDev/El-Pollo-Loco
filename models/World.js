@@ -117,11 +117,6 @@ export class World {
       AudioHub.stopAll();
       AudioHub.playOne(AudioHub.Character_Dead);
       document.getElementById("gameover-screen").style.display = "flex";
-
-      const restartBtn = document.getElementById("restart-btn");
-      restartBtn.addEventListener("click", () => {
-        location.reload();
-      });
     }
   }
 
@@ -133,10 +128,6 @@ export class World {
           AudioHub.stopAll();
           AudioHub.playOne(AudioHub.Winning);
           document.getElementById("winning-screen").style.display = "flex";
-          const restartBtn = document.getElementById("restart-btn-winning");
-          restartBtn.addEventListener("click", () => {
-            location.reload();
-          });
         }
       }
     });

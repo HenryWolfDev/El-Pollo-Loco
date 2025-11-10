@@ -12,6 +12,18 @@ function startGame() {
   closeControlSettings();
 }
 
+function restartGame() {
+  const canvas = document.getElementById("canvas");
+  // Hide overlays
+  const gameover = document.getElementById("gameover-screen");
+  const winning = document.getElementById("winning-screen");
+  if (gameover) gameover.style.display = "none";
+  if (winning) winning.style.display = "none";
+
+  // Recreate world with existing keyboard
+  world = new World(canvas, keyboard);
+}
+
 window.addEventListener("load", () => {
   document.getElementById("start-button").addEventListener("click", startGame);
   document.getElementById("start-icon").addEventListener("click", startGame);
@@ -29,6 +41,16 @@ window.addEventListener("load", () => {
   const impressClose = document.getElementById("impressum-close-btn");
   if (impressClose) {
     impressClose.addEventListener("click", closeImpressum);
+  }
+
+  // Restart buttons
+  const restartBtn = document.getElementById("restart-btn");
+  if (restartBtn) {
+    restartBtn.addEventListener("click", restartGame);
+  }
+  const restartWinBtn = document.getElementById("restart-btn-winning");
+  if (restartWinBtn) {
+    restartWinBtn.addEventListener("click", restartGame);
   }
 
   // #region Mobile Controls
