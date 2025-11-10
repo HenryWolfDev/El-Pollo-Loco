@@ -53,6 +53,8 @@ export class World {
   keyboard;
   camera_x = -100;
   statusBarHealth = new StatusbarHealth();
+  animationFrameId = null;
+  isDestroyed = false;
 
   /**
    * Erstellt eine neue Spielwelt und initialisiert Rendering, Spielfigur und HUD.
@@ -80,6 +82,19 @@ export class World {
 
     // Hauptspielschleife (Logik)
     IntervalHub.startInterval(this.run, 1000 / 60);
+  }
+
+  /**
+   * Beendet alle Loops und stoppt Audio; verhindert weitere Frames.
+   */
+  destroy() {
+    this.isDestroyed = true;
+    if (this.animationFrameId !== null) {
+      cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = null;
+    }
+    IntervalHub.stopAllIntervals();
+    AudioHub.stopAll();
   }
 
   /**
@@ -362,6 +377,7 @@ export class World {
    * @returns {void}
    */
   draw() {
+    if (this.isDestroyed) return;
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
 
@@ -385,7 +401,7 @@ export class World {
     this.ctx.translate(this.camera_x, 0);
 
     this.ctx.translate(-this.camera_x, 0);
-    requestAnimationFrame(() => this.draw());
+    this.animationFrameId = requestAnimationFrame(() => this.draw());
   }
 
   // #region Render Helpers (addObjectsToMap & addToMap)

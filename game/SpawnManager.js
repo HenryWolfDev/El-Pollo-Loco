@@ -3,6 +3,12 @@ export class SpawnManager {
   static spwanYClouds = 20 - Math.random() * 15;
   static spwanXClouds = 300;
 
+  static reset() {
+    SpawnManager.spawnX = 100;
+    SpawnManager.spwanYClouds = 20 - Math.random() * 15;
+    SpawnManager.spwanXClouds = 300;
+  }
+
   static getNextSpawnX() {
     const currentX = this.spawnX;
     this.spawnX += Math.random() * 120 + 250;

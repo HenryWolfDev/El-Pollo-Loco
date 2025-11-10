@@ -1,11 +1,17 @@
 import { World } from "../models/World.js";
 import { Keyboard } from "../models/Keyboard.js";
+import { SpawnManager } from "./SpawnManager.js";
 
 let world;
 let keyboard = new Keyboard();
 
 function startGame() {
   const canvas = document.getElementById("canvas");
+  if (world && typeof world.destroy === "function") {
+    world.destroy();
+  }
+  // Reset spawn sequences for enemies/clouds
+  SpawnManager.reset();
   world = new World(canvas, keyboard);
 
   document.getElementById("start-screen").style.display = "none";
@@ -21,7 +27,31 @@ function restartGame() {
   if (winning) winning.style.display = "none";
 
   // Recreate world with existing keyboard
+  if (world && typeof world.destroy === "function") {
+    world.destroy();
+  }
+  // Reset spawns for a fresh level layout
+  SpawnManager.reset();
   world = new World(canvas, keyboard);
+}
+
+function goToMainMenu() {
+  // Hide any overlays
+  const gameover = document.getElementById("gameover-screen");
+  const winning = document.getElementById("winning-screen");
+  const control = document.getElementById("control-setting-screen");
+  if (gameover) gameover.style.display = "none";
+  if (winning) winning.style.display = "none";
+  if (control) control.style.display = "none";
+
+  // Show start screen
+  const start = document.getElementById("start-screen");
+  if (start) start.style.display = "flex";
+
+  // Stop any running game loops/audio
+  if (world && typeof world.destroy === "function") {
+    world.destroy();
+  }
 }
 
 window.addEventListener("load", () => {
@@ -51,6 +81,16 @@ window.addEventListener("load", () => {
   const restartWinBtn = document.getElementById("restart-btn-winning");
   if (restartWinBtn) {
     restartWinBtn.addEventListener("click", restartGame);
+  }
+
+  // Main menu buttons
+  const mainMenuBtn = document.getElementById("main-menu-btn");
+  if (mainMenuBtn) {
+    mainMenuBtn.addEventListener("click", goToMainMenu);
+  }
+  const mainMenuBtnWin = document.getElementById("main-menu-btn-winning");
+  if (mainMenuBtnWin) {
+    mainMenuBtnWin.addEventListener("click", goToMainMenu);
   }
 
   // #region Mobile Controls
