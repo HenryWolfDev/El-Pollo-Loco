@@ -47,8 +47,9 @@ canvas {
 #wrapper {
   position: relative;
   margin: 0 auto;
-  width: 720px;
-  height: 480px;
+  width: min(95vw, 720px);
+  aspect-ratio: 3 / 2;
+  height: auto;
 }
 
 .overlay {
