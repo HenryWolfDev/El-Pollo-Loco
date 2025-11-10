@@ -5,7 +5,7 @@ export class StatusbarCoins extends DrawableObject {
   width = 200;
   height = 50;
   x = 0;
-  x = 50;
+  y = 50;
 
   constructor() {
     super();

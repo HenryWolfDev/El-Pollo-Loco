@@ -229,7 +229,7 @@ export class World {
    * @returns {void}
    */
   checkJumpAttack() {
-    this.enemys.forEach((enemy, index) => {
+    this.enemys.forEach((enemy) => {
       if (
         this.character.isFalling() &&
         this.character.isAboveGround() &&
@@ -237,7 +237,7 @@ export class World {
       ) {
         enemy.hit(100);
         this.character.jump();
-        this.removeEnemy(index);
+        this.removeEnemy(enemy);
       }
     });
   }
@@ -300,7 +300,7 @@ export class World {
             enemy.hit(100);
           }
           if (enemy.isdead()) {
-            this.removeEnemy(eIndex);
+            this.removeEnemy(enemy);
           }
         } else if (!bottle.isAboveGround()) {
           this.removeBottle(bIndex);
@@ -315,9 +315,12 @@ export class World {
     }, 300);
   }
 
-  removeEnemy(index) {
+  removeEnemy(enemy) {
     setTimeout(() => {
-      this.enemys.splice(index, 1);
+      const idx = this.enemys.indexOf(enemy);
+      if (idx !== -1) {
+        this.enemys.splice(idx, 1);
+      }
     }, 500);
   }
   // #endregion Collisions (Character vs Enemies, Bottles)
