@@ -3,14 +3,13 @@ import { imageLoader } from "../game/imageLoader.js";
 
 export class StatusbarHealth extends DrawableObject {
   images_Health = imageLoader.STATUSBAR.statusbarHealth;
-
+  width = 200;
+  height = 50;
+  x = 0;
+  y = 0;
   constructor() {
     super();
     this.loadImages(this.images_Health);
-    this.x = 0;
-    this.y = 0;
-    this.width = 200;
-    this.height = 50;
     this.setPercentage(100);
   }
 

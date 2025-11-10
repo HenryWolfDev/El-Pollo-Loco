@@ -4,6 +4,9 @@ import { IntervalHub } from "../game/IntervalHub.js";
 import { AudioHub } from "../game/AudioHub.js";
 
 export class ThrowableObject extends MoveabelObject {
+  width = 80;
+  height = 100;
+
   images_Rotation = imageLoader.SALSABOTTLE.bottleRotation;
   images_Splash = imageLoader.SALSABOTTLE.bottleSplash;
 
@@ -17,8 +20,6 @@ export class ThrowableObject extends MoveabelObject {
     this.loadImage("assets/img/6_salsa_bottle/salsa_bottle.png");
     this.x = x;
     this.y = y;
-    this.height = 100;
-    this.width = 80;
     this.loadImages(this.images_Rotation);
     this.loadImages(this.images_Splash);
     this.throw();

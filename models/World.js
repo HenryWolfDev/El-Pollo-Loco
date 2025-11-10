@@ -38,10 +38,10 @@ export class World {
   backgroundLayers = [];
   bgLayer1 = Level.bgLayers1;
   bgLayer2 = Level.bgLayers2;
-  clouds = Level.clouds;
-  enemys = Level.enemies;
-  coins = Level.Coins;
-  bottles = Level.Bottle;
+  clouds = [];
+  enemys = [];
+  coins = [];
+  bottles = [];
   throwableBottles = [];
 
   canThrow = true;
@@ -65,6 +65,11 @@ export class World {
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.generateBackgroundLayers();
+    // Create level entities now (after Start clicked)
+    this.clouds = Level.createClouds();
+    this.enemys = Level.createEnemies();
+    this.coins = Level.createCoins();
+    this.bottles = Level.createBottles();
     this.character = new Character(this);
     this.statusbarCoins = new StatusbarCoins();
     this.statusbarBottles = new StatusbarBottles();

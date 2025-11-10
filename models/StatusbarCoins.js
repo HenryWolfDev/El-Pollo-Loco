@@ -2,14 +2,14 @@ import { DrawableObject } from "./DrawableObject.js";
 import { imageLoader } from "../game/imageLoader.js";
 export class StatusbarCoins extends DrawableObject {
   images_Coins = imageLoader.STATUSBAR.statusbarCoins;
+  width = 200;
+  height = 50;
+  x = 0;
+  x = 50;
 
   constructor() {
     super();
     this.loadImages(this.images_Coins);
-    this.x = 0;
-    this.y = 50;
-    this.width = 200;
-    this.height = 50;
     this.setPercentage(0);
   }
 

@@ -4,8 +4,8 @@ import { IntervalHub } from "../game/IntervalHub.js";
 export class Enbboss extends MoveabelObject {
   width = 350;
   height = 350;
+  x = 3800;
   y = 95;
-  // Base patrol speed (~42 px/s at 60 Hz)
   speedX = 0.7;
 
   endbossAttacking = false;
@@ -21,7 +21,6 @@ export class Enbboss extends MoveabelObject {
 
   constructor() {
     super().loadImage("assets/img/4_enemie_boss_chicken/2_alert/G5.png");
-    this.x = 3800;
     this.loadingImages();
     IntervalHub.startInterval(this.animate, 1000 / 30);
   }

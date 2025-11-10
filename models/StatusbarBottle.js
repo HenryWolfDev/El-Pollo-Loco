@@ -2,14 +2,13 @@ import { DrawableObject } from "./DrawableObject.js";
 import { imageLoader } from "../game/imageLoader.js";
 export class StatusbarBottles extends DrawableObject {
   images_Bottle = imageLoader.STATUSBAR.statusbarBottle;
-
+  width = 200;
+  height = 50;
+  x = 0;
+  y = 100;
   constructor() {
     super();
     this.loadImages(this.images_Bottle);
-    this.x = 0;
-    this.y = 100;
-    this.width = 200;
-    this.height = 50;
     this.setPercentage(0);
   }
 

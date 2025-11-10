@@ -3,14 +3,13 @@ import { DrawableObject } from "./DrawableObject.js";
 
 export class StatusbarBossHealth extends DrawableObject {
   images_Health = imageLoader.STATUSBAR.statusbarEndboss;
-
+  width = 200;
+  height = 70;
+  x = 510;
+  y = 55;
   constructor() {
     super();
     this.loadImages(this.images_Health);
-    this.x = 510;
-    this.y = 55;
-    this.width = 200;
-    this.height = 70;
     this.setPercentage(100);
   }
 
