@@ -13,7 +13,7 @@ export class ChickenNormal extends MoveabelObject {
   images_Walking = imageLoader.ENEMIE_CHICKEN.chicken_normal.walk;
   images_Dead = imageLoader.ENEMIE_CHICKEN.chicken_normal.dead;
 
-  speedX = 2.5;
+  speedX = 1.5;
 
   isDeadSoundPlaying = false;
 

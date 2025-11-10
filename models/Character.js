@@ -15,7 +15,7 @@ export class Character extends MoveabelObject {
   y = 230;
   width = 150;
   height = 200;
-  speedX = 4;
+  speedX = 6;
   speedY = 2.5;
 
   jumpAnim = false;
@@ -24,6 +24,9 @@ export class Character extends MoveabelObject {
 
   bottleCount = 3;
   coinsCount = 0;
+
+  // Animation timing control
+  _lastAnimTime = 0;
 
   /**
    * Lädt alle benötigten Animationsbilder des Charakters.
@@ -110,32 +113,32 @@ export class Character extends MoveabelObject {
 
   CharacterAnimations() {
     if (this.isdead()) {
-      this.playAnimation(this.images_Dead);
+      this.playAnimationThrottled(this.images_Dead, 125); // ~8 fps
       this.isWalking = false;
       return;
     }
     if (this.isHurt()) {
       this.updateAction();
-      this.playAnimation(this.images_Hurt);
+      this.playAnimationThrottled(this.images_Hurt, 83); // ~12 fps
       return;
     }
     if (this.charIsJumpingOrInAir()) {
       this.isWalking = false;
-      this.playAnimation(this.images_Jumping);
+      this.playAnimationThrottled(this.images_Jumping, 83); // ~12 fps
       return;
     }
     if (this.isWalking) {
-      this.playAnimation(this.images_Walking);
+      this.playAnimationThrottled(this.images_Walking, 100); // ~10 fps
       this.isWalking = false;
       return;
     }
     if (this.charIsSleeping()) {
-      this.playAnimation(this.images_Sleep);
+      this.playAnimationThrottled(this.images_Sleep, 200); // ~5 fps
       AudioHub.playOne(AudioHub.Character_Snoring);
       return;
     }
 
-    this.playAnimation(this.images_Idle);
+    this.playAnimationThrottled(this.images_Idle, 150); // ~6-7 fps
   }
 
   // #endregion Character Animations
@@ -179,5 +182,14 @@ export class Character extends MoveabelObject {
 
   updateCamera() {
     this.world.camera_x = -this.x + 100;
+  }
+
+  // Advance animation frames at a capped rate independent of the 60 Hz update
+  playAnimationThrottled(images, intervalMs) {
+    const now = Date.now();
+    if (now - this._lastAnimTime >= intervalMs) {
+      super.playAnimation(images);
+      this._lastAnimTime = now;
+    }
   }
 }

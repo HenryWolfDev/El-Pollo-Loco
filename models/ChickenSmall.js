@@ -15,7 +15,7 @@ export class ChickenSmall extends MoveabelObject {
 
   isDeadSoundPlaying = false;
 
-  speedX = 2.5;
+  speedX = 1.5;
 
   constructor() {
     super().loadImage(
