@@ -13,8 +13,8 @@ import { AudioHub } from "../game/AudioHub.js";
 export class Character extends MoveabelObject {
   x = 0;
   y = 230;
-  width = 150;
-  height = 200;
+  width = 200;
+  height = 250;
   speedX = 6;
   speedY = 2.5;
 
@@ -27,6 +27,8 @@ export class Character extends MoveabelObject {
 
   // Animation timing control
   _lastAnimTime = 0;
+
+  debugFrame = true;
 
   /**
    * Lädt alle benötigten Animationsbilder des Charakters.
