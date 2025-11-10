@@ -239,6 +239,62 @@ table {
   }
 }
 
+@media only screen and (orientation: landscape) and (max-height: 500px) {
+  .desktop-buttons {
+    display: none;
+  }
+
+  .overlay {
+    align-items: flex-end;
+  }
+
+  .mobile-buttons {
+    display: block;
+    position: absolute;
+    inset: 0;
+
+    .general-box {
+      position: absolute;
+      top: 1rem;
+      right: 1.6rem;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .move-box-left {
+      position: absolute;
+      bottom: 1rem;
+      left: 1.6rem;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .move-box-right {
+      position: absolute;
+      bottom: 1rem;
+      right: 1.6rem;
+      display: flex;
+      gap: 2rem;
+    }
+  }
+
+  .title {
+    display: none;
+  }
+
+  canvas {
+    width: 100%;
+  }
+
+  .table-desktop {
+    display: none;
+  }
+
+  .table-mobile {
+    display: flex;
+  }
+}
+
 @media only screen and (max-height: 480px) {
   .title {
     display: none;
