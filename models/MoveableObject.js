@@ -149,7 +149,7 @@ export class MoveabelObject extends DrawableObject {
           }
         }
       }
-    }, 1000 / 25);
+    }, 1000 / 60);
   }
 
   isAboveGround() {

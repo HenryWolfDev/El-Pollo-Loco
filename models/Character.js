@@ -15,14 +15,14 @@ export class Character extends MoveabelObject {
   y = 230;
   width = 150;
   height = 200;
-  speedX = 20;
+  speedX = 4;
   speedY = 2.5;
 
   jumpAnim = false;
   isWalking = false;
   s;
 
-  bottleCount = 2;
+  bottleCount = 3;
   coinsCount = 0;
 
   /**
@@ -45,7 +45,7 @@ export class Character extends MoveabelObject {
     this.loadingImages();
     this.lastAction = Date.now();
     this.applyGravity();
-    IntervalHub.startInterval(this.animate, 1000 / 10);
+    IntervalHub.startInterval(this.animate, 1000 / 60);
   }
 
   loadingImages() {

@@ -11,7 +11,7 @@ export class Cloud extends MoveabelObject {
     super().loadImage("assets/img/5_background/layers/4_clouds/full.png");
     this.x = SpawnManager.getNextSpawnXForClouds();
     this.y = SpawnManager.getNextSpawnYForClouds();
-    IntervalHub.startInterval(this.animate, 1000 / 50);
+    IntervalHub.startInterval(this.animate, 1000 / 30);
   }
   animate = () => {
     this.moveLeft();

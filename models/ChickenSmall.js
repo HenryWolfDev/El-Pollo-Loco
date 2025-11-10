@@ -25,7 +25,7 @@ export class ChickenSmall extends MoveabelObject {
     this.speedX = this.speedX + Math.random() * 0.5;
     this.loadImages(this.images_Walking);
     this.loadImages(this.images_Dead);
-    IntervalHub.startInterval(this.animate, 1000 / 5);
+    IntervalHub.startInterval(this.animate, 1000 / 30);
   }
 
   animate = () => {

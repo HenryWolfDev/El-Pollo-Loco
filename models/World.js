@@ -74,7 +74,7 @@ export class World {
     this.draw();
 
     // Hauptspielschleife (Logik)
-    IntervalHub.startInterval(this.run, 100);
+    IntervalHub.startInterval(this.run, 1000 / 60);
   }
 
   /**
