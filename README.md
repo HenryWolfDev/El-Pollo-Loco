@@ -8,7 +8,7 @@ Ein kleines, schnelles 2D‑Jump‑and‑Run für den Browser. Du steuerst den C
 
 - Geschmeidiges Rendering via `requestAnimationFrame` und konsistente Logik‑Loops
 - Responsives Layout (Desktop und Mobile, inkl. Landscape‑Phones)
-- Mobile‑Touch‑Controls und Desktop‑Keyboard‑Support (inkl. F/D zum Werfen)
+- Mobile‑Touch‑Controls und Desktop‑Keyboard‑Support
 - Sauberes Restart/Reset: Neustart ohne Seitenreload, sauberer Teardown
 - Endboss‑Event: automatisch beim Nähern oder frühem Treffer durch Wurfobjekt
 - Audio‑Hub mit zentralem Start/Stop, Schlaf‑Schnarchen mit Loop/Stop‑Logik
@@ -17,7 +17,7 @@ Ein kleines, schnelles 2D‑Jump‑and‑Run für den Browser. Du steuerst den C
 
 - Bewegen: Pfeiltasten links/rechts
 - Springen: Leertaste
-- Werfen: F oder D
+- Werfen: F
 - Mobile: On‑Screen‑Buttons (links/rechts/springen/werfen)
 
 ## Projekt Struktur (Auszug)
