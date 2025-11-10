@@ -83,6 +83,18 @@ export class World {
   }
 
   /**
+   * Initialisiert den Endboss-Event (HUD, Audio) – idempotent.
+   */
+  startBossEvent() {
+    if (this.bossEventTriggered) return;
+    this.bossEventTriggered = true;
+    if (!this.statusBarBossHealth) {
+      this.statusBarBossHealth = new StatusbarBossHealth();
+    }
+    AudioHub.playOne(AudioHub.Chicken_Voice);
+  }
+
+  /**
    * Zyklische Spiellogik: Event-Handling, Kollisionen und Pickups prüfen.
    * Wird periodisch von der Spielschleife aufgerufen.
    *
@@ -177,10 +189,8 @@ export class World {
    * @returns {void}
    */
   endbossEventHandling() {
-    if (this.character.x >= 3500) {
-      this.bossEventTriggered = true;
-      this.statusBarBossHealth = new StatusbarBossHealth();
-      AudioHub.playOne(AudioHub.Chicken_Voice);
+    if (this.character.x >= 3500 && !this.bossEventTriggered) {
+      this.startBossEvent();
     }
     if (this.bossEventTriggered) {
       this.enemys.forEach((enemy) => {
@@ -291,11 +301,15 @@ export class World {
           bottle.playSplashAnimation();
           this.removeBottle(bIndex);
           if (enemy instanceof Enbboss) {
+            // Start boss event early if the bottle hits the boss before reaching the trigger zone
+            this.startBossEvent();
             enemy.hit(25);
             if (!enemy.isdead()) {
               AudioHub.playOne(AudioHub.Chicken_Dead);
             }
-            this.statusBarBossHealth.setPercentage(enemy.energy);
+            if (this.statusBarBossHealth) {
+              this.statusBarBossHealth.setPercentage(enemy.energy);
+            }
           } else {
             enemy.hit(100);
           }

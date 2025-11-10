@@ -27,6 +27,8 @@ export class Character extends MoveabelObject {
 
   // Animation timing control
   _lastAnimTime = 0;
+  // Sleep snoring state
+  _isSnoring = false;
 
   debugFrame = true;
 
@@ -117,30 +119,35 @@ export class Character extends MoveabelObject {
     if (this.isdead()) {
       this.playAnimationThrottled(this.images_Dead, 125); // ~8 fps
       this.isWalking = false;
+      this.stopSnoringIfActive();
       return;
     }
     if (this.isHurt()) {
       this.updateAction();
       this.playAnimationThrottled(this.images_Hurt, 83); // ~12 fps
+      this.stopSnoringIfActive();
       return;
     }
     if (this.charIsJumpingOrInAir()) {
       this.isWalking = false;
       this.playAnimationThrottled(this.images_Jumping, 83); // ~12 fps
+      this.stopSnoringIfActive();
       return;
     }
     if (this.isWalking) {
       this.playAnimationThrottled(this.images_Walking, 100); // ~10 fps
       this.isWalking = false;
+      this.stopSnoringIfActive();
       return;
     }
     if (this.charIsSleeping()) {
       this.playAnimationThrottled(this.images_Sleep, 200); // ~5 fps
-      AudioHub.playOne(AudioHub.Character_Snoring);
+      this.startSnoringIfNeeded();
       return;
     }
 
     this.playAnimationThrottled(this.images_Idle, 150); // ~6-7 fps
+    this.stopSnoringIfActive();
   }
 
   // #endregion Character Animations
@@ -192,6 +199,22 @@ export class Character extends MoveabelObject {
     if (now - this._lastAnimTime >= intervalMs) {
       super.playAnimation(images);
       this._lastAnimTime = now;
+    }
+  }
+
+  startSnoringIfNeeded() {
+    if (!this._isSnoring) {
+      AudioHub.Character_Snoring.sound.loop = true;
+      AudioHub.playOne(AudioHub.Character_Snoring);
+      this._isSnoring = true;
+    }
+  }
+
+  stopSnoringIfActive() {
+    if (this._isSnoring) {
+      AudioHub.Character_Snoring.sound.loop = false;
+      AudioHub.stopOne(AudioHub.Character_Snoring);
+      this._isSnoring = false;
     }
   }
 }
