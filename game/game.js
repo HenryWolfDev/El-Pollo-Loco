@@ -21,6 +21,15 @@ window.addEventListener("load", () => {
   document
     .getElementById("settings-icon")
     .addEventListener("click", showControlSettings);
+  // Impressum
+  const impressBtn = document.getElementById("impress-button");
+  if (impressBtn) {
+    impressBtn.addEventListener("click", showImpressum);
+  }
+  const impressClose = document.getElementById("impressum-close-btn");
+  if (impressClose) {
+    impressClose.addEventListener("click", closeImpressum);
+  }
 
   // #region Mobile Controls
   document
@@ -58,9 +67,10 @@ function showControlSettings() {
   document.getElementById("control-setting-screen").style.display = "flex";
 
   const restartBtn = document.getElementById("restart-btn-control");
-  restartBtn.addEventListener("click", () => {
-    location.reload();
-  });
+  // Behave like Impressum: simply close overlay without reloading
+  if (restartBtn) {
+    restartBtn.onclick = closeControlSettings;
+  }
 }
 
 function closeControlSettings() {
@@ -68,6 +78,18 @@ function closeControlSettings() {
   overlay.style.display = "none";
 }
 // #endregion Show-Control Settings
+
+// #region Impressum Overlay
+function showImpressum() {
+  const overlay = document.getElementById("impressum-screen");
+  overlay.style.display = "flex";
+}
+
+function closeImpressum() {
+  const overlay = document.getElementById("impressum-screen");
+  overlay.style.display = "none";
+}
+// #endregion Impressum Overlay
 
 // #region Keyboard-Listener
 window.addEventListener("keydown", (e) => {

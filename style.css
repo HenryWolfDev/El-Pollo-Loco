@@ -82,7 +82,7 @@ canvas {
 }
 
 table {
-  background-color: rgba(76, 40, 13, 0.1);
+  background-color: rgba(76, 40, 13, 0.4);
   border-radius: 0.5rem;
   border: 0.1rem solid black;
   border-collapse: collapse;
@@ -116,9 +116,11 @@ table {
   background-position: center;
   background-repeat: no-repeat;
 }
+
 #start-screen {
   background-image: url("assets/img/9_intro_outro_screens/start/startscreen_1.png");
 }
+
 #gameover-screen {
   background-size: 80% 80%;
   background-image: url("assets/img/won,lost/Game Over.png");
@@ -127,6 +129,29 @@ table {
 #winning-screen {
   background-size: 80% 80%;
   background-image: url("assets/img/won,lost/You Win A.png");
+}
+
+#impressum-screen {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url("assets/img/5_background/second_half_background.png");
+
+  .impressum-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    background-color: rgba(76, 40, 13, 0.4);
+    border-radius: 0.5rem;
+    border: 0.1rem solid black;
+    font-size: 1.8rem;
+
+    .info-text {
+      text-align: center;
+    }
+  }
 }
 
 #control-setting-screen {
