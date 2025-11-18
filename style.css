@@ -118,6 +118,25 @@ table {
 .icon:hover {
   color: #ffffff;
 }
+
+.rotate-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: #ffffff;
+  z-index: 2000;
+}
+
+.rotate-device-content {
+  max-width: 32rem;
+  font-size: 2rem;
+  line-height: 1.4;
+}
 /* #endregion Global styles */
 
 /* #region Gamestate Screens */
@@ -305,6 +324,16 @@ table {
   #wrapper {
     width: 100vw;
     height: 100dvh;
+  }
+}
+
+@media only screen and (max-width: 780px) and (orientation: portrait) {
+  #wrapper {
+    display: none;
+  }
+
+  .rotate-overlay {
+    display: flex;
   }
 }
 /* #endregion Smartphone */
