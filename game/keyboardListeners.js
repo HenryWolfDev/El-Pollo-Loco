@@ -1,3 +1,8 @@
+/**
+ * Attaches global key listeners and toggles flags on the shared keyboard state object.
+ * Supports movement, jump, throw (D/F), and escape keys.
+ * @param {object} keyboard Mutable keyboard state with boolean direction/action flags.
+ */
 export function keyboardListeners(keyboard) {
   window.addEventListener("keydown", (e) => {
     if (e.keyCode == 39) {
