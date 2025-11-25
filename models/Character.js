@@ -14,7 +14,7 @@ export class Character extends MoveabelObject {
   y = 230;
   width = 300;
   height = 300;
-  speedX = 8;
+  speedX = 7;
   speedY = 2.5;
 
   jumpAnim = false;

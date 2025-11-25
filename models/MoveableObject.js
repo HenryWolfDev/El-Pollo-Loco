@@ -144,7 +144,7 @@ export class MoveabelObject extends DrawableObject {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
         if (this instanceof Character) {
-          if (this.y >= 180) {
+          if (this.y >= 130) {
             this.y = 130;
           }
         }

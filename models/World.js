@@ -341,7 +341,7 @@ export class World {
       if (idx !== -1) {
         this.enemys.splice(idx, 1);
       }
-    }, 500);
+    }, 200);
   }
   // #endregion Collisions (Character vs Enemies, Bottles)
 
