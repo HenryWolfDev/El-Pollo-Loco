@@ -1,3 +1,6 @@
+/**
+ * Lightweight wrapper around an `Audio` element to track load state and reuse a single instance.
+ */
 class MyAudio {
   sound;
   loaded = false;
@@ -7,6 +10,10 @@ class MyAudio {
   }
 }
 
+/**
+ * Central registry for all game sounds plus helpers to play/stop them.
+ * Use the static members (e.g. `AudioHub.Character_Jump`) with `playOne` and `stopOne`.
+ */
 export class AudioHub {
   // #region Audio-Files
   static Character_Damage = new MyAudio(
@@ -74,6 +81,11 @@ export class AudioHub {
     AudioHub.Wind,
   ];
   // #endregion Audio-Files
+
+  /**
+   * Plays a single sound from the start if it is ready. Volume is capped at 0.4 for consistency.
+   * @param {MyAudio} sound Sound wrapper to play.
+   */
   static playOne(sound) {
     if (sound.sound.readyState === 4 || sound.loaded) {
       sound.loaded = true;
@@ -85,12 +97,19 @@ export class AudioHub {
     }
   }
 
+  /**
+   * Pauses all registered sounds; used when muting or pausing the game.
+   */
   static stopAll() {
     AudioHub.allSounds.forEach((sound) => {
       sound.sound.pause();
     });
   }
 
+  /**
+   * Pauses a single sound.
+   * @param {MyAudio} sound Sound wrapper to pause.
+   */
   static stopOne(sound) {
     sound.sound.pause();
   }
