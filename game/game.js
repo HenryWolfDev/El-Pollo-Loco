@@ -9,6 +9,7 @@ import { SpawnManager } from "./SpawnManager.js";
 import { keyboardListeners } from "./keyboardListeners.js";
 import { mobileControls } from "./mobileControls.js";
 import { menuAndOverlayListeners } from "./menuListeners.js";
+import { AudioHub } from "./AudioHub.js";
 
 /** @type {World|null} */
 let world;
@@ -122,10 +123,47 @@ function goToMainMenu() {
 }
 // #endregion_______________________Game controls_______________________
 
+function initMusicToggle() {
+  const toggle = document.getElementById("music-toggle");
+  if (!toggle) return;
+  const icon = toggle.querySelector("img");
+
+  const updateToggleUI = () => {
+    const enabled = AudioHub.musicEnabled;
+    toggle.setAttribute("aria-pressed", String(enabled));
+    toggle.title = enabled ? "Mute sound" : "Unmute sound";
+    if (icon) {
+      icon.src = enabled
+        ? "assets/svg/volume-high.svg"
+        : "assets/svg/volume-mute.svg";
+      icon.alt = enabled ? "Sound on" : "Sound muted";
+    }
+  };
+
+  toggle.addEventListener("click", () => {
+    const nextState = !AudioHub.musicEnabled;
+    AudioHub.setMusicEnabled(nextState);
+    if (nextState && world) {
+      AudioHub.playOne(AudioHub.Background);
+    }
+    updateToggleUI();
+  });
+
+  // Prevent spacebar from toggling music when the button is focused.
+  toggle.addEventListener("keydown", (e) => {
+    if (e.code === "Space" || e.keyCode === 32) {
+      e.preventDefault();
+    }
+  });
+
+  updateToggleUI();
+}
+
 /** Initializes input listeners and UI buttons after the page loads. */
 window.addEventListener("load", () => {
   keyboardListeners(keyboard);
   mobileControls(keyboard);
+  initMusicToggle();
   menuAndOverlayListeners({
     startGame,
     showControlSettings,
@@ -135,4 +173,3 @@ window.addEventListener("load", () => {
     goToMainMenu,
   });
 });
-

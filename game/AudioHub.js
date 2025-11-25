@@ -15,6 +15,8 @@ class MyAudio {
  * Use the static members (e.g. `AudioHub.Character_Jump`) with `playOne` and `stopOne`.
  */
 export class AudioHub {
+  // Master audio toggle; when false, no sounds will play.
+  static musicEnabled = true;
   // #region Audio-Files
   static Character_Damage = new MyAudio(
     "assets/sounds/character/characterDamage.mp3"
@@ -83,14 +85,29 @@ export class AudioHub {
   // #endregion Audio-Files
 
   /**
-   * Plays a single sound from the start if it is ready. Volume is capped at 0.4 for consistency.
+   * Enables or disables all game audio (music and effects).
+   * When disabled, all sounds are stopped immediately.
+   * @param {boolean} enabled
+   */
+  static setMusicEnabled(enabled) {
+    AudioHub.musicEnabled = enabled;
+    if (!enabled) {
+      AudioHub.stopAll();
+    }
+  }
+
+  /**
+   * Plays a single sound from the start if it is ready. Volume is capped at 0.2 for consistency.
    * @param {MyAudio} sound Sound wrapper to play.
    */
   static playOne(sound) {
+    if (!AudioHub.musicEnabled) {
+      return;
+    }
     if (sound.sound.readyState === 4 || sound.loaded) {
       sound.loaded = true;
 
-      sound.sound.volume = 0.2;
+      sound.sound.volume = 0.1;
 
       sound.sound.currentTime = 0;
       sound.sound.play();
