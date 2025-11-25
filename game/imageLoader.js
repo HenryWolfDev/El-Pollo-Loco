@@ -1,3 +1,8 @@
+/**
+ * Centralized catalogue of sprite/image asset paths keyed by game entity and state.
+ * Useful for preloading and animation frame sequencing across the game.
+ * @module game/imageLoader
+ */
 export const imageLoader = {
   PLAYER: {
     idle: [

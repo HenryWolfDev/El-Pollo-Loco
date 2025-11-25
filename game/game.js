@@ -17,7 +17,7 @@ let keyboard = new Keyboard();
 
 // #region_______________________region Show-Control Settings______________________
 /**
- * Zeigt das Steuerungs-Overlay und bindet den Zurück-Button zum Schließen.
+ * Shows the controls overlay and wires the restart button to close it.
  * @returns {void}
  */
 function showControlSettings() {
@@ -31,7 +31,7 @@ function showControlSettings() {
 }
 
 /**
- * Blendet das Steuerungs-Overlay aus.
+ * Hides the controls overlay.
  * @returns {void}
  */
 function closeControlSettings() {
@@ -42,7 +42,7 @@ function closeControlSettings() {
 
 // #region_______________________Impressum Overlay_______________________
 /**
- * Zeigt das Impressum-Overlay an.
+ * Displays the imprint (legal) overlay.
  * @returns {void}
  */
 function showImpressum() {
@@ -51,7 +51,7 @@ function showImpressum() {
 }
 
 /**
- * Blendet das Impressum-Overlay aus.
+ * Hides the imprint overlay.
  * @returns {void}
  */
 function closeImpressum() {
@@ -63,10 +63,10 @@ function closeImpressum() {
 // #region_______________________Game controls_______________________
 
 /**
- * Startet eine neue Spielinstanz.
- * - Stoppt ggf. laufende Instanz
- * - Setzt Spawn-Sequenzen zurück
- * - Erzeugt neue World und blendet Startbildschirm aus
+ * Starts a new game session.
+ * - Stops an existing session if present
+ * - Resets spawn sequences
+ * - Instantiates a fresh World and hides the start screen
  * @returns {void}
  */
 function startGame() {
@@ -82,8 +82,7 @@ function startGame() {
 }
 
 /**
- * Startet das Spiel direkt neu (ohne Hauptmenü),
- * indem eine frische World erzeugt wird.
+ * Immediately restarts the game (skips main menu) by creating a fresh World.
  * @returns {void}
  */
 function restartGame() {
@@ -103,7 +102,7 @@ function restartGame() {
 }
 
 /**
- * Zurück ins Hauptmenü wechseln und laufende Loops stoppen.
+ * Returns to the main menu and stops running loops.
  * @returns {void}
  */
 function goToMainMenu() {
@@ -123,7 +122,7 @@ function goToMainMenu() {
 }
 // #endregion_______________________Game controls_______________________
 
-/** Initialisiert Eingabe‑Listener und UI‑Buttons nach dem Laden der Seite. */
+/** Initializes input listeners and UI buttons after the page loads. */
 window.addEventListener("load", () => {
   keyboardListeners(keyboard);
   mobileControls(keyboard);
@@ -136,3 +135,4 @@ window.addEventListener("load", () => {
     goToMainMenu,
   });
 });
+
