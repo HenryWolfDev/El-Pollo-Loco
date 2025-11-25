@@ -1,4 +1,8 @@
-// Touch controls for mobile UI
+/**
+ * Touch controls for mobile UI that toggle the shared keyboard state.
+ * Mirrors keyboard actions for left/right/jump/throw via on-screen buttons.
+ * @param {object} keyboard Mutable keyboard state with boolean flags.
+ */
 export function mobileControls(keyboard) {
   const left = document.getElementById("left-icon");
   const right = document.getElementById("right-icon");

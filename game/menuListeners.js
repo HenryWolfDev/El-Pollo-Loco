@@ -1,4 +1,8 @@
-// Centralize menu and overlay button listeners
+/**
+ * Centralizes menu and overlay button listeners for the main UI.
+ * Wires buttons/icons to handlers for start, controls, imprint, restart, and main menu.
+ * @param {object} handlers Callbacks for the various UI buttons.
+ */
 export function menuAndOverlayListeners({
   startGame,
   showControlSettings,
