@@ -121,7 +121,7 @@ table {
 
 .music-toggle {
   position: absolute;
-  top: 1rem;
+  top: 2rem;
   right: 1rem;
   z-index: 50;
   display: flex;
@@ -130,10 +130,9 @@ table {
   width: 4.4rem;
   height: 4.4rem;
   border-radius: 50%;
-  border: 0.1rem solid rgba(255, 255, 255, 0.75);
-  background: rgba(0, 0, 0, 0.4);
+  border: 0.1rem solid black;
+  background-color: rgb(234, 200, 89);
   cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .music-toggle img {
@@ -143,8 +142,7 @@ table {
 }
 
 .music-toggle:hover {
-  background: rgba(0, 0, 0, 0.6);
-  border-color: #ffffff;
+  background-color: rgb(158, 134, 1);
 }
 
 .rotate-overlay {
