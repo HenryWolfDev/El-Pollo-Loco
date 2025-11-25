@@ -12,9 +12,9 @@ import { AudioHub } from "../game/AudioHub.js";
 export class Character extends MoveabelObject {
   x = 0;
   y = 230;
-  width = 200;
-  height = 250;
-  speedX = 6;
+  width = 300;
+  height = 300;
+  speedX = 8;
   speedY = 2.5;
 
   jumpAnim = false;
@@ -28,8 +28,6 @@ export class Character extends MoveabelObject {
   _lastAnimTime = 0;
   // Sleep snoring state
   _isSnoring = false;
-
-  debugFrame = true;
 
   /** Preloaded animation frames for the character. */
   images_Idle = imageLoader.PLAYER.idle;
@@ -207,4 +205,3 @@ export class Character extends MoveabelObject {
     }
   }
 }
-

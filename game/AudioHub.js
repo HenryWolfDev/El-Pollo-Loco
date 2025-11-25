@@ -90,7 +90,7 @@ export class AudioHub {
     if (sound.sound.readyState === 4 || sound.loaded) {
       sound.loaded = true;
 
-      sound.sound.volume = 0.4;
+      sound.sound.volume = 0.2;
 
       sound.sound.currentTime = 0;
       sound.sound.play();
