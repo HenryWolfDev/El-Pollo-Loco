@@ -5,9 +5,8 @@ import { Level } from "./Level.js";
 import { AudioHub } from "../game/AudioHub.js";
 
 /**
- * Repräsentiert den spielbaren Charakter.
- * Erbt von MoveableObject und enthält Animationen, Bewegungen und Interaktionen.
- *
+ * Playable character controller handling movement, physics, animations, and interactions.
+ * Extends MoveableObject and manages state (jumping, walking, sleeping) plus related audio.
  * @extends MoveabelObject
  */
 export class Character extends MoveabelObject {
@@ -32,9 +31,7 @@ export class Character extends MoveabelObject {
 
   debugFrame = true;
 
-  /**
-   * Lädt alle benötigten Animationsbilder des Charakters.
-   */
+  /** Preloaded animation frames for the character. */
   images_Idle = imageLoader.PLAYER.idle;
   images_Walking = imageLoader.PLAYER.walk;
   images_Jumping = imageLoader.PLAYER.jump;
@@ -43,8 +40,8 @@ export class Character extends MoveabelObject {
   images_Sleep = imageLoader.PLAYER.long_idle;
 
   /**
-   * Erstellt eine neue Instanz des Characters.
-   * @param {object} world - Das Spielfeld bzw. die Welt, in der sich der Charakter befindet.
+   * Creates a new character instance.
+   * @param {object} world - World instance the character belongs to.
    */
   constructor(world) {
     super().loadImage("assets/img/2_character_pepe/2_walk/W-21.png");
@@ -55,6 +52,7 @@ export class Character extends MoveabelObject {
     IntervalHub.startInterval(this.animate, 1000 / 60);
   }
 
+  /** Loads all animation frame sequences into memory. */
   loadingImages() {
     this.loadImages(this.images_Idle);
     this.loadImages(this.images_Walking);
@@ -73,9 +71,7 @@ export class Character extends MoveabelObject {
 
   // #region movement
 
-  /**
-   * Bewegt den Charakter nach links oder rechts basierend auf Tasteneingaben.
-   */
+  /** Moves the character left/right based on keyboard input. */
   moveLeftAndRight() {
     if (this.world.keyboard.RIGHT && this.x < Level.level_end_x) {
       this.moveRight();
@@ -93,7 +89,7 @@ export class Character extends MoveabelObject {
   }
 
   /**
-   * Startet den Sprung, wenn SPACE gedrückt wird und der Charakter nicht bereits in der Luft ist.
+   * Starts a jump when SPACE is pressed and the character is on the ground.
    */
   jumpStart() {
     if (this.world.keyboard.SPACE && !this.isAboveGround()) {
@@ -111,10 +107,7 @@ export class Character extends MoveabelObject {
   // #endregion movement
 
   // #region Character Animations
-  /**
-   * Verarbeitet die aktuellen Animationen des Charakters abhängig vom Zustand.
-   */
-
+  /** Processes the current animation based on state. */
   CharacterAnimations() {
     if (this.isdead()) {
       this.playAnimationThrottled(this.images_Dead, 125); // ~8 fps
@@ -153,8 +146,8 @@ export class Character extends MoveabelObject {
   // #endregion Character Animations
 
   /**
-   * Überprüft, ob der Charakter springt oder sich in der Luft befindet.
-   * @returns {boolean} true, wenn Charakter springt oder in der Luft ist
+   * Checks whether the character is jumping or airborne.
+   * @returns {boolean} true if jumping or in the air.
    */
   charIsJumpingOrInAir() {
     return this.jumpAnim || this.isAboveGround();
@@ -165,24 +158,20 @@ export class Character extends MoveabelObject {
   }
 
   /**
-   * Überprüft, ob der Charakter schläft (nach 5 Sekunden Inaktivität).
-   * @returns {boolean} true, wenn der Charakter schläft
+   * Checks if the character is sleeping (after 5 seconds of inactivity).
+   * @returns {boolean} true if the character is sleeping.
    */
   charIsSleeping() {
     let timeSinceLastAction = (Date.now() - this.lastAction) / 1000;
     return timeSinceLastAction > 5;
   }
 
-  /**
-   * Aktualisiert den Zeitstempel der letzten Aktion (z.B. Bewegung).
-   */
+  /** Updates the timestamp of the last action (e.g., movement). */
   updateAction() {
     this.lastAction = Date.now();
   }
 
-  /**
-   * Setzt das Sprung-Flag zurück, wenn der Charakter wieder auf dem Boden ist.
-   */
+  /** Resets the jump flag when the character is back on the ground. */
   resetJumpFlagIfOnGround() {
     if (!this.isAboveGround() && this.jumpAnim) {
       this.jumpAnim = false;
@@ -218,3 +207,4 @@ export class Character extends MoveabelObject {
     }
   }
 }
+

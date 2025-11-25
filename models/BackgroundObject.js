@@ -1,3 +1,8 @@
+/**
+ * Static parallax layer element that extends MoveableObject with fixed size.
+ * Positions itself on the ground line using the provided x coordinate.
+ * @module models/BackgroundObject
+ */
 import { MoveabelObject } from "./MoveableObject.js";
 
 export class BackgroundObject extends MoveabelObject {

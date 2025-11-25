@@ -1,3 +1,8 @@
+/**
+ * Collectible salsa bottle that extends MoveableObject with fixed size/position.
+ * Randomly chooses a left/right ground sprite on creation.
+ * @module models/Bottle
+ */
 import { MoveabelObject } from "./MoveableObject.js";
 import { imageLoader } from "../game/imageLoader.js";
 
