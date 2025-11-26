@@ -288,7 +288,7 @@ export class World {
    */
   checkCharacterXPosition() {
     if (this.character.x <= 0) {
-      this.x = 0;
+      this.character.x = 0;
     }
   }
 
