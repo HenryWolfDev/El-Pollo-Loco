@@ -1,4 +1,4 @@
-import { Character } from "../models/Character.js";
+﻿import { Character } from "../models/Character.js";
 import { BackgroundObject } from "./BackgroundObject.js";
 import { Level } from "./Level.js";
 import { IntervalHub } from "../game/IntervalHub.js";
@@ -11,7 +11,7 @@ import { StatusbarBossHealth } from "./StatusbarBossHealth.js";
 import { Enbboss } from "./Endboss.js";
 
 /**
- * Repräsentiert die komplette Spielwelt (Spielfigur, Gegner, Hintergrund, HUD und Spiellogik).
+ * ReprÃ¤sentiert die komplette Spielwelt (Spielfigur, Gegner, Hintergrund, HUD und Spiellogik).
  *
  * @class
  * @property {BackgroundObject[]} backgroundLayers - Alle aktuell gerenderten Hintergrund-Objekte (parallax).
@@ -19,18 +19,18 @@ import { Enbboss } from "./Endboss.js";
  * @property {string[]} bgLayer2 - Bildpfade der zweiten Hintergrund-Layer-Konfiguration aus dem Level.
  * @property {Object[]} clouds - Wolken-Objekte aus dem Level (werden gezeichnet).
  * @property {(Object|Enbboss)[]} enemys - Gegnerliste des Levels (inkl. Endboss).
- * @property {Object[]} coins - Münz-Objekte im Level.
+ * @property {Object[]} coins - MÃ¼nz-Objekte im Level.
  * @property {Object[]} bottles - Flaschen-Objekte im Level (Pickup).
  * @property {ThrowableObject[]} throwableBottles - Aktive, geworfene Flaschen.
  * @property {boolean} canThrow - Ob der Spieler aktuell eine Flasche werfen darf (Wurf-Rate-Limiter).
  * @property {boolean} bossEventTriggered - Ob das Endboss-Ereignis bereits gestartet wurde.
  * @property {HTMLCanvasElement} canvas - Referenz auf das Canvas.
  * @property {CanvasRenderingContext2D} ctx - 2D-Rendering-Kontext des Canvas.
- * @property {object} keyboard - Zustände der Steuerungstasten.
+ * @property {object} keyboard - ZustÃ¤nde der Steuerungstasten.
  * @property {number} camera_x - Aktuelle X-Position der Kamera (negativ = nach links versetzt).
  * @property {StatusbarHealth} statusBarHealth - HUD-Anzeige der Spielerenergie.
- * @property {StatusbarCoins} statusbarCoins - HUD-Anzeige der gesammelten Münzen.
- * @property {StatusbarBottles} statusbarBottles - HUD-Anzeige der verfügbaren Flaschen.
+ * @property {StatusbarCoins} statusbarCoins - HUD-Anzeige der gesammelten MÃ¼nzen.
+ * @property {StatusbarBottles} statusbarBottles - HUD-Anzeige der verfÃ¼gbaren Flaschen.
  * @property {StatusbarBossHealth|null} statusBarBossHealth - HUD-Anzeige der Boss-Energie (nur bei Bosskampf).
  * @property {Character} character - Die Spielfigur.
  */
@@ -59,8 +59,8 @@ export class World {
   /**
    * Erstellt eine neue Spielwelt und initialisiert Rendering, Spielfigur und HUD.
    *
-   * @param {HTMLCanvasElement} canvas - Das Canvas-Element für das Rendering.
-   * @param {object} keyboard - Objekt mit Tastatureingaben/-zuständen.
+   * @param {HTMLCanvasElement} canvas - Das Canvas-Element fÃ¼r das Rendering.
+   * @param {object} keyboard - Objekt mit Tastatureingaben/-zustÃ¤nden.
    */
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -98,7 +98,7 @@ export class World {
   }
 
   /**
-   * Initialisiert den Endboss-Event (HUD, Audio) – idempotent.
+   * Initialisiert den Endboss-Event (HUD, Audio) â€“ idempotent.
    */
   startBossEvent() {
     if (this.bossEventTriggered) return;
@@ -110,7 +110,7 @@ export class World {
   }
 
   /**
-   * Zyklische Spiellogik: Event-Handling, Kollisionen und Pickups prüfen.
+   * Zyklische Spiellogik: Event-Handling, Kollisionen und Pickups prÃ¼fen.
    * Wird periodisch von der Spielschleife aufgerufen.
    *
    * @returns {void}
@@ -150,8 +150,8 @@ export class World {
   // #endregion Screens
 
   /**
-   * Prüft, ob der Spieler eine Münze berührt, sammelt sie ein
-   * und aktualisiert den Münz-Statusbalken.
+   * PrÃ¼ft, ob der Spieler eine MÃ¼nze berÃ¼hrt, sammelt sie ein
+   * und aktualisiert den MÃ¼nz-Statusbalken.
    *
    * @returns {void}
    */
@@ -169,7 +169,7 @@ export class World {
   // #region Pickups
 
   /**
-   * Prüft Flaschen-Pickups des Spielers und aktualisiert den Flaschen-Statusbalken.
+   * PrÃ¼ft Flaschen-Pickups des Spielers und aktualisiert den Flaschen-Statusbalken.
    *
    * @returns {void}
    */
@@ -190,7 +190,7 @@ export class World {
 
   /**
    * Startet das Endboss-Event, sobald der Spieler die Trigger-Position erreicht,
-   * bewegt den Boss und prüft Boss-Angriffe.
+   * bewegt den Boss und prÃ¼ft Boss-Angriffe.
    *
    * @returns {void}
    */
@@ -209,7 +209,7 @@ export class World {
   }
 
   /**
-   * Prüft, ob der Boss nah genug ist, um eine Nahkampfangriff-Animation auszulösen.
+   * PrÃ¼ft, ob der Boss nah genug ist, um eine Nahkampfangriff-Animation auszulÃ¶sen.
    *
    * @param {Enbboss} enemy - Referenz auf den Endboss.
    * @returns {void}
@@ -228,7 +228,7 @@ export class World {
   // #region Collisions (Character vs Enemies, Bottles)
 
   /**
-   * Führt alle Kollisionsprüfungen aus (Boden, Sprung, Flasche).
+   * FÃ¼hrt alle KollisionsprÃ¼fungen aus (Boden, Sprung, Flasche).
    *
    * @returns {void}
    */
@@ -260,7 +260,7 @@ export class World {
 
   /**
    * Boden-Kontakt mit Gegnern: Spieler erleidet Schaden je nach Gegnertyp,
-   * Position wird leicht zurückgesetzt, HUD aktualisiert.
+   * Position wird leicht zurÃ¼ckgesetzt, HUD aktualisiert.
    *
    * @returns {void}
    */
@@ -284,7 +284,7 @@ export class World {
   }
 
   /**
-   * Verhindert, dass der Charakter über den linken Rand hinaus bewegt wird.
+   * Verhindert, dass der Charakter Ã¼ber den linken Rand hinaus bewegt wird.
    */
   checkCharacterXPosition() {
     if (this.character.x <= 0) {
@@ -293,7 +293,7 @@ export class World {
   }
 
   /**
-   * Prüft Kollisionen zwischen geworfenen Flaschen und Gegnern,
+   * PrÃ¼ft Kollisionen zwischen geworfenen Flaschen und Gegnern,
    * spielt ggf. Splash-Animation, verteilt Schaden und entfernt getroffene Objekte.
    *
    * @returns {void}
@@ -371,8 +371,8 @@ export class World {
   }
 
   /**
-   * Zeichnet die komplette Spielwelt für den aktuellen Frame
-   * (Kamera-Offset, World-Objekte, HUD) und plant den nächsten Frame.
+   * Zeichnet die komplette Spielwelt fÃ¼r den aktuellen Frame
+   * (Kamera-Offset, World-Objekte, HUD) und plant den nÃ¤chsten Frame.
    *
    * @returns {void}
    */
@@ -407,7 +407,7 @@ export class World {
   // #region Render Helpers (addObjectsToMap & addToMap)
 
   /**
-   * Fügt eine Liste von Objekten der Zeichenfläche hinzu.
+   * FÃ¼gt eine Liste von Objekten der ZeichenflÃ¤che hinzu.
    * @param {object[]} objects - Liste der zu zeichnenden Objekte
    */
   addObjectsToMap(objects) {
@@ -418,7 +418,7 @@ export class World {
 
   /**
    * Zeichnet ein einzelnes Objekt auf das Canvas.
-   * Berücksichtigt Richtung (Spiegelung).
+   * BerÃ¼cksichtigt Richtung (Spiegelung).
    * @param {object} mo - Das darzustellende Objekt
    */
   addToMap(mo) {
@@ -445,8 +445,8 @@ export class World {
   }
 
   /**
-   * Setzt die Spiegelung des Objekts zurück.
-   * @param {object} mo - Das Objekt, das zurückgesetzt werden soll
+   * Setzt die Spiegelung des Objekts zurÃ¼ck.
+   * @param {object} mo - Das Objekt, das zurÃ¼ckgesetzt werden soll
    */
   flipImageBack(mo) {
     mo.x = mo.x * -1;
@@ -490,3 +490,4 @@ export class World {
   }
   // #region Background Creation
 }
+

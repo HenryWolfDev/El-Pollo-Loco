@@ -1,3 +1,6 @@
+/**
+ * Plain state holder for input flags. Updated by keyboard and touch listeners.
+ */
 export class Keyboard {
   LEFT = false;
   RIGHT = false;

@@ -1,6 +1,9 @@
 import { DrawableObject } from "./DrawableObject.js";
 import { imageLoader } from "../game/imageLoader.js";
 
+/**
+ * Player health bar showing remaining HP as a segmented image plus numeric label.
+ */
 export class StatusbarHealth extends DrawableObject {
   images_Health = imageLoader.STATUSBAR.statusbarHealth;
   width = 200;
@@ -13,6 +16,9 @@ export class StatusbarHealth extends DrawableObject {
     this.setPercentage(100);
   }
 
+  /**
+   * Draws the bar and health percentage text.
+   */
   draw(ctx) {
     super.draw(ctx);
     const centerX = this.x + this.width / 2;
@@ -20,12 +26,20 @@ export class StatusbarHealth extends DrawableObject {
     this.drawText(ctx, this.percentage, centerX, centerY);
   }
 
+  /**
+   * Updates the bar sprite to match the given health value.
+   * @param {number} percentage
+   */
   setPercentage(percentage) {
     this.percentage = percentage;
     let path = this.images_Health[this.resolveImageIndex()];
     this.img = this.imageCache[path];
   }
 
+  /**
+   * Maps a percentage to the closest sprite frame.
+   * @returns {number}
+   */
   resolveImageIndex() {
     if (this.percentage == 100) {
       return 5;

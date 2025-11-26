@@ -6,6 +6,10 @@ import { Coin } from "./Coin.js";
 import { Bottle } from "./Bottle.js";
 import { imageLoader } from "../game/imageLoader.js";
 
+/**
+ * Static factory/registry for level content (enemies, collectibles, backgrounds).
+ * Keeps creation logic centralized so starting a new game stays lightweight.
+ */
 export class Level {
   static level_end_x = 3600;
   // Lazily create entities on game start to avoid background activity before clicking Start

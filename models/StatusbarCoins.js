@@ -1,5 +1,9 @@
 import { DrawableObject } from "./DrawableObject.js";
 import { imageLoader } from "../game/imageLoader.js";
+
+/**
+ * HUD bar tracking how many coins the player has collected.
+ */
 export class StatusbarCoins extends DrawableObject {
   images_Coins = imageLoader.STATUSBAR.statusbarCoins;
   width = 200;
@@ -13,12 +17,19 @@ export class StatusbarCoins extends DrawableObject {
     this.setPercentage(0);
   }
 
+  /**
+   * Updates the bar sprite based on collected coins.
+   * @param {number} percentage
+   */
   setPercentage(percentage) {
     this.percentage = percentage;
     let path = this.images_Coins[this.resolveImageIndex()];
     this.img = this.imageCache[path];
   }
 
+  /**
+   * Draws the bar and overlays the current coin count.
+   */
   draw(ctx) {
     super.draw(ctx);
     const centerX = this.x + this.width / 2;
@@ -26,6 +37,10 @@ export class StatusbarCoins extends DrawableObject {
     this.drawText(ctx, this.percentage, centerX, centerY);
   }
 
+  /**
+   * Resolves which image to show based on coin total.
+   * @returns {number}
+   */
   resolveImageIndex() {
     if (this.percentage >= 5) {
       return 5;

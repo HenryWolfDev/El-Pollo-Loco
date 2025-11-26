@@ -3,21 +3,20 @@ import { IntervalHub } from "../game/IntervalHub.js";
 import { Character } from "./Character.js";
 
 /**
- * Basisklasse für bewegliche Objekte in der Spielwelt.
- * Erweitert {@link DrawableObject} um Eigenschaften wie Bewegung, Schwerkraft,
- * Kollisionserkennung und Energieverwaltung.
+ * Base class for movable game objects (character, enemies, projectiles).
+ * Adds movement, gravity, collision checks, and health handling on top of DrawableObject.
  *
  * @class
  * @extends DrawableObject
  *
- * @property {number} speedX - Horizontale Bewegungsgeschwindigkeit.
- * @property {number} speedY - Vertikale Bewegungsgeschwindigkeit (positiv = nach oben).
- * @property {number} acceleration - Beschleunigung für die Gravitation.
- * @property {number} energy - Lebensenergie des Objekts (0 = tot).
- * @property {number} lastHit - Zeitstempel des letzten Treffers (ms seit Unix-Epoch).
- * @property {boolean} otherDirection - Gibt an, ob das Objekt nach links schaut (für Spiegelung).
- * @property {boolean} debugFrame - Wenn true, wird ein grüner Rahmen um das Objekt gezeichnet.
- * @property {boolean} isWalking  - Gibt an, ob ein Gegner aktuell läuft.
+ * @property {number} speedX - Horizontal movement speed.
+ * @property {number} speedY - Vertical movement speed (positive = upward).
+ * @property {number} acceleration - Gravity acceleration.
+ * @property {number} energy - Hit points of the object (0 = dead).
+ * @property {number} lastHit - Timestamp of the last hit (ms since Unix epoch).
+ * @property {boolean} otherDirection - True when facing left (used for mirroring).
+ * @property {boolean} debugFrame - When true, draws a lime frame around the hitbox.
+ * @property {boolean} isWalking  - Whether an enemy is currently walking.
  */
 export class MoveabelObject extends DrawableObject {
   speedX = 2.5;
@@ -32,10 +31,9 @@ export class MoveabelObject extends DrawableObject {
   // #region action methods
 
   /**
-   * Verringert die Energie des Objekts um den angegebenen Schaden.
-   * Setzt {@link MoveabelObject#lastHit} auf den aktuellen Zeitpunkt.
+   * Reduces energy by given damage and records the hit time.
    *
-   * @param {number} damage - Schadenshöhe.
+   * @param {number} damage - Amount of damage to apply.
    * @returns {void}
    */
   hit(damage) {
@@ -48,10 +46,9 @@ export class MoveabelObject extends DrawableObject {
   }
 
   /**
-   * Prüft, ob das Objekt kürzlich getroffen wurde.
-   * Wird als "verwundet" betrachtet, wenn der letzte Treffer < 0.5 Sekunden zurückliegt.
+   * Returns true if the object was hit within the last 0.5 seconds.
    *
-   * @returns {boolean} true, wenn Objekt verwundet ist.
+   * @returns {boolean} true when recently hurt.
    */
   isHurt() {
     let timepassed = new Date().getTime() - this.lastHit;
@@ -60,9 +57,9 @@ export class MoveabelObject extends DrawableObject {
   }
 
   /**
-   * Prüft, ob das Objekt keine Energie mehr hat.
+   * Returns true when the object has no health left.
    *
-   * @returns {boolean} true, wenn das Objekt tot ist.
+   * @returns {boolean} true when dead.
    */
   isdead() {
     return this.energy == 0;
@@ -72,8 +69,7 @@ export class MoveabelObject extends DrawableObject {
   // #region Moving
 
   /**
-   * Bewegt das Objekt nach links, solange es nicht tot ist.
-   * Aktiviert zusätzlich die Walking-Animation für Endboss.
+   * Moves the object left if alive; flags walking animation for enemies.
    *
    * @returns {void}
    */
@@ -85,7 +81,7 @@ export class MoveabelObject extends DrawableObject {
   }
 
   /**
-   * Bewegt Character nach rechts, solange es nicht tot ist.
+   * Moves the character right if alive.
    *
    * @returns {void}
    */
@@ -98,43 +94,48 @@ export class MoveabelObject extends DrawableObject {
   // #endregion Moving
 
   /**
-   * Prüft, ob dieses Objekt mit einem anderen kollidiert.
+   * Checks for an AABB collision against another drawable object.
    *
-   * @param {DrawableObject} mo - Das andere zu prüfende Objekt.
-   * @returns {boolean} true, wenn die Objekte kollidieren.
+   * @param {DrawableObject} mo - Other object to test against.
+   * @returns {boolean} true when colliding.
    */
   isColliding(mo) {
+    const a = this.getHitbox();
+    const b =
+      typeof mo.getHitbox === "function"
+        ? mo.getHitbox()
+        : { x: mo.x, y: mo.y, width: mo.width, height: mo.height };
+
     return (
-      this.x < mo.x + mo.width &&
-      this.x + this.width > mo.x &&
-      this.y < mo.y + mo.height &&
-      this.y + this.height > mo.y
+      a.x < b.x + b.width &&
+      a.x + a.width > b.x &&
+      a.y < b.y + b.height &&
+      a.y + a.height > b.y
     );
   }
 
   // #region drawing frames
 
   /**
-   * Zeichnet ein Rechteck um das Objekt (Debugging der Hitbox).
+   * Draws the current hitbox as a rectangle for debugging.
    *
-   * @param {CanvasRenderingContext2D} ctx - Der Canvas-Rendering-Kontext.
+   * @param {CanvasRenderingContext2D} ctx - Canvas rendering context.
    * @returns {void}
    */
   drawFrame(ctx) {
     if (this.debugFrame) {
+      const box = this.getHitbox();
       ctx.beginPath();
       ctx.lineWidth = 2;
       ctx.strokeStyle = "lime";
-      ctx.rect(this.x, this.y, this.width, this.height);
+      ctx.rect(box.x, box.y, box.width, box.height);
       ctx.stroke();
     }
   }
   // #endregion drawing frames
 
   /**
-   * Wendet Schwerkraft auf das Objekt an.
-   * Lässt das Objekt fallen oder steigen, abhängig von {@link MoveabelObject#speedY}.
-   * Für den {@link Character} wird die Bodenhöhe bei y=230 begrenzt.
+   * Applies gravity each tick: moves up/down based on speedY and clamps character ground height.
    *
    * @returns {void}
    */
@@ -163,9 +164,9 @@ export class MoveabelObject extends DrawableObject {
   // #region loading images
 
   /**
-   * Spielt eine Frame-Animation basierend auf einem Array von Bildpfaden ab.
+   * Plays a frame animation from a list of image paths.
    *
-   * @param {string[]} images - Array mit Bildpfaden für die Animation.
+   * @param {string[]} images - Animation frame paths.
    * @returns {void}
    */
   playAnimation(images) {
@@ -175,4 +176,13 @@ export class MoveabelObject extends DrawableObject {
     this.currentImage++;
   }
   // #endregion loading images
+
+  /**
+   * Returns the active hitbox for collisions/debug frames.
+   * Subclasses can override to tighten/loosen bounds.
+   * @returns {{x:number,y:number,width:number,height:number}}
+   */
+  getHitbox() {
+    return { x: this.x, y: this.y, width: this.width, height: this.height };
+  }
 }
