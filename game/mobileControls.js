@@ -9,27 +9,49 @@ export function mobileControls(keyboard) {
   const jump = document.getElementById("jump-icon");
   const thrw = document.getElementById("throw-icon");
 
-  const bindControl = (el, onPress, onRelease) => {
-    if (!el) return;
-    const startEvents = ["pointerdown", "touchstart"];
-    const endEvents = ["pointerup", "pointercancel", "touchend", "touchcancel", "mouseleave"];
+  /**
+   * Wires a single on-screen button to press/release handlers.
+   * @param {HTMLElement|null} buttonEl - The button element (can be null if not found).
+   * @param {Function} onPress - Called when the button is pressed.
+   * @param {Function} onRelease - Called when the button is released.
+   */
+  const bindControl = (buttonEl, onPress, onRelease) => {
+    const handlePress = (e) => {
+      e.preventDefault();
+      onPress();
+    };
 
-    startEvents.forEach((evt) =>
-      el.addEventListener(evt, (e) => {
-        e.preventDefault();
-        onPress();
-      })
-    );
-    endEvents.forEach((evt) =>
-      el.addEventListener(evt, (e) => {
-        e.preventDefault();
-        onRelease();
-      })
-    );
+    const handleRelease = (e) => {
+      e.preventDefault();
+      onRelease();
+    };
+
+    buttonEl.addEventListener("pointerdown", handlePress);
+    buttonEl.addEventListener("touchstart", handlePress);
+
+    buttonEl.addEventListener("pointerup", handleRelease);
+    buttonEl.addEventListener("pointercancel", handleRelease);
+    buttonEl.addEventListener("touchend", handleRelease);
   };
 
-  bindControl(left, () => (keyboard.LEFT = true), () => (keyboard.LEFT = false));
-  bindControl(right, () => (keyboard.RIGHT = true), () => (keyboard.RIGHT = false));
-  bindControl(jump, () => (keyboard.SPACE = true), () => (keyboard.SPACE = false));
-  bindControl(thrw, () => (keyboard.D = true), () => (keyboard.D = false));
+  bindControl(
+    left,
+    () => (keyboard.LEFT = true),
+    () => (keyboard.LEFT = false)
+  );
+  bindControl(
+    right,
+    () => (keyboard.RIGHT = true),
+    () => (keyboard.RIGHT = false)
+  );
+  bindControl(
+    jump,
+    () => (keyboard.SPACE = true),
+    () => (keyboard.SPACE = false)
+  );
+  bindControl(
+    thrw,
+    () => (keyboard.D = true),
+    () => (keyboard.D = false)
+  );
 }
