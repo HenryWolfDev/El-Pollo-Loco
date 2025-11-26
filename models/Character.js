@@ -99,7 +99,7 @@ export class Character extends MoveabelObject {
   }
 
   jump() {
-    this.speedY = 30;
+    this.speedY = 28;
   }
 
   // #endregion movement
