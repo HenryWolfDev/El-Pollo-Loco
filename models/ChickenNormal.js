@@ -3,6 +3,10 @@ import { SpawnManager } from "../game/SpawnManager.js";
 import { IntervalHub } from "../game/IntervalHub.js";
 import { imageLoader } from "../game/imageLoader.js";
 import { AudioHub } from "../game/AudioHub.js";
+
+/**
+ * Standard chicken enemy that walks left and can die with a short animation and sound.
+ */
 export class ChickenNormal extends MoveabelObject {
   x = 700;
   y = 330;
@@ -17,6 +21,10 @@ export class ChickenNormal extends MoveabelObject {
 
   isDeadSoundPlaying = false;
 
+  /**
+   * Creates a chicken and starts its walk animation loop.
+   * Spawn position is randomized via SpawnManager.
+   */
   constructor() {
     super().loadImage(
       "assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png"
@@ -34,6 +42,9 @@ export class ChickenNormal extends MoveabelObject {
     this.playDeadAnimation();
   };
 
+  /**
+   * Plays death animation and sound once when the chicken is dead.
+   */
   playDeadAnimation() {
     if (this.isdead()) {
       if (!this.isDeadSoundPlaying) {

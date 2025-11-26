@@ -1,6 +1,10 @@
 import { MoveabelObject } from "./MoveableObject.js";
 import { imageLoader } from "../game/imageLoader.js";
 import { IntervalHub } from "../game/IntervalHub.js";
+
+/**
+ * Final boss chicken with multiple animation states (alert, walk, attack, hurt, dead).
+ */
 export class Enbboss extends MoveabelObject {
   width = 350;
   height = 350;
@@ -19,12 +23,18 @@ export class Enbboss extends MoveabelObject {
   // Animation timing control
   _lastAnimTime = 0;
 
+  /**
+   * Preloads animations and starts the boss animation loop.
+   */
   constructor() {
     super().loadImage("assets/img/4_enemie_boss_chicken/2_alert/G5.png");
     this.loadingImages();
     IntervalHub.startInterval(this.animate, 1000 / 30);
   }
 
+  /**
+   * Preloads all boss animation sets.
+   */
   loadingImages() {
     this.loadImages(this.images_Walk);
     this.loadImages(this.images_ALERT);
@@ -37,6 +47,9 @@ export class Enbboss extends MoveabelObject {
     this.BossAnimations();
   };
 
+  /**
+   * Chooses the correct animation based on boss state (attack, alert, hurt, walk).
+   */
   BossAnimations() {
     if (this.endbossAttacking) {
       this.playAnimationThrottled(this.images_Attack, 100); // ~10 fps
@@ -49,6 +62,9 @@ export class Enbboss extends MoveabelObject {
     }
   }
 
+  /**
+   * Triggers a short attack animation sequence.
+   */
   playAttackAnimation() {
     if (this.endbossAttacking) return;
     this.endbossAttacking = true;

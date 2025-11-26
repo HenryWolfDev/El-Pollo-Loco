@@ -4,6 +4,9 @@ import { IntervalHub } from "../game/IntervalHub.js";
 import { imageLoader } from "../game/imageLoader.js";
 import { AudioHub } from "../game/AudioHub.js";
 
+/**
+ * Smaller chicken enemy variant with its own walk and death animations.
+ */
 export class ChickenSmall extends MoveabelObject {
   x = 1000;
   y = 340;
@@ -17,6 +20,9 @@ export class ChickenSmall extends MoveabelObject {
 
   speedX = 1.5;
 
+  /**
+   * Initializes the small chicken, randomizes its spawn offset, and starts the walk loop.
+   */
   constructor() {
     super().loadImage(
       "assets/img/3_enemies_chicken/chicken_small/1_walk/1_w.png"
@@ -34,6 +40,9 @@ export class ChickenSmall extends MoveabelObject {
     this.playDeadAnimation();
   };
 
+  /**
+   * Plays the small chicken's death animation and triggers its sound once.
+   */
   playDeadAnimation() {
     if (this.isdead()) {
       if (!this.isDeadSoundPlaying) {
