@@ -144,7 +144,7 @@ function initMusicToggle() {
     const nextState = !AudioHub.musicEnabled;
     AudioHub.setMusicEnabled(nextState);
     if (nextState && world) {
-      AudioHub.playOne(AudioHub.Background);
+      AudioHub.playOne(AudioHub.Background, false);
     }
     updateToggleUI();
   });

@@ -99,8 +99,9 @@ export class AudioHub {
   /**
    * Plays a single sound from the start if it is ready. Volume is capped at 0.2 for consistency.
    * @param {MyAudio} sound Sound wrapper to play.
+   * @param {boolean} [restart=true] When false, resumes from current position instead of restarting.
    */
-  static playOne(sound) {
+  static playOne(sound, restart = true) {
     if (!AudioHub.musicEnabled) {
       return;
     }
@@ -109,7 +110,10 @@ export class AudioHub {
 
       sound.sound.volume = 0.1;
 
-      sound.sound.currentTime = 0;
+      if (restart || sound.sound.ended) {
+        sound.sound.currentTime = 0;
+      }
+
       sound.sound.play();
     }
   }
