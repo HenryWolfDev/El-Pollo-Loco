@@ -127,22 +127,20 @@ table {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 4.4rem;
-  height: 4.4rem;
-  border-radius: 50%;
-  border: 0.1rem solid black;
-  background-color: rgb(234, 200, 89);
+  padding: 0;
+  background: transparent;
   cursor: pointer;
 }
 
-.music-toggle img {
+.music-toggle:focus-visible {
+  outline: 0.2rem solid rgba(255, 255, 255, 0.7);
+  outline-offset: 0.2rem;
+}
+
+.music-icon {
   width: 2.6rem;
   height: 2.6rem;
   pointer-events: none;
-}
-
-.music-toggle:hover {
-  background-color: rgb(158, 134, 1);
 }
 
 .rotate-overlay {
@@ -237,10 +235,6 @@ table {
     display: none;
   }
 
-  .music-toggle {
-    display: none;
-  }
-
   .overlay {
     align-items: flex-end;
   }
@@ -295,10 +289,6 @@ table {
     display: none;
   }
 
-  .music-toggle {
-    display: none;
-  }
-
   .overlay {
     align-items: flex-end;
   }
@@ -347,6 +337,22 @@ table {
 
   .table-mobile {
     display: flex;
+  }
+}
+
+@media only screen and (max-width: 1200px),
+  only screen and (orientation: landscape) and (max-height: 500px) {
+  .music-toggle {
+    top: 1rem;
+    left: auto;
+    right: 13rem;
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .music-icon {
+    width: 2.2rem;
+    height: 2.2rem;
   }
 }
 

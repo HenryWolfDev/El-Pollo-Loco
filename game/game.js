@@ -126,17 +126,17 @@ function goToMainMenu() {
 function initMusicToggle() {
   const toggle = document.getElementById("music-toggle");
   if (!toggle) return;
-  const icon = toggle.querySelector("img");
+  const iconOn = toggle.querySelector("[data-state='on']");
+  const iconOff = toggle.querySelector("[data-state='off']");
 
   const updateToggleUI = () => {
     const enabled = AudioHub.musicEnabled;
+    toggle.dataset.state = enabled ? "on" : "off";
     toggle.setAttribute("aria-pressed", String(enabled));
     toggle.title = enabled ? "Mute sound" : "Unmute sound";
-    if (icon) {
-      icon.src = enabled
-        ? "assets/svg/volume-high.svg"
-        : "assets/svg/volume-mute.svg";
-      icon.alt = enabled ? "Sound on" : "Sound muted";
+    if (iconOn && iconOff) {
+      iconOn.style.display = enabled ? "block" : "none";
+      iconOff.style.display = enabled ? "none" : "block";
     }
   };
 
