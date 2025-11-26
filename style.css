@@ -178,11 +178,15 @@ table {
 #gameover-screen {
   background-size: 80% 80%;
   background-image: url("assets/img/won,lost/Game Over.png");
+  background-color: black;
+  z-index: 100;
 }
 
 #winning-screen {
   background-size: 80% 80%;
   background-image: url("assets/img/won,lost/You Win A.png");
+  background-color: black;
+  z-index: 100;
 }
 
 #impressum-screen {
