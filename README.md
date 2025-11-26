@@ -1,69 +1,69 @@
-![Startmenü](assets/img/9_intro_outro_screens/start/startscreen_1.png)
+![Start screen](assets/img/9_intro_outro_screens/start/startscreen_1.png)
 
-# El Pollo Loco — Browser Game
+# El Pollo Loco – Browser Game
 
-Ein kleines, schnelles 2D‑Jump‑and‑Run für den Browser. Du steuerst den Charakter durch eine horizontale Welt, weichst Gegnern aus, sammelst Coins und bekämpfst den Endboss. Das Projekt ist für Portfolio‑Zwecke aufbereitet: sauber strukturierter Code, responsive UI und klare Audio/Animation‑Logik.
+A small, fast 2D jump-and-run for the browser. Guide the character through a side-scrolling world, dodge enemies, collect coins, and defeat the end boss. Built for portfolio purposes: clean code structure, responsive UI, and clear audio/animation logic.
 
 ## Highlights
 
-- Geschmeidiges Rendering via `requestAnimationFrame` und konsistente Logik‑Loops
-- Responsives Layout (Desktop und Mobile, inkl. Landscape‑Phones)
-- Mobile‑Touch‑Controls und Desktop‑Keyboard‑Support
-- Sauberes Restart/Reset: Neustart ohne Seitenreload, sauberer Teardown
-- Endboss‑Event: automatisch beim Nähern oder frühem Treffer durch Wurfobjekt
-- Audio‑Hub mit zentralem Start/Stop, Schlaf‑Schnarchen mit Loop/Stop‑Logik
+- Smooth rendering via `requestAnimationFrame` and consistent logic loops
+- Responsive layout (desktop and mobile, including landscape phones)
+- Mobile touch controls and desktop keyboard support
+- Clean restart/reset: restart without page reload, tidy teardown
+- Endboss event: triggers on approach or early hit with a thrown object
+- Audio hub with central start/stop and snoring loop/stop logic
 
-## Steuerung
+## Controls
 
-- Bewegen: Pfeiltasten links/rechts
-- Springen: Leertaste
-- Werfen: F
-- Mobile: On‑Screen‑Buttons (links/rechts/springen/werfen)
+- Move: Arrow keys left/right
+- Jump: Space
+- Throw: F
+- Mobile: On-screen buttons (left/right/jump/throw)
 
-## Projekt Struktur (Auszug)
+## Project Structure (excerpt)
 
-- `game/game.js` – Bootstrap, UI‑Wiring, Start/Restart/Main‑Menu
-- `game/keyboardListeners.js` – Keyboard‑Events (Desktop)
-- `game/mobileControls.js` – Touch‑Controls (Mobile UI)
-- `game/menuListeners.js` – Menü‑/Overlay‑Buttons
-- `game/AudioHub.js` – Audio Management (play/stop/loop)
-- `game/IntervalHub.js` – Zentrale Verwaltung von Intervals
-- `game/SpawnManager.js` – Deterministisches Spawning, inkl. `reset()`
-- `models/World.js` – Welt, Kollisionen, Rendering, Boss‑Event
-- `models/Character.js` – Player‑Logik, Animationen mit FPS‑Throttling
-- `models/Endboss.js` – Endboss‑Logik, Attack‑Throttling
-- `models/*` – Enemies, Collectibles, Hintergrund, Statusleisten
+- `game/game.js` – bootstrap, UI wiring, start/restart/main menu
+- `game/keyboardListeners.js` – keyboard events (desktop)
+- `game/mobileControls.js` – touch controls (mobile UI)
+- `game/menuListeners.js` – menu/overlay buttons
+- `game/AudioHub.js` – audio management (play/stop/loop)
+- `game/IntervalHub.js` – central interval management
+- `game/SpawnManager.js` – deterministic spawning, including `reset()`
+- `models/World.js` – world, collisions, rendering, boss event
+- `models/Character.js` – player logic, animations with FPS throttling
+- `models/Endboss.js` – end boss logic, attack throttling
+- `models/*` – enemies, collectibles, background, status bars
 
-## Technik
+## Tech
 
-- Vanilla JS (ES Modules), HTML5 Canvas, CSS
-- Strukturierte Module und klare Zuständigkeiten
-- Animations‑Throttling für konsistente Bildraten (flüssige Darstellung)
+- Vanilla JS (ES modules), HTML5 Canvas, CSS
+- Structured modules and clear responsibilities
+- Animation throttling for consistent frame rates (smooth display)
 
-## Lokal starten
+## Run Locally
 
-1. Repository klonen oder entpacken
-2. Mit einem lokalen Webserver starten (z. B. VS Code Live Server oder `npx serve`)
-3. `index.html` im Browser öffnen
+1. Clone or unzip the repository.
+2. Start a local web server (e.g., VS Code Live Server or `npx serve`).
+3. Open `index.html` in the browser.
 
-Hinweis: Einige Browser blockieren lokale Audio‑Autoplay‑Rechte. Ein Klick auf „Start“ aktiviert die nötigen Interaktionen.
+Note: Some browsers block local audio autoplay. A click on “Start” enables the needed interactions.
 
-## Responsive Verhalten
+## Responsive Behavior
 
-- Desktop passt sich bis `720x480` an und behält 3:2‑Seitenverhältnis
-- Mobile‑UI aktiviert sich bei schmalen Viewports und auch bei Landscape‑Phones mit geringer Höhe
+- Desktop scales up to `720x480` and keeps a 3:2 aspect ratio.
+- Mobile UI activates on narrow viewports and landscape phones with low height.
 
-## Bekannte Shortcuts/Features
+## Shortcuts/Features
 
-- Neustart über „Neustarten“ startet sofort ein neues Spiel (kein Reload)
-- „Hauptmenü“ beendet Loops/Audios und zeigt den Startbildschirm
-- Impressum im Startmenü verfügbar
+- Restart via “Neustarten” instantly starts a new game (no reload).
+- “Hauptmenü” stops loops/audio and shows the start screen.
+- Impressum available from the start menu.
 
 ## Assets & Credits
 
-- Grafiken/Sounds sind Kurs‑/Demo‑Assets. Rechte verbleiben bei den jeweiligen Inhabern.
-- Projekt ist ein Lern‑ und Portfolio‑Projekt der Developer Akademie.
+- Graphics/sounds are course/demo assets. Rights remain with their respective owners.
+- Project is a learning and portfolio project from Developer Akademie.
 
-## Lizenz
+## License
 
-Dieses Projekt dient Demonstrations‑ und Lernzwecken. Keine kommerzielle Nutzung der beigefügten Assets.
+This project is for demonstration and learning purposes. No commercial use of the bundled assets.
