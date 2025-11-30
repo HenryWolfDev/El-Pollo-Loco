@@ -16,6 +16,16 @@ export class Character extends MoveabelObject {
   height = 350;
   speedX = 7;
   speedY = 2.5;
+  rX = 0;
+  rY = 0;
+  rW = 0;
+  rH = 0;
+  offset = {
+    top: 150,
+    right: 75,
+    bottom: 40,
+    left: 35,
+  };
 
   jumpAnim = false;
   isWalking = false;
@@ -23,6 +33,8 @@ export class Character extends MoveabelObject {
 
   bottleCount = 3;
   coinsCount = 0;
+
+  debugFrame = true;
 
   // Animation timing control
   _lastAnimTime = 0;
@@ -178,6 +190,18 @@ export class Character extends MoveabelObject {
 
   updateCamera() {
     this.world.camera_x = -this.x + 100;
+  }
+
+  getRealFrame() {
+    this.rX = this.x + this.offset.left;
+    this.rY = this.y + this.offset.top;
+    this.rW = this.width - this.offset.left - this.offset.right;
+    this.rH = this.height - this.offset.top - this.offset.bottom;
+  }
+
+  getCollisionBox() {
+    this.getRealFrame();
+    return { x: this.rX, y: this.rY, width: this.rW, height: this.rH };
   }
 
   // Advance animation frames at a capped rate independent of the 60 Hz update

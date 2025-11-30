@@ -100,9 +100,14 @@ export class MoveabelObject extends DrawableObject {
    * @returns {boolean} true when colliding.
    */
   isColliding(mo) {
-    const a = this.getHitbox();
+    const a =
+      typeof this.getCollisionBox === "function"
+        ? this.getCollisionBox()
+        : this.getHitbox();
     const b =
-      typeof mo.getHitbox === "function"
+      typeof mo.getCollisionBox === "function"
+        ? mo.getCollisionBox()
+        : typeof mo.getHitbox === "function"
         ? mo.getHitbox()
         : { x: mo.x, y: mo.y, width: mo.width, height: mo.height };
 
@@ -124,7 +129,10 @@ export class MoveabelObject extends DrawableObject {
    */
   drawFrame(ctx) {
     if (this.debugFrame) {
-      const box = this.getHitbox();
+      const box =
+        typeof this.getCollisionBox === "function"
+          ? this.getCollisionBox()
+          : this.getHitbox();
       ctx.beginPath();
       ctx.lineWidth = 2;
       ctx.strokeStyle = "lime";
@@ -184,5 +192,9 @@ export class MoveabelObject extends DrawableObject {
    */
   getHitbox() {
     return { x: this.x, y: this.y, width: this.width, height: this.height };
+  }
+
+  getCollisionBox() {
+    return this.getHitbox();
   }
 }

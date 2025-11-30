@@ -21,6 +21,8 @@ export class ChickenNormal extends MoveabelObject {
 
   isDeadSoundPlaying = false;
 
+  debugFrame = true;
+
   /**
    * Creates a chicken and starts its walk animation loop.
    * Spawn position is randomized via SpawnManager.
