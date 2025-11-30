@@ -22,9 +22,9 @@ export class Character extends MoveabelObject {
   rH = 0;
   offset = {
     top: 150,
-    right: 75,
+    right: 100,
     bottom: 40,
-    left: 35,
+    left: 85,
   };
 
   jumpAnim = false;
