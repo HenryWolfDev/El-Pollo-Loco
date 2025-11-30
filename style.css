@@ -253,6 +253,11 @@ table {
 }
 
 @media only screen and (max-width: 1200px) {
+  #impressum-screen.is-visible ~ .mobile-buttons .general-box,
+  #impressum-screen.is-visible ~ .mobile-buttons #music-toggle-mobile {
+    display: none !important;
+  }
+
   #start-screen.is-visible ~ .mobile-buttons .move-box-left,
   #start-screen.is-visible ~ .mobile-buttons .move-box-right {
     display: none !important;
@@ -312,6 +317,11 @@ table {
 }
 
 @media only screen and (orientation: landscape) and (max-height: 500px) {
+  #impressum-screen.is-visible ~ .mobile-buttons .general-box,
+  #impressum-screen.is-visible ~ .mobile-buttons #music-toggle-mobile {
+    display: none !important;
+  }
+
   #start-screen.is-visible ~ .mobile-buttons .move-box-left,
   #start-screen.is-visible ~ .mobile-buttons .move-box-right {
     display: none !important;
