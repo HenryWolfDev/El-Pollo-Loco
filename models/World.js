@@ -279,32 +279,43 @@ export class World {
    */
   checkBottleAttack() {
     this.throwableBottles.forEach((bottle, bIndex) => {
-      if (bottle.hasDamaged) return;
-      this.enemys.forEach((enemy, eIndex) => {
-        if (bottle.isColliding(enemy)) {
-          bottle.hasDamaged = true;
-          bottle.playSplashAnimation();
-          this.removeBottle(bIndex);
-          if (enemy instanceof Enbboss) {
-            this.startBossEvent();
-            enemy.hit(25);
-            if (!enemy.isdead()) {
-              AudioHub.playOne(AudioHub.Chicken_Dead);
-            }
-            if (this.statusBarBossHealth) {
-              this.statusBarBossHealth.setPercentage(enemy.energy);
-            }
-          } else {
-            enemy.hit(100);
-          }
-          if (enemy.isdead()) {
-            this.removeEnemy(enemy);
-          }
-        } else if (!bottle.isAboveGround()) {
-          this.removeBottle(bIndex);
-        }
-      });
+      if (bottle.hasDamaged) {
+        return;
+      }
+      const hitEnemy = this.enemys.find((enemy) => bottle.isColliding(enemy));
+      if (hitEnemy) {
+        this.handleBottleEnemyHit(bottle, bIndex, hitEnemy);
+        return;
+      }
+      if (!bottle.isAboveGround()) {
+        this.removeBottle(bIndex);
+      }
     });
+  }
+
+  handleBottleEnemyHit(bottle, bottleIndex, enemy) {
+    bottle.hasDamaged = true;
+    bottle.playSplashAnimation();
+    this.removeBottle(bottleIndex);
+
+    enemy instanceof Enbboss
+      ? this.handleBossBottleHit(enemy)
+      : enemy.hit(100);
+
+    if (enemy.isdead()) {
+      this.removeEnemy(enemy);
+    }
+  }
+
+  handleBossBottleHit(enemy) {
+    this.startBossEvent();
+    enemy.hit(25);
+    if (!enemy.isdead()) {
+      AudioHub.playOne(AudioHub.Chicken_Dead);
+    }
+    if (this.statusBarBossHealth) {
+      this.statusBarBossHealth.setPercentage(enemy.energy);
+    }
   }
 
   removeBottle(bIndex) {
