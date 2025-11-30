@@ -13,6 +13,9 @@ export class Enbboss extends MoveabelObject {
   speedX = 0.7;
 
   endbossAttacking = false;
+  _deadPlayed = false;
+  _deadFrameIndex = 0;
+  _deadFrameTime = 0;
 
   images_ALERT = imageLoader.ENEMIE_BOSS_CHICKEN.alert;
   images_Hurt = imageLoader.ENEMIE_BOSS_CHICKEN.hurt;
@@ -51,7 +54,9 @@ export class Enbboss extends MoveabelObject {
    * Chooses the correct animation based on boss state (attack, alert, hurt, walk).
    */
   BossAnimations() {
-    if (this.endbossAttacking) {
+    if (this.isdead()) {
+      this.animateDeadOnce();
+    } else if (this.endbossAttacking) {
       this.playAnimationThrottled(this.images_Attack, 100); // ~10 fps
     } else if (!this.isWalking) {
       this.playAnimationThrottled(this.images_ALERT, 150); // ~6-7 fps
@@ -60,6 +65,36 @@ export class Enbboss extends MoveabelObject {
     } else if (this.isWalking) {
       this.playAnimationThrottled(this.images_Walk, 100); // ~10 fps
     }
+  }
+
+  /**
+   * Plays the dead animation frames once, then freezes on the last frame.
+   */
+  animateDeadOnce() {
+    if (this._deadPlayed) return;
+    const now = Date.now();
+    if (now - this._deadFrameTime < 125) return;
+
+    const frames = this.images_Dead;
+    const index = Math.min(this._deadFrameIndex, frames.length - 1);
+    const path = frames[index];
+    this.img = this.imageCache[path];
+
+    this._deadFrameIndex++;
+    this._deadFrameTime = now;
+
+    if (this._deadFrameIndex >= frames.length) {
+      this._deadPlayed = true;
+      this._deadFrameIndex = frames.length - 1;
+    }
+  }
+
+  /**
+   * Returns true once the full death animation has been displayed.
+   * @returns {boolean}
+   */
+  hasFinishedDeathAnimation() {
+    return this._deadPlayed;
   }
 
   /**

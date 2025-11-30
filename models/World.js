@@ -11,7 +11,8 @@ import { StatusbarBossHealth } from "./StatusbarBossHealth.js";
 import { Enbboss } from "./Endboss.js";
 
 const OVERLAY_VISIBLE_CLASS = "is-visible";
-const OVERLAY_SHOW_DELAY = 800;
+// Small delay before showing end screens to allow death animations to play.
+const OVERLAY_SHOW_DELAY = 1500;
 
 /**
  * Represents the full game world: player, enemies, background, HUD, and logic.
@@ -133,21 +134,26 @@ export class World {
   }
 
   showWinningScreen() {
-    this.enemys.forEach((enemy) => {
-      if (enemy instanceof Enbboss) {
-        if (enemy.isdead() && !this.winningShown) {
-          this.winningShown = true;
-          IntervalHub.stopAllIntervals();
-          AudioHub.stopAll();
-          AudioHub.playOne(AudioHub.Winning);
-          const overlay = document.getElementById("winning-screen");
-          this.winningTimer = setTimeout(() => {
-            if (this.isDestroyed) return;
-            if (overlay) overlay.classList.add(OVERLAY_VISIBLE_CLASS);
-          }, OVERLAY_SHOW_DELAY);
-        }
-      }
-    });
+    if (this.winningShown) return;
+
+    const boss = this.enemys.find((enemy) => enemy instanceof Enbboss);
+    if (!boss || !boss.isdead()) return;
+    if (
+      typeof boss.hasFinishedDeathAnimation === "function" &&
+      !boss.hasFinishedDeathAnimation()
+    ) {
+      return; // wait until death animation finished
+    }
+
+    this.winningShown = true;
+    IntervalHub.stopAllIntervals();
+    AudioHub.stopAll();
+    AudioHub.playOne(AudioHub.Winning);
+    const overlay = document.getElementById("winning-screen");
+    this.winningTimer = setTimeout(() => {
+      if (this.isDestroyed) return;
+      if (overlay) overlay.classList.add(OVERLAY_VISIBLE_CLASS);
+    }, OVERLAY_SHOW_DELAY);
   }
   // #endregion Screens
   // #endregion Game Loop & Screens
@@ -328,6 +334,7 @@ export class World {
 
   /** Removes an enemy after a short delay so its final state can render. */
   removeEnemy(enemy) {
+    if (enemy instanceof Enbboss) return;
     setTimeout(() => {
       const idx = this.enemys.indexOf(enemy);
       if (idx !== -1) {
