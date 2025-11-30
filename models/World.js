@@ -12,7 +12,7 @@ import { Enbboss } from "./Endboss.js";
 
 const OVERLAY_VISIBLE_CLASS = "is-visible";
 // Small delay before showing end screens to allow death animations to play.
-const OVERLAY_SHOW_DELAY = 1500;
+const OVERLAY_SHOW_DELAY = 1800;
 
 /**
  * Represents the full game world: player, enemies, background, HUD, and logic.
@@ -265,7 +265,8 @@ export class World {
     this.enemys.forEach((enemy) => {
       if (
         this.character.isColliding(enemy) &&
-        !this.character.isAboveGround()
+        !this.character.isAboveGround() &&
+        !this.character.isHurt()
       ) {
         if (enemy instanceof Enbboss) {
           this.character.hit(15);
