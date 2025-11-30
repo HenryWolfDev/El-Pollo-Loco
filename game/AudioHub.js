@@ -1,3 +1,32 @@
+const MUSIC_PREF_KEY = "elpolloloco:musicEnabled";
+
+/**
+ * Reads the persisted music preference from localStorage.
+ * @returns {boolean|null}
+ */
+function loadMusicPreference() {
+  try {
+    const value = localStorage.getItem(MUSIC_PREF_KEY);
+    if (value === "true") return true;
+    if (value === "false") return false;
+  } catch (e) {
+    // Ignore storage errors (e.g. privacy mode).
+  }
+  return null;
+}
+
+/**
+ * Saves the current music preference in localStorage.
+ * @param {boolean} enabled
+ */
+function saveMusicPreference(enabled) {
+  try {
+    localStorage.setItem(MUSIC_PREF_KEY, String(enabled));
+  } catch (e) {
+    // Ignore storage errors (e.g. privacy mode).
+  }
+}
+
 /**
  * Lightweight wrapper around an `Audio` element to track load state and reuse a single instance.
  */
@@ -16,7 +45,7 @@ class MyAudio {
  */
 export class AudioHub {
   // Master audio toggle; when false, no sounds will play.
-  static musicEnabled = true;
+  static musicEnabled = loadMusicPreference() ?? true;
   // #region Audio-Files
   static Character_Damage = new MyAudio(
     "assets/sounds/character/characterDamage.mp3"
@@ -91,6 +120,7 @@ export class AudioHub {
    */
   static setMusicEnabled(enabled) {
     AudioHub.musicEnabled = enabled;
+    saveMusicPreference(enabled);
     if (!enabled) {
       AudioHub.stopAll();
     }
