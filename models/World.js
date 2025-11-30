@@ -122,6 +122,12 @@ export class World {
   // #region Screens
   showGameOverScreen() {
     if (this.gameOverShown || !this.character.isdead()) return;
+    if (
+      typeof this.character.hasFinishedDeathAnimation === "function" &&
+      !this.character.hasFinishedDeathAnimation()
+    ) {
+      return; // wait until character death animation completes
+    }
     this.gameOverShown = true;
     IntervalHub.stopAllIntervals();
     AudioHub.stopAll();

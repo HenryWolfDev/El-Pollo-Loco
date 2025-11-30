@@ -38,6 +38,10 @@ export class Character extends MoveabelObject {
   _lastAnimTime = 0;
   // Sleep snoring state
   _isSnoring = false;
+  // Death animation state
+  _deadPlayed = false;
+  _deadFrameIndex = 0;
+  _deadFrameTime = 0;
 
   /** Preloaded animation frames for the character. */
   images_Idle = imageLoader.PLAYER.idle;
@@ -134,7 +138,7 @@ export class Character extends MoveabelObject {
      * @returns {boolean} true when handled.
      */
     if (!this.isdead()) return false;
-    this.animateDead();
+    this.animateDeadOnce();
     return true;
   }
 
@@ -210,6 +214,43 @@ export class Character extends MoveabelObject {
   animateIdle() {
     this.playAnimationThrottled(this.images_Idle, 150); // ~6-7 fps
     this.stopSnoringIfActive();
+  }
+
+  /**
+   * Plays the death animation frames once, then freezes on the last frame.
+   */
+  animateDeadOnce() {
+    const frames = this.images_Dead;
+    const lastIndex = frames.length - 1;
+    this.isWalking = false;
+    this.stopSnoringIfActive();
+
+    if (this._deadPlayed) {
+      this.img = this.imageCache[frames[lastIndex]];
+      return;
+    }
+
+    const now = Date.now();
+    if (now - this._deadFrameTime < 125) return;
+
+    const index = Math.min(this._deadFrameIndex, lastIndex);
+    this.img = this.imageCache[frames[index]];
+
+    this._deadFrameIndex++;
+    this._deadFrameTime = now;
+
+    if (this._deadFrameIndex > lastIndex) {
+      this._deadPlayed = true;
+      this._deadFrameIndex = lastIndex;
+    }
+  }
+
+  /**
+   * Returns true once the full death animation has been displayed.
+   * @returns {boolean}
+   */
+  hasFinishedDeathAnimation() {
+    return this._deadPlayed;
   }
 
   /**
