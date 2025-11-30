@@ -13,7 +13,7 @@ export class Character extends MoveabelObject {
   x = 0;
   y = 230;
   width = 300;
-  height = 300;
+  height = 350;
   speedX = 7;
   speedY = 2.5;
 

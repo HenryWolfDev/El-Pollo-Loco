@@ -145,8 +145,8 @@ export class MoveabelObject extends DrawableObject {
         this.y -= this.speedY;
         this.speedY -= this.acceleration;
         if (this instanceof Character) {
-          if (this.y >= 130) {
-            this.y = 130;
+          if (this.y >= 100) {
+            this.y = 100;
           }
         }
       }
@@ -154,7 +154,7 @@ export class MoveabelObject extends DrawableObject {
   }
 
   isAboveGround() {
-    return this.y < 130;
+    return this.y < 100;
   }
 
   isFalling() {

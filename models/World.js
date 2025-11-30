@@ -187,7 +187,7 @@ export class World {
    * Triggers the boss event on reaching the zone and drives boss movement/attacks.
    */
   endbossEventHandling() {
-    if (this.character.x >= 3500 && !this.bossEventTriggered) {
+    if (this.character.x >= 3300 && !this.bossEventTriggered) {
       this.startBossEvent();
     }
     if (this.bossEventTriggered) {
