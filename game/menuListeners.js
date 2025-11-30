@@ -26,6 +26,8 @@ export function menuAndOverlayListeners({
   // Impressum
   const impressBtn = document.getElementById("impress-button");
   if (impressBtn) impressBtn.addEventListener("click", showImpressum);
+  const impressIcon = document.getElementById("impress-icon");
+  if (impressIcon) impressIcon.addEventListener("click", showImpressum);
   const impressClose = document.getElementById("impressum-close-btn");
   if (impressClose) impressClose.addEventListener("click", closeImpressum);
 
