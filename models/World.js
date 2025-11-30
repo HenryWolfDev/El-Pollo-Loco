@@ -43,6 +43,7 @@ export class World {
   animationFrameId = null;
   isDestroyed = false;
 
+  // #region Lifecycle & Setup
   /**
    * Sets up rendering, spawns entities/status bars, and starts world loops.
    * @param {HTMLCanvasElement} canvas - Canvas for rendering.
@@ -66,7 +67,6 @@ export class World {
     AudioHub.playOne(AudioHub.Background);
     this.draw();
 
-    // Hauptspielschleife (Logik)
     IntervalHub.startInterval(this.run, 1000 / 60);
   }
 
@@ -90,7 +90,9 @@ export class World {
       this.winningTimer = null;
     }
   }
+  // #endregion Lifecycle & Setup
 
+  // #region Game Loop & Screens
   /**
    * Initializes the endboss event once (HUD + alert audio).
    */
@@ -148,6 +150,7 @@ export class World {
     });
   }
   // #endregion Screens
+  // #endregion Game Loop & Screens
 
   /**
    * Collects coins the character touches and updates the coin status bar.
@@ -298,9 +301,7 @@ export class World {
     bottle.playSplashAnimation();
     this.removeBottle(bottleIndex);
 
-    enemy instanceof Enbboss
-      ? this.handleBossBottleHit(enemy)
-      : enemy.hit(100);
+    enemy instanceof Enbboss ? this.handleBossBottleHit(enemy) : enemy.hit(100);
 
     if (enemy.isdead()) {
       this.removeEnemy(enemy);
@@ -318,12 +319,14 @@ export class World {
     }
   }
 
+  /** Removes a bottle after a short delay to allow the splash animation to play. */
   removeBottle(bIndex) {
     setTimeout(() => {
       this.throwableBottles.splice(bIndex, 1);
     }, 300);
   }
 
+  /** Removes an enemy after a short delay so its final state can render. */
   removeEnemy(enemy) {
     setTimeout(() => {
       const idx = this.enemys.indexOf(enemy);
@@ -334,6 +337,7 @@ export class World {
   }
   // #endregion Collisions (Character vs Enemies, Bottles)
 
+  // #region Throwables
   /**
    * Creates a throwable bottle on input, decreases inventory, and rate-limits throws.
    */
@@ -355,7 +359,9 @@ export class World {
       this.canThrow = true;
     }
   }
+  // #endregion Throwables
 
+  // #region Rendering
   /**
    * Renders the full scene for the current frame and schedules the next frame.
    */
@@ -386,6 +392,8 @@ export class World {
     this.ctx.translate(-this.camera_x, 0);
     this.animationFrameId = requestAnimationFrame(() => this.draw());
   }
+
+  // #endregion Rendering
 
   // #region Render Helpers (addObjectsToMap & addToMap)
 
@@ -469,5 +477,5 @@ export class World {
       );
     }
   }
-  // #region Background Creation
+  // #endregion Background Creation
 }

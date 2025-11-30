@@ -34,8 +34,6 @@ export class Character extends MoveabelObject {
   bottleCount = 3;
   coinsCount = 0;
 
-  debugFrame = true;
-
   // Animation timing control
   _lastAnimTime = 0;
   // Sleep snoring state
