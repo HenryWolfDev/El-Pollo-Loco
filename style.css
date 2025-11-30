@@ -263,6 +263,15 @@ table {
     display: none !important;
   }
 
+  /* Hide desktop music toggle on mobile; mobile variant lives in general-box */
+  .music-toggle {
+    display: none;
+  }
+
+  .is-playing .mobile-buttons .general-box {
+    display: none;
+  }
+
   .desktop-buttons {
     display: none;
   }
@@ -299,6 +308,15 @@ table {
       display: flex;
       gap: 2rem;
     }
+  }
+
+  body.is-playing .mobile-buttons .general-box {
+    display: none !important;
+  }
+
+  /* Hide the top-right general controls while the game is running */
+  .is-playing .mobile-buttons .general-box {
+    display: none !important;
   }
   .title {
     display: none;
@@ -327,6 +345,15 @@ table {
     display: none !important;
   }
 
+  /* Hide desktop music toggle on mobile; mobile variant lives in general-box */
+  .music-toggle {
+    display: none;
+  }
+
+  .is-playing .mobile-buttons .general-box {
+    display: none;
+  }
+
   .desktop-buttons {
     display: none;
   }
@@ -363,6 +390,15 @@ table {
       display: flex;
       gap: 2rem;
     }
+  }
+
+  body.is-playing .mobile-buttons .general-box {
+    display: none !important;
+  }
+
+  /* Hide the top-right general controls while the game is running */
+  .is-playing .mobile-buttons .general-box {
+    display: none !important;
   }
 
   .title {
