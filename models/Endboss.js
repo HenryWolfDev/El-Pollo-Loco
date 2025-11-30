@@ -14,7 +14,7 @@ export class Enbboss extends MoveabelObject {
 
   endbossAttacking = false;
   _deadPlayed = false;
-  _deadFrameIndex = 0;
+  _deadLoopCounter = 0;
   _deadFrameTime = 0;
 
   images_ALERT = imageLoader.ENEMIE_BOSS_CHICKEN.alert;
@@ -55,7 +55,7 @@ export class Enbboss extends MoveabelObject {
    */
   BossAnimations() {
     if (this.isdead()) {
-      this.animateDeadOnce();
+      this.animateDeadLooping();
     } else if (this.endbossAttacking) {
       this.playAnimationThrottled(this.images_Attack, 100); // ~10 fps
     } else if (!this.isWalking) {
@@ -68,24 +68,21 @@ export class Enbboss extends MoveabelObject {
   }
 
   /**
-   * Plays the dead animation frames once, then freezes on the last frame.
+   * Plays the death animation in a loop; marks when at least one full cycle completed.
    */
-  animateDeadOnce() {
-    if (this._deadPlayed) return;
+  animateDeadLooping() {
+    const frames = this.images_Dead;
     const now = Date.now();
     if (now - this._deadFrameTime < 125) return;
 
-    const frames = this.images_Dead;
-    const index = Math.min(this._deadFrameIndex, frames.length - 1);
-    const path = frames[index];
-    this.img = this.imageCache[path];
+    const index = this._deadLoopCounter % frames.length;
+    this.img = this.imageCache[frames[index]];
 
-    this._deadFrameIndex++;
+    this._deadLoopCounter++;
     this._deadFrameTime = now;
 
-    if (this._deadFrameIndex >= frames.length) {
+    if (!this._deadPlayed && this._deadLoopCounter >= frames.length) {
       this._deadPlayed = true;
-      this._deadFrameIndex = frames.length - 1;
     }
   }
 

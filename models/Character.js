@@ -40,8 +40,6 @@ export class Character extends MoveabelObject {
   _isSnoring = false;
   // Death animation state
   _deadPlayed = false;
-  _deadFrameIndex = 0;
-  _deadFrameTime = 0;
 
   /** Preloaded animation frames for the character. */
   images_Idle = imageLoader.PLAYER.idle;
@@ -138,7 +136,7 @@ export class Character extends MoveabelObject {
      * @returns {boolean} true when handled.
      */
     if (!this.isdead()) return false;
-    this.animateDeadOnce();
+    this.animateDeadLooping();
     return true;
   }
 
@@ -217,31 +215,19 @@ export class Character extends MoveabelObject {
   }
 
   /**
-   * Plays the death animation frames once, then freezes on the last frame.
+   * Plays the death animation in a loop; marks when at least one full cycle completed.
    */
-  animateDeadOnce() {
+  animateDeadLooping() {
     const frames = this.images_Dead;
-    const lastIndex = frames.length - 1;
     this.isWalking = false;
     this.stopSnoringIfActive();
+    this.playAnimationThrottled(frames, 125); // ~8 fps
 
-    if (this._deadPlayed) {
-      this.img = this.imageCache[frames[lastIndex]];
-      return;
-    }
-
-    const now = Date.now();
-    if (now - this._deadFrameTime < 125) return;
-
-    const index = Math.min(this._deadFrameIndex, lastIndex);
-    this.img = this.imageCache[frames[index]];
-
-    this._deadFrameIndex++;
-    this._deadFrameTime = now;
-
-    if (this._deadFrameIndex > lastIndex) {
-      this._deadPlayed = true;
-      this._deadFrameIndex = lastIndex;
+    if (!this._deadPlayed) {
+      const lastIndex = frames.length - 1;
+      if (this.currentImage % frames.length === lastIndex) {
+        this._deadPlayed = true;
+      }
     }
   }
 
