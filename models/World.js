@@ -270,9 +270,17 @@ export class World {
         this.character.isAboveGround() &&
         this.character.isColliding(enemy)
       ) {
-        enemy.hit(100);
+        const isBoss = enemy instanceof Enbboss;
+        enemy.hit(isBoss ? 15 : 100);
+        if (isBoss) {
+          AudioHub.playOne(AudioHub.Chicken_Dead);
+          this.statusBarBossHealth.setPercentage(enemy.energy);
+        }
+
         this.character.jump();
-        this.removeEnemy(enemy);
+        if (!isBoss) {
+          this.removeEnemy(enemy);
+        }
       }
     });
   }
