@@ -12,7 +12,7 @@ import { Enbboss } from "./Endboss.js";
 
 const OVERLAY_VISIBLE_CLASS = "is-visible";
 // Small delay before showing end screens to allow death animations to play.
-const OVERLAY_SHOW_DELAY = 1800;
+const OVERLAY_SHOW_DELAY = 2000;
 
 /**
  * Represents the full game world: player, enemies, background, HUD, and logic.
@@ -144,7 +144,7 @@ export class World {
       typeof this.character.hasFinishedDeathAnimation === "function" &&
       !this.character.hasFinishedDeathAnimation()
     ) {
-      return false; // wait until character death animation completes
+      return false;
     }
     return true;
   }
@@ -157,7 +157,7 @@ export class World {
       typeof boss.hasFinishedDeathAnimation === "function" &&
       !boss.hasFinishedDeathAnimation()
     ) {
-      return false; // wait until death animation finished
+      return false;
     }
     return true;
   }
@@ -265,24 +265,32 @@ export class World {
    */
   checkJumpAttack() {
     this.enemys.forEach((enemy) => {
-      if (
-        this.character.isFalling() &&
-        this.character.isAboveGround() &&
-        this.character.isColliding(enemy)
-      ) {
-        const isBoss = enemy instanceof Enbboss;
-        enemy.hit(isBoss ? 15 : 100);
-        if (isBoss) {
-          AudioHub.playOne(AudioHub.Chicken_Dead);
-          this.statusBarBossHealth.setPercentage(enemy.energy);
-        }
-
-        this.character.jump();
-        if (!isBoss) {
-          this.removeEnemy(enemy);
-        }
-      }
+      if (!this.shouldApplyStomp(enemy)) return;
+      this.applyStompDamage(enemy);
     });
+  }
+
+  shouldApplyStomp(enemy) {
+    const fallingOnEnemy =
+      this.character.isFalling() &&
+      this.character.isAboveGround() &&
+      this.character.isColliding(enemy);
+    if (!fallingOnEnemy) return false;
+
+    return !(enemy instanceof Enbboss && enemy.isHurt());
+  }
+
+  applyStompDamage(enemy) {
+    const isBoss = enemy instanceof Enbboss;
+    enemy.hit(isBoss ? 15 : 100);
+    if (isBoss) {
+      AudioHub.playOne(AudioHub.Chicken_Dead);
+      this.statusBarBossHealth.setPercentage(enemy.energy);
+      return;
+    }
+
+    this.character.jump();
+    this.removeEnemy(enemy);
   }
 
   /**
