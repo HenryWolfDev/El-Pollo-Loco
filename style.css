@@ -263,9 +263,13 @@ table {
     display: none !important;
   }
 
-  /* Hide desktop music toggle on mobile; mobile variant lives in general-box */
+  /* Hide desktop music toggle on mobile menu; allow in-game */
   .music-toggle {
     display: none;
+  }
+
+  body.is-playing .music-toggle {
+    display: flex;
   }
 
   .is-playing .mobile-buttons .general-box {
@@ -345,9 +349,13 @@ table {
     display: none !important;
   }
 
-  /* Hide desktop music toggle on mobile; mobile variant lives in general-box */
+  /* Hide desktop music toggle on mobile menu; allow in-game */
   .music-toggle {
     display: none;
+  }
+
+  body.is-playing .music-toggle {
+    display: flex;
   }
 
   .is-playing .mobile-buttons .general-box {
