@@ -468,9 +468,10 @@ table {
 @media only screen and (max-width: 1200px),
   only screen and (orientation: landscape) and (max-height: 500px) {
   .music-toggle {
-    top: 0rem;
+    position: fixed;
+    top: 1rem;
     left: auto;
-    right: 16.5rem;
+    right: 18rem;
     width: 4rem;
     height: 4rem;
   }
