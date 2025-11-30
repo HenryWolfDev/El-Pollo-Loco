@@ -62,6 +62,16 @@ canvas {
   justify-content: center;
   align-items: flex-start;
   gap: 2rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 200ms ease, visibility 200ms ease;
+}
+
+.overlay.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 /* #endregion Canvas and Wrapper */
 

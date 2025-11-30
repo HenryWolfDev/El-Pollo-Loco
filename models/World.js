@@ -10,6 +10,9 @@ import { AudioHub } from "../game/AudioHub.js";
 import { StatusbarBossHealth } from "./StatusbarBossHealth.js";
 import { Enbboss } from "./Endboss.js";
 
+const OVERLAY_VISIBLE_CLASS = "is-visible";
+const OVERLAY_SHOW_DELAY = 800;
+
 /**
  * Represents the full game world: player, enemies, background, HUD, and logic.
  * Owns the canvas context, camera, and input state.
@@ -27,6 +30,10 @@ export class World {
   canThrow = true;
 
   bossEventTriggered = false;
+  gameOverShown = false;
+  winningShown = false;
+  gameOverTimer = null;
+  winningTimer = null;
 
   canvas;
   ctx;
@@ -74,6 +81,14 @@ export class World {
     }
     IntervalHub.stopAllIntervals();
     AudioHub.stopAll();
+    if (this.gameOverTimer) {
+      clearTimeout(this.gameOverTimer);
+      this.gameOverTimer = null;
+    }
+    if (this.winningTimer) {
+      clearTimeout(this.winningTimer);
+      this.winningTimer = null;
+    }
   }
 
   /**
@@ -103,22 +118,31 @@ export class World {
 
   // #region Screens
   showGameOverScreen() {
-    if (this.character.isdead()) {
-      IntervalHub.stopAllIntervals();
-      AudioHub.stopAll();
-      AudioHub.playOne(AudioHub.Character_Dead);
-      document.getElementById("gameover-screen").style.display = "flex";
-    }
+    if (this.gameOverShown || !this.character.isdead()) return;
+    this.gameOverShown = true;
+    IntervalHub.stopAllIntervals();
+    AudioHub.stopAll();
+    AudioHub.playOne(AudioHub.Character_Dead);
+    const overlay = document.getElementById("gameover-screen");
+    this.gameOverTimer = setTimeout(() => {
+      if (this.isDestroyed) return;
+      if (overlay) overlay.classList.add(OVERLAY_VISIBLE_CLASS);
+    }, OVERLAY_SHOW_DELAY);
   }
 
   showWinningScreen() {
     this.enemys.forEach((enemy) => {
       if (enemy instanceof Enbboss) {
-        if (enemy.isdead()) {
+        if (enemy.isdead() && !this.winningShown) {
+          this.winningShown = true;
           IntervalHub.stopAllIntervals();
           AudioHub.stopAll();
           AudioHub.playOne(AudioHub.Winning);
-          document.getElementById("winning-screen").style.display = "flex";
+          const overlay = document.getElementById("winning-screen");
+          this.winningTimer = setTimeout(() => {
+            if (this.isDestroyed) return;
+            if (overlay) overlay.classList.add(OVERLAY_VISIBLE_CLASS);
+          }, OVERLAY_SHOW_DELAY);
         }
       }
     });

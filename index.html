@@ -23,7 +23,7 @@
     <div id="wrapper">
       <canvas id="canvas" width="720" height="480"></canvas>
       <!-- #region-Screens -->
-      <div id="start-screen" class="overlay screen">
+      <div id="start-screen" class="overlay screen is-visible">
         <div class="button-box desktop-buttons">
           <button class="button" id="start-button">Start</button>
           <button class="button" id="control-button">Steuerung</button>
@@ -31,18 +31,18 @@
         </div>
       </div>
 
-      <div id="gameover-screen" class="overlay screen" style="display: none">
+      <div id="gameover-screen" class="overlay screen">
         <button class="button" id="restart-btn">Neustarten</button>
         <button class="button" id="main-menu-btn">Hauptmenu</button>
       </div>
        
-      <div id="winning-screen" class="overlay screen" style="display: none">
+      <div id="winning-screen" class="overlay screen">
         <button class="button" id="restart-btn-winning">Neustarten</button>
         <button class="button" id="main-menu-btn-winning">Hauptmenu</button>
       </div>
       
       <!-- Impressum Overlay -->
-      <div id="impressum-screen" class="overlay screen" style="display: none">
+      <div id="impressum-screen" class="overlay screen">
         <div class="impressum-box">
           <h2>Impressum</h2>
           <div>
@@ -204,7 +204,7 @@
       </button>
 
       <!--#region Control-Setting-Screen-Desktop -->
-      <div id="control-setting-screen" class="overlay screen" style="display: none">
+      <div id="control-setting-screen" class="overlay screen">
         <div>
           <table class="table-desktop">
             <tr>

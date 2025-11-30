@@ -15,6 +15,30 @@ import { AudioHub } from "./AudioHub.js";
 let world;
 /** @type {Keyboard} */
 let keyboard = new Keyboard();
+const OVERLAY_VISIBLE_CLASS = "is-visible";
+
+/**
+ * Shows an overlay with an optional delay.
+ * @param {HTMLElement|null} el
+ * @param {number} delay
+ */
+function showOverlay(el, delay = 0) {
+  if (!el) return;
+  if (delay > 0) {
+    setTimeout(() => el.classList.add(OVERLAY_VISIBLE_CLASS), delay);
+  } else {
+    el.classList.add(OVERLAY_VISIBLE_CLASS);
+  }
+}
+
+/**
+ * Hides an overlay by removing the visible class.
+ * @param {HTMLElement|null} el
+ */
+function hideOverlay(el) {
+  if (!el) return;
+  el.classList.remove(OVERLAY_VISIBLE_CLASS);
+}
 
 // #region_______________________region Show-Control Settings______________________
 /**
@@ -22,7 +46,8 @@ let keyboard = new Keyboard();
  * @returns {void}
  */
 function showControlSettings() {
-  document.getElementById("control-setting-screen").style.display = "flex";
+  const overlay = document.getElementById("control-setting-screen");
+  showOverlay(overlay);
 
   const restartBtn = document.getElementById("restart-btn-control");
 
@@ -37,7 +62,7 @@ function showControlSettings() {
  */
 function closeControlSettings() {
   const overlay = document.getElementById("control-setting-screen");
-  overlay.style.display = "none";
+  hideOverlay(overlay);
 }
 // #endregion_______________________region Show-Control Settings______________________
 
@@ -48,7 +73,7 @@ function closeControlSettings() {
  */
 function showImpressum() {
   const overlay = document.getElementById("impressum-screen");
-  overlay.style.display = "flex";
+  showOverlay(overlay);
 }
 
 /**
@@ -57,7 +82,7 @@ function showImpressum() {
  */
 function closeImpressum() {
   const overlay = document.getElementById("impressum-screen");
-  overlay.style.display = "none";
+  hideOverlay(overlay);
 }
 // #endregion_______________________Impressum Overlay_______________________
 
@@ -78,7 +103,7 @@ function startGame() {
   SpawnManager.reset();
   world = new World(canvas, keyboard);
 
-  document.getElementById("start-screen").style.display = "none";
+  hideOverlay(document.getElementById("start-screen"));
   closeControlSettings();
 }
 
@@ -91,8 +116,8 @@ function restartGame() {
 
   const gameover = document.getElementById("gameover-screen");
   const winning = document.getElementById("winning-screen");
-  if (gameover) gameover.style.display = "none";
-  if (winning) winning.style.display = "none";
+  hideOverlay(gameover);
+  hideOverlay(winning);
 
   if (world && typeof world.destroy === "function") {
     world.destroy();
@@ -110,12 +135,12 @@ function goToMainMenu() {
   const gameover = document.getElementById("gameover-screen");
   const winning = document.getElementById("winning-screen");
   const control = document.getElementById("control-setting-screen");
-  if (gameover) gameover.style.display = "none";
-  if (winning) winning.style.display = "none";
-  if (control) control.style.display = "none";
+  hideOverlay(gameover);
+  hideOverlay(winning);
+  hideOverlay(control);
 
   const start = document.getElementById("start-screen");
-  if (start) start.style.display = "flex";
+  showOverlay(start);
 
   if (world && typeof world.destroy === "function") {
     world.destroy();
@@ -164,6 +189,7 @@ window.addEventListener("load", () => {
   keyboardListeners(keyboard);
   mobileControls(keyboard);
   initMusicToggle();
+  showOverlay(document.getElementById("start-screen"));
   menuAndOverlayListeners({
     startGame,
     showControlSettings,
