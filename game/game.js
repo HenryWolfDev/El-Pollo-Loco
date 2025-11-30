@@ -190,41 +190,43 @@ function initMusicToggle() {
   const toggles = Array.from(document.querySelectorAll(".music-toggle"));
   if (!toggles.length) return;
 
-  const updateToggleUI = () => {
-    const enabled = AudioHub.musicEnabled;
-    toggles.forEach((toggle) => {
-      const iconOn = toggle.querySelector("[data-state='on']");
-      const iconOff = toggle.querySelector("[data-state='off']");
-      toggle.dataset.state = enabled ? "on" : "off";
-      toggle.setAttribute("aria-pressed", String(enabled));
-      toggle.title = enabled ? "Mute sound" : "Unmute sound";
-      if (iconOn && iconOff) {
-        iconOn.style.display = enabled ? "block" : "none";
-        iconOff.style.display = enabled ? "none" : "block";
-      }
-    });
-  };
+  const update = () =>
+    toggles.forEach((toggle) => syncToggleUI(toggle, AudioHub.musicEnabled));
 
   const handleClick = () => {
-    const nextState = !AudioHub.musicEnabled;
-    AudioHub.setMusicEnabled(nextState);
-    if (nextState && world) {
+    AudioHub.setMusicEnabled(!AudioHub.musicEnabled);
+    if (AudioHub.musicEnabled && world) {
       AudioHub.playOne(AudioHub.Background, false);
     }
-    updateToggleUI();
+    update();
   };
+  toggles.forEach((toggle) => bindToggleEvents(toggle, handleClick));
+  update();
+}
 
-  toggles.forEach((toggle) => {
-    toggle.addEventListener("click", handleClick);
-    // Prevent spacebar from toggling music when the button is focused.
-    toggle.addEventListener("keydown", (e) => {
-      if (e.code === "Space" || e.keyCode === 32) {
-        e.preventDefault();
-      }
-    });
+function bindToggleEvents(toggle, handleClick) {
+  toggle.addEventListener("click", handleClick);
+  toggle.addEventListener("keydown", (e) => {
+    if (e.code === "Space" || e.keyCode === 32) {
+      e.preventDefault();
+    }
   });
+}
 
-  updateToggleUI();
+function syncToggleUI(toggle, enabled) {
+  const iconOn = toggle.querySelector("[data-state='on']");
+  const iconOff = toggle.querySelector("[data-state='off']");
+
+  toggle.dataset.state = enabled ? "on" : "off";
+  toggle.setAttribute("aria-pressed", String(enabled));
+  toggle.title = enabled ? "Mute sound" : "Unmute sound";
+
+  if (iconOn) {
+    iconOn.style.display = enabled ? "block" : "none";
+  }
+  if (iconOff) {
+    iconOff.style.display = enabled ? "none" : "block";
+  }
 }
 
 /** Initializes input listeners and UI buttons after the page loads. */
