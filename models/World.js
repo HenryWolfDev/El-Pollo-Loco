@@ -234,7 +234,7 @@ export class World {
           this.character.hit(5);
         }
         AudioHub.playOne(AudioHub.Character_Damage);
-        this.character.x -= 35;
+        this.character.x -= 15;
         this.checkCharacterXPosition();
         this.statusBarHealth.setPercentage(this.character.energy);
       }
