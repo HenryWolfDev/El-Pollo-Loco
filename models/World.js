@@ -282,21 +282,13 @@ export class World {
    */
   checkBottomAttack() {
     this.enemys.forEach((enemy) => {
-      if (
-        this.character.isColliding(enemy) &&
-        !this.character.isAboveGround() &&
-        !this.character.isHurt()
-      ) {
-        if (enemy instanceof Enbboss) {
-          this.character.hit(15);
-        } else {
-          this.character.hit(5);
-        }
-        AudioHub.playOne(AudioHub.Character_Damage);
-        this.character.x -= 15;
-        this.checkCharacterXPosition();
-        this.statusBarHealth.setPercentage(this.character.energy);
-      }
+      if (!this.shouldApplyGroundHit(enemy)) return;
+      const damage = enemy instanceof Enbboss ? 15 : 5;
+      this.character.hit(damage);
+      AudioHub.playOne(AudioHub.Character_Damage);
+      this.character.x -= 15;
+      this.checkCharacterXPosition();
+      this.statusBarHealth.setPercentage(this.character.energy);
     });
   }
 
@@ -307,6 +299,14 @@ export class World {
     if (this.character.x <= 0) {
       this.character.x = 0;
     }
+  }
+
+  shouldApplyGroundHit(enemy) {
+    return (
+      this.character.isColliding(enemy) &&
+      !this.character.isAboveGround() &&
+      !this.character.isHurt()
+    );
   }
 
   /**
@@ -375,22 +375,27 @@ export class World {
    * Creates a throwable bottle on input, decreases inventory, and rate-limits throws.
    */
   checkThrowableObjects() {
-    if (this.keyboard.D && this.character.bottleCount > 0 && this.canThrow) {
-      this.canThrow = false;
-      this.character.updateAction();
-      let bottle = new ThrowableObject(
-        this.character.x + 100,
-        this.character.y + 50,
-        this
-      );
-      this.throwableBottles.push(bottle);
-      this.character.bottleCount--;
-      this.statusbarBottles.setPercentage(this.character.bottleCount);
+    if (this.shouldThrowBottle()) {
+      this.spawnThrowableBottle();
     }
+    this.canThrow = this.canThrow || !this.keyboard.D;
+  }
 
-    if (!this.keyboard.D) {
-      this.canThrow = true;
-    }
+  shouldThrowBottle() {
+    return this.keyboard.D && this.character.bottleCount > 0 && this.canThrow;
+  }
+
+  spawnThrowableBottle() {
+    this.canThrow = false;
+    this.character.updateAction();
+    const bottle = new ThrowableObject(
+      this.character.x + 100,
+      this.character.y + 50,
+      this
+    );
+    this.throwableBottles.push(bottle);
+    this.character.bottleCount--;
+    this.statusbarBottles.setPercentage(this.character.bottleCount);
   }
   // #endregion Throwables
 
