@@ -121,47 +121,66 @@ export class World {
 
   // #region Screens
   showGameOverScreen() {
-    if (this.gameOverShown || !this.character.isdead()) return;
+    if (!this.shouldShowGameOver()) return;
+    this.gameOverShown = true;
+    this.stopAllAudioAndIntervals();
+    AudioHub.playOne(AudioHub.Character_Dead);
+    this.showOverlayWithDelay("gameover-screen");
+  }
+
+  showWinningScreen() {
+    if (!this.shouldShowWinning()) return;
+    this.winningShown = true;
+    this.stopAllAudioAndIntervals();
+    AudioHub.playOne(AudioHub.Winning);
+    this.showOverlayWithDelay("winning-screen");
+  }
+  // #endregion Screens
+
+  // #region Screen helpers
+  shouldShowGameOver() {
+    if (this.gameOverShown || !this.character.isdead()) return false;
     if (
       typeof this.character.hasFinishedDeathAnimation === "function" &&
       !this.character.hasFinishedDeathAnimation()
     ) {
-      return; // wait until character death animation completes
+      return false; // wait until character death animation completes
     }
-    this.gameOverShown = true;
-    IntervalHub.stopAllIntervals();
-    AudioHub.stopAll();
-    AudioHub.playOne(AudioHub.Character_Dead);
-    const overlay = document.getElementById("gameover-screen");
-    this.gameOverTimer = setTimeout(() => {
-      if (this.isDestroyed) return;
-      if (overlay) overlay.classList.add(OVERLAY_VISIBLE_CLASS);
-    }, OVERLAY_SHOW_DELAY);
+    return true;
   }
 
-  showWinningScreen() {
-    if (this.winningShown) return;
-
+  shouldShowWinning() {
+    if (this.winningShown) return false;
     const boss = this.enemys.find((enemy) => enemy instanceof Enbboss);
-    if (!boss || !boss.isdead()) return;
+    if (!boss || !boss.isdead()) return false;
     if (
       typeof boss.hasFinishedDeathAnimation === "function" &&
       !boss.hasFinishedDeathAnimation()
     ) {
-      return; // wait until death animation finished
+      return false; // wait until death animation finished
     }
+    return true;
+  }
 
-    this.winningShown = true;
+  stopAllAudioAndIntervals() {
     IntervalHub.stopAllIntervals();
     AudioHub.stopAll();
-    AudioHub.playOne(AudioHub.Winning);
-    const overlay = document.getElementById("winning-screen");
-    this.winningTimer = setTimeout(() => {
+  }
+
+  showOverlayWithDelay(id) {
+    const overlay = document.getElementById(id);
+    const timer = setTimeout(() => {
       if (this.isDestroyed) return;
       if (overlay) overlay.classList.add(OVERLAY_VISIBLE_CLASS);
     }, OVERLAY_SHOW_DELAY);
+
+    if (id === "gameover-screen") {
+      this.gameOverTimer = timer;
+    } else if (id === "winning-screen") {
+      this.winningTimer = timer;
+    }
   }
-  // #endregion Screens
+  // #endregion Screen helpers
   // #endregion Game Loop & Screens
 
   /**
