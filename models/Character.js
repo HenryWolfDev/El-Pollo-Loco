@@ -119,41 +119,100 @@ export class Character extends MoveabelObject {
   // #region Character Animations
   /** Processes the current animation based on state. */
   CharacterAnimations() {
-    if (this.isdead()) {
-      this.playAnimationThrottled(this.images_Dead, 125); // ~8 fps
-      this.isWalking = false;
-      this.stopSnoringIfActive();
-      return;
-    }
-    if (this.isHurt()) {
-      this.updateAction();
-      this.playAnimationThrottled(this.images_Hurt, 83); // ~12 fps
-      this.stopSnoringIfActive();
-      return;
-    }
-    if (this.charIsJumpingOrInAir()) {
-      this.isWalking = false;
-      this.playAnimationThrottled(this.images_Jumping, 83); // ~12 fps
-      this.stopSnoringIfActive();
-      return;
-    }
-    if (this.isWalking) {
-      this.playAnimationThrottled(this.images_Walking, 100); // ~10 fps
-      this.isWalking = false;
-      this.stopSnoringIfActive();
-      return;
-    }
-    if (this.charIsSleeping()) {
-      this.playAnimationThrottled(this.images_Sleep, 200); // ~5 fps
-      this.startSnoringIfNeeded();
-      return;
-    }
+    if (this.handleDead()) return;
+    if (this.handleHurt()) return;
+    if (this.handleAirborne()) return;
+    if (this.handleWalking()) return;
+    if (this.handleSleeping()) return;
 
-    this.playAnimationThrottled(this.images_Idle, 150); // ~6-7 fps
-    this.stopSnoringIfActive();
+    this.animateIdle();
   }
 
   // #endregion Character Animations
+
+  handleDead() {
+    /**
+     * If the character is dead, run the death animation and signal it was handled.
+     * @returns {boolean} true when handled.
+     */
+    if (!this.isdead()) return false;
+    this.animateDead();
+    return true;
+  }
+
+  handleHurt() {
+    /**
+     * If the character is hurt, run the hurt animation and signal it was handled.
+     * @returns {boolean} true when handled.
+     */
+    if (!this.isHurt()) return false;
+    this.animateHurt();
+    return true;
+  }
+
+  handleAirborne() {
+    /**
+     * If the character is jumping or airborne, run the jump animation and signal it was handled.
+     * @returns {boolean} true when handled.
+     */
+    if (!this.charIsJumpingOrInAir()) return false;
+    this.animateAirborne();
+    return true;
+  }
+
+  handleWalking() {
+    /**
+     * If the character is walking, run the walk animation and signal it was handled.
+     * @returns {boolean} true when handled.
+     */
+    if (!this.isWalking) return false;
+    this.animateWalking();
+    return true;
+  }
+
+  handleSleeping() {
+    /**
+     * If the character is idle long enough, run the sleep animation and signal it was handled.
+     * @returns {boolean} true when handled.
+     */
+    if (!this.charIsSleeping()) return false;
+    this.animateSleeping();
+    return true;
+  }
+
+  animateDead() {
+    this.playAnimationThrottled(this.images_Dead, 125); // ~8 fps
+    this.isWalking = false;
+    this.stopSnoringIfActive();
+  }
+
+  animateHurt() {
+    this.updateAction();
+    this.playAnimationThrottled(this.images_Hurt, 83); // ~12 fps
+    this.stopSnoringIfActive();
+  }
+
+  animateAirborne() {
+    this.isWalking = false;
+    this.playAnimationThrottled(this.images_Jumping, 83); // ~12 fps
+    this.stopSnoringIfActive();
+  }
+
+  animateWalking() {
+    this.playAnimationThrottled(this.images_Walking, 100); // ~10 fps
+    this.isWalking = false;
+    this.stopSnoringIfActive();
+  }
+
+  animateSleeping() {
+    this.playAnimationThrottled(this.images_Sleep, 200); // ~5 fps
+    this.startSnoringIfNeeded();
+  }
+
+  animateIdle() {
+    this.playAnimationThrottled(this.images_Idle, 150); // ~6-7 fps
+    this.stopSnoringIfActive();
+  }
 
   /**
    * Checks whether the character is jumping or airborne.
