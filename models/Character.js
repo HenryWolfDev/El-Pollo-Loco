@@ -72,14 +72,14 @@ export class Character extends MoveabelObject {
     this.loadImages(this.images_Sleep);
   }
 
+  // #region Main Loop & Movement
+  /** Per-frame tick: movement, jump triggers, animation selection, reset flags. */
   animate = () => {
     this.moveLeftAndRight();
     this.jumpStart();
     this.CharacterAnimations();
     this.resetJumpFlagIfOnGround();
   };
-
-  // #region movement
 
   /** Moves the character left/right based on keyboard input. */
   moveLeftAndRight() {
@@ -113,10 +113,9 @@ export class Character extends MoveabelObject {
   jump() {
     this.speedY = 28;
   }
+  // #endregion Main Loop & Movement
 
-  // #endregion movement
-
-  // #region Character Animations
+  // #region Animation Dispatcher
   /** Processes the current animation based on state. */
   CharacterAnimations() {
     if (this.handleDead()) return;
@@ -128,58 +127,58 @@ export class Character extends MoveabelObject {
     this.animateIdle();
   }
 
-  // #endregion Character Animations
-
+  /**
+   * Runs once the character is dead; plays death anim and signals handled.
+   * @returns {boolean} true when a dead animation was chosen.
+   */
   handleDead() {
-    /**
-     * If the character is dead, run the death animation and signal it was handled.
-     * @returns {boolean} true when handled.
-     */
     if (!this.isdead()) return false;
     this.animateDeadLooping();
     return true;
   }
 
+  /**
+   * Runs hurt animation when recently damaged.
+   * @returns {boolean} true when a hurt animation was chosen.
+   */
   handleHurt() {
-    /**
-     * If the character is hurt, run the hurt animation and signal it was handled.
-     * @returns {boolean} true when handled.
-     */
     if (!this.isHurt()) return false;
     this.animateHurt();
     return true;
   }
 
+  /**
+   * Runs jump/air animation while airborne.
+   * @returns {boolean} true when an air animation was chosen.
+   */
   handleAirborne() {
-    /**
-     * If the character is jumping or airborne, run the jump animation and signal it was handled.
-     * @returns {boolean} true when handled.
-     */
     if (!this.charIsJumpingOrInAir()) return false;
     this.animateAirborne();
     return true;
   }
 
+  /**
+   * Runs walking animation when moving horizontally.
+   * @returns {boolean} true when a walk animation was chosen.
+   */
   handleWalking() {
-    /**
-     * If the character is walking, run the walk animation and signal it was handled.
-     * @returns {boolean} true when handled.
-     */
     if (!this.isWalking) return false;
     this.animateWalking();
     return true;
   }
 
+  /**
+   * Runs sleep animation after idle timeout.
+   * @returns {boolean} true when a sleep animation was chosen.
+   */
   handleSleeping() {
-    /**
-     * If the character is idle long enough, run the sleep animation and signal it was handled.
-     * @returns {boolean} true when handled.
-     */
     if (!this.charIsSleeping()) return false;
     this.animateSleeping();
     return true;
   }
+  // #endregion Animation Dispatcher
 
+  // #region Animation Runners
   animateDead() {
     this.playAnimationThrottled(this.images_Dead, 125); // ~8 fps
     this.isWalking = false;
@@ -230,7 +229,9 @@ export class Character extends MoveabelObject {
       }
     }
   }
+  // #endregion Animation Runners
 
+  // #region State Checks & Timers
   /**
    * Returns true once the full death animation has been displayed.
    * @returns {boolean}
@@ -264,7 +265,9 @@ export class Character extends MoveabelObject {
   updateAction() {
     this.lastAction = Date.now();
   }
+  // #endregion State Checks & Timers
 
+  // #region Position & Collision Helpers
   /** Resets the jump flag when the character is back on the ground. */
   resetJumpFlagIfOnGround() {
     if (!this.isAboveGround() && this.jumpAnim) {
@@ -287,8 +290,10 @@ export class Character extends MoveabelObject {
     this.getRealFrame();
     return { x: this.rX, y: this.rY, width: this.rW, height: this.rH };
   }
+  // #endregion Position & Collision Helpers
 
-  // Advance animation frames at a capped rate independent of the 60 Hz update
+  // #region Animation Helpers
+  /** Advance animation frames at a capped rate independent of the 60 Hz update. */
   playAnimationThrottled(images, intervalMs) {
     const now = Date.now();
     if (now - this._lastAnimTime >= intervalMs) {
@@ -312,4 +317,5 @@ export class Character extends MoveabelObject {
       this._isSnoring = false;
     }
   }
+  // #endregion Animation Helpers
 }
