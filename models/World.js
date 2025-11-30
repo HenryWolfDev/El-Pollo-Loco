@@ -286,11 +286,12 @@ export class World {
     if (isBoss) {
       AudioHub.playOne(AudioHub.Chicken_Dead);
       this.statusBarBossHealth.setPercentage(enemy.energy);
-      return;
     }
 
     this.character.jump();
-    this.removeEnemy(enemy);
+    if (!isBoss) {
+      this.removeEnemy(enemy);
+    }
   }
 
   /**
@@ -321,7 +322,8 @@ export class World {
     return (
       this.character.isColliding(enemy) &&
       !this.character.isAboveGround() &&
-      !this.character.isHurt()
+      !this.character.isHurt() &&
+      !(enemy instanceof Enbboss && enemy.isHurt())
     );
   }
 
