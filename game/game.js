@@ -16,6 +16,7 @@ let world;
 /** @type {Keyboard} */
 let keyboard = new Keyboard();
 const OVERLAY_VISIBLE_CLASS = "is-visible";
+const BODY_PLAYING_CLASS = "is-playing";
 
 /**
  * Shows an overlay with an optional delay.
@@ -24,6 +25,10 @@ const OVERLAY_VISIBLE_CLASS = "is-visible";
  */
 function showOverlay(el, delay = 0) {
   if (!el) return;
+  if (el.id === "start-screen") {
+    // Ensure mobile move buttons stay hidden while on the start menu.
+    document.body.classList.remove(BODY_PLAYING_CLASS);
+  }
   if (delay > 0) {
     setTimeout(() => el.classList.add(OVERLAY_VISIBLE_CLASS), delay);
   } else {

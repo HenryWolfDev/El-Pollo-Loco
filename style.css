@@ -253,6 +253,11 @@ table {
 }
 
 @media only screen and (max-width: 1200px) {
+  #start-screen.is-visible ~ .mobile-buttons .move-box-left,
+  #start-screen.is-visible ~ .mobile-buttons .move-box-right {
+    display: none !important;
+  }
+
   .desktop-buttons {
     display: none;
   }
@@ -307,6 +312,11 @@ table {
 }
 
 @media only screen and (orientation: landscape) and (max-height: 500px) {
+  #start-screen.is-visible ~ .mobile-buttons .move-box-left,
+  #start-screen.is-visible ~ .mobile-buttons .move-box-right {
+    display: none !important;
+  }
+
   .desktop-buttons {
     display: none;
   }
@@ -367,7 +377,7 @@ table {
   .music-toggle {
     top: 1rem;
     left: auto;
-    right: 13rem;
+    right: 19rem;
     width: 4rem;
     height: 4rem;
   }
